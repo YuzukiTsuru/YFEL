@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>691</width>
+    <height>380</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>691</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="chip_tab">
+     <attribute name="title">
+      <string>Chip</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="flash_tab">
+     <attribute name="title">
+      <string>Flash</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="dump_tab">
+     <attribute name="title">
+      <string>Dump</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="data_tab">
+     <attribute name="title">
+      <string>Data</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="misc_tab">
+     <attribute name="title">
+      <string>Misc</string>
+     </attribute>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="chip_label">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>0</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Currect Chip: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="chip_label_2">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>0</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>None</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>691</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_YFEL"/>
+    <addaction name="actionWeb"/>
+   </widget>
+   <widget class="QMenu" name="menuTool">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionInit_DDR"/>
+    <addaction name="actionEnable_JTAG"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuTool"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionInit_DDR">
+   <property name="text">
+    <string>Init DDR</string>
+   </property>
+  </action>
+  <action name="actionEnable_JTAG">
+   <property name="text">
+    <string>Enable JTAG</string>
+   </property>
+  </action>
+  <action name="actionAbout_YFEL">
+   <property name="text">
+    <string>About YFEL</string>
+   </property>
+  </action>
+  <action name="actionWeb">
+   <property name="text">
+    <string>Web</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
