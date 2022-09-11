@@ -1,12 +1,15 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //init_mainwindow_data();
     ui->setupUi(this);
+    initMainwindowData();
+    initMenubar();
 }
 
 MainWindow::~MainWindow()
@@ -14,7 +17,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::init_mainwindow_data()
+void MainWindow::initMainwindowData()
 {
-    ui->chip_label_2->setText("None");
+    ui->chip_label_2->setText(tr("NONE"));
+    ui->statusbar->showMessage(tr("Ready"));
 }
+
+void MainWindow::initMenubar()
+{
+    ui->actionExit->setShortcut(QKeySequence::Quit);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitMenuClicked);
+}
+
+void MainWindow::exitMenuClicked()
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("Exit YFEL?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    if(ret == QMessageBox::Yes)
+    {
+        QApplication::quit();
+    }
+}
+
+void MainWindow::updateStatusBar(QString status)
+{
+    ui->statusbar->showMessage(status);
+}
+

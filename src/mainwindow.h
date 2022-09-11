@@ -17,8 +17,17 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QAction *exitAct;
 
 private:
-    void init_mainwindow_data();
+    void initMainwindowData();
+
+    void initMenubar();
+
+private:
+    void exitMenuClicked();
+
+    void updateStatusBar(QString status);
+
 };
 #endif // MAINWINDOW_H
