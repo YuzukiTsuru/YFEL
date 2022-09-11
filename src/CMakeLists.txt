@@ -49,9 +49,9 @@ set(TS_FILES i18n/YFEL_zh_CN.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        ChipID.h
-        chipworker.cpp
-        chipworker.h
+        ChipList.h
+        ChipWorker.cpp
+        ChipWorker.h
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
