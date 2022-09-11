@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -185,6 +185,29 @@
      <attribute name="title">
       <string>Flash</string>
      </attribute>
+     <widget class="QTabWidget" name="flash_flash_tabWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>691</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="fel_flash">
+       <attribute name="title">
+        <string>FEL Flash</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="aw_flash">
+       <attribute name="title">
+        <string>AW Flash</string>
+       </attribute>
+      </widget>
+     </widget>
     </widget>
     <widget class="QWidget" name="dump_tab">
      <attribute name="title">
