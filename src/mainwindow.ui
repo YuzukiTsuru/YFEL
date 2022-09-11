@@ -6,12 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>380</height>
+    <width>689</width>
+    <height>407</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>689</width>
+    <height>407</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -20,7 +29,7 @@
       <x>0</x>
       <y>0</y>
       <width>691</width>
-      <height>351</height>
+      <height>371</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -30,6 +39,147 @@
      <attribute name="title">
       <string>Chip</string>
      </attribute>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>9</y>
+        <width>671</width>
+        <height>320</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="chip_chip_name_label">
+         <property name="text">
+          <string>Chip Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLineEdit" name="lineEdit"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chip_chip_name_pushButton">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="chip_chip_id_label_2">
+         <property name="text">
+          <string>Chip ID</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_2"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chip_chip_id_pushButton_2">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="chip_chip_sid_label_4">
+         <property name="text">
+          <string>Chip SID</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_4"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chip_chip_sid_pushButton_3">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="chip_chip_core_label_5">
+         <property name="text">
+          <string>Chip Core</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_5"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chip_chip_core_pushButton_4">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="chip_chip_dflag_label_6">
+         <property name="text">
+          <string>Dflag</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_6"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chip_dflag_pushButton_5">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="chip_chip_version_label_7">
+         <property name="text">
+          <string>Version</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_7"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chip_version_pushButton_6">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <widget class="QWidget" name="flash_tab">
      <attribute name="title">
@@ -52,31 +202,38 @@
      </attribute>
     </widget>
    </widget>
-   <widget class="QLabel" name="chip_label">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>470</x>
       <y>0</y>
-      <width>91</width>
-      <height>20</height>
+      <width>211</width>
+      <height>21</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Currect Chip: </string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="chip_label_2">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>0</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>None</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QPushButton" name="scan_pushButton">
+       <property name="text">
+        <string>Scan</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="chip_label">
+       <property name="text">
+        <string>Currect Chip: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="chip_label_2">
+       <property name="text">
+        <string>None</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -84,7 +241,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>691</width>
+     <width>689</width>
      <height>22</height>
     </rect>
    </property>

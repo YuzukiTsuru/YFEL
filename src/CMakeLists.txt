@@ -1,6 +1,32 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(YFEL VERSION 0.1 LANGUAGES CXX)
+# Set Version, Release need cmake
+set(PROJECT_VERSION_MAJOR 0)
+set(PROJECT_VERSION_MINOR 0)
+
+# use git version as library version
+find_package(Git QUIET)
+if (Git_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} rev-list --count HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE _git_version
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} log -1 --pretty=format:%h
+            OUTPUT_VARIABLE PROJECT_GIT_HASH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+            WORKING_DIRECTORY
+            ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+else ()
+    set(_git_version 0)
+    set(PROJECT_GIT_HASH "")
+endif ()
+
+project(YFEL VERSION 0.0.${_git_version} LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -11,6 +37,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+configure_file(
+        "${PROJECT_SOURCE_DIR}/config.h.in"
+        "${PROJECT_BINARY_DIR}/yfel_config.h"
+)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
@@ -18,12 +49,15 @@ set(TS_FILES i18n/YFEL_zh_CN.ts)
 
 set(PROJECT_SOURCES
         main.cpp
+        ChipID.h
         chipworker.cpp
         chipworker.h
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        icon.qrc
         ${TS_FILES}
+        ${PROJECT_BINARY_DIR}/yfel_config.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

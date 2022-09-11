@@ -14,6 +14,7 @@
 *.so.*
 *_pch.h.cpp
 *_resource.rc
+*.user
 *.qm
 .#*
 *.*#

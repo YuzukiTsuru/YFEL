@@ -4,6 +4,8 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include "yfel_config.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -18,6 +20,8 @@ int main(int argc, char *argv[])
         }
     }
     MainWindow w;
+    w.setWindowTitle(PROJECT_NAME + QString(" - ") + PROJECT_DESCRIPTION);
+    w.setWindowIcon(QIcon(":/assets/img/icon.png"));
     w.show();
     return a.exec();
 }
