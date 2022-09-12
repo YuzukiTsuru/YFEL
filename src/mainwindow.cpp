@@ -31,12 +31,15 @@ void MainWindow::initMenubar()
 
     // menu about
     connect(ui->actionAbout_YFEL, &QAction::triggered, this, &MainWindow::aboutMenuClicked);
+
+    // menu web
 }
 
 void MainWindow::exitMenuClicked()
 {
     QMessageBox msgBox;
     msgBox.setText(tr("Exit YFEL?"));
+    msgBox.setWindowIcon(QIcon(":/assets/img/icon.png"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();
@@ -48,7 +51,7 @@ void MainWindow::exitMenuClicked()
 
 void MainWindow::aboutMenuClicked()
 {
-    QMessageBox::about(this, tr("About YFEL"), tr("CopyRight 2022 YuzukiTsuru\nLicensed under GPL-3.0"));
+    QMessageBox::about(this, tr("About YFEL"), tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0"));
 }
 
 void MainWindow::updateStatusBar(QString status)

@@ -45,7 +45,7 @@ configure_file(
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-set(TS_FILES i18n/YFEL_zh_CN.ts)
+set(TS_FILES "i18n/YFEL_zh_CN.ts")
 
 set(PROJECT_SOURCES
         main.cpp
