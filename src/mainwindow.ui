@@ -59,7 +59,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="chip_name_lineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="chip_chip_name_pushButton">
@@ -80,7 +80,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="QLineEdit" name="lineEdit_2"/>
+          <widget class="QLineEdit" name="chip_id_lineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="chip_chip_id_pushButton_2">
@@ -104,7 +104,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QLineEdit" name="lineEdit_4"/>
+          <widget class="QLineEdit" name="chip_sid_lineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="chip_chip_sid_pushButton_3">
@@ -125,7 +125,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QLineEdit" name="chip_core_lineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="chip_chip_core_pushButton_4">
@@ -146,7 +146,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLineEdit" name="lineEdit_6"/>
+          <widget class="QLineEdit" name="chip_dflag_lineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="chip_dflag_pushButton_5">
@@ -167,7 +167,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLineEdit" name="lineEdit_7"/>
+          <widget class="QLineEdit" name="chip_version_lineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="chip_version_pushButton_6">
@@ -211,7 +211,7 @@
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>REG</string>
+      <string>Run</string>
      </attribute>
     </widget>
     <widget class="QWidget" name="dump_tab">
