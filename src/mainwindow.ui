@@ -39,7 +39,7 @@
      <attribute name="title">
       <string>Chip</string>
      </attribute>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="fel_flash">
        <attribute name="title">
@@ -230,13 +230,13 @@
      </attribute>
     </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>470</x>
       <y>0</y>
       <width>211</width>
-      <height>21</height>
+      <height>26</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_7">
