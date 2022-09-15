@@ -6,7 +6,7 @@ set(PROJECT_VERSION_MINOR 0)
 
 # use git version as library version
 find_package(Git QUIET)
-if (Git_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+if (Git_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../.git")
     execute_process(
             COMMAND ${GIT_EXECUTABLE} rev-list --count HEAD
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -52,6 +52,10 @@ set(PROJECT_SOURCES
         ChipList.h
         ChipWorker.cpp
         ChipWorker.h
+        sha256.cpp
+        sha256.h
+        x.h
+        macros.h
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
