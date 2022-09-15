@@ -91,10 +91,15 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+if(WIN32)
+    target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/lib/libusb-1.0.a)
+    target_include_directories(YFEL PRIVATE ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/include)
+else()
+    target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets usb-1.0)
+endif()
 
 set_target_properties(YFEL PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+    MACOSX_BUNDLE_GUI_IDENTIFIER yfel.gloomyghost.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
