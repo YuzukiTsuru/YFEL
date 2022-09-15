@@ -7,7 +7,11 @@
 class ChipWorker
 {
 public:
-    ChipWorker(QString chipname);
+    ChipWorker() = default;
+
+    ~ChipWorker();
+
+    void setChipID(uint64_t chip_id);
 
 private:
     chip_t chip = {};

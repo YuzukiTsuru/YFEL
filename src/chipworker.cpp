@@ -1,6 +1,6 @@
 #include "chipworker.h"
 
-ChipWorker::ChipWorker(QString chipname)
+void ChipWorker::setChipID(uint64_t chip_id)
 {
-    chip.chip_name = chipname;
+
 }
