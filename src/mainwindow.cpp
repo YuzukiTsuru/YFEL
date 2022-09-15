@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "yfel_config.h"
 
 #include <QMessageBox>
 
@@ -20,7 +21,7 @@ MainWindow::~MainWindow()
 void MainWindow::initMainwindowData()
 {
     ui->chip_label_2->setText(tr("NONE"));
-    ui->statusbar->showMessage(tr("Ready"), 5000);
+    ui->statusbar->showMessage(tr("Ready, Version: ") + PROJECT_GIT_HASH, 5000);
 }
 
 void MainWindow::initMenubar()
@@ -51,11 +52,16 @@ void MainWindow::exitMenuClicked()
 
 void MainWindow::aboutMenuClicked()
 {
-    QMessageBox::about(this, tr("About YFEL"), tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0"));
+    QMessageBox::about(this, tr("About YFEL"), tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " + PROJECT_GIT_HASH);
 }
 
 void MainWindow::updateStatusBar(QString status)
 {
     ui->statusbar->showMessage(status);
+}
+
+void MainWindow::on_scan_pushButton_clicked()
+{
+    qDebug() << "scaning target chip";
 }
 

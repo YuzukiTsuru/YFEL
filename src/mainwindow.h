@@ -15,6 +15,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_scan_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *exitAct;
@@ -24,12 +27,13 @@ private:
 
     void initMenubar();
 
+    void initButtons();
+
 private:
     void exitMenuClicked();
 
     void aboutMenuClicked();
 
     void updateStatusBar(QString status);
-
 };
 #endif // MAINWINDOW_H
