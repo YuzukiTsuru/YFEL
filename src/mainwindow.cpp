@@ -6,6 +6,8 @@
 #include <QClipboard>
 #include <QTimer>
 
+#include <qdesktopservices.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -33,9 +35,17 @@ void MainWindow::initMenubar()
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitMenuClicked);
 
     // menu about
-    connect(ui->actionAbout_YFEL, &QAction::triggered, this, &MainWindow::aboutMenuClicked);
+    connect(ui->actionAbout_YFEL, &QAction::triggered, this, [this]()
+    {
+        QMessageBox::about(this, tr("About YFEL"), tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " + PROJECT_GIT_HASH);
+    });
 
     // menu web
+    connect(ui->actionWeb, &QAction::triggered, this, []()
+    {
+        QString URL = "https://github.com/YuzukiTsuru/YFEL";
+        QDesktopServices::openUrl(QUrl(URL.toLatin1()));
+    });
 }
 
 void MainWindow::exitMenuClicked()
@@ -59,11 +69,6 @@ void MainWindow::copyToClipboard(QString data, QPushButton *button)
     clip->setText(data);
     button->setText("√");
     QTimer::singleShot(500, this, [button](){button->setText(tr("Copy"));});
-}
-
-void MainWindow::aboutMenuClicked()
-{
-    QMessageBox::about(this, tr("About YFEL"), tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " + PROJECT_GIT_HASH);
 }
 
 void MainWindow::updateStatusBar(QString status)

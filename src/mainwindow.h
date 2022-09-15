@@ -45,8 +45,6 @@ private:
 private:
     void exitMenuClicked();
 
-    void aboutMenuClicked();
-
     void updateStatusBar(QString status);
 
     void copyToClipboard(QString data, QPushButton *button);
