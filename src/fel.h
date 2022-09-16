@@ -66,6 +66,8 @@ public:
 
     void fel_open_usb();
 
+    void fel_close_usb();
+
     void fel_scan_chip();
 
     uint32_t fel_get_chip_id();

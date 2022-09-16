@@ -40,6 +40,10 @@ void fel::fel_open_usb() {
     }
 }
 
+void fel::fel_close_usb(){
+    libusb_close(ctx.hdl);
+}
+
 void fel::fel_scan_chip() {
     fel_init();
     fel_chip_id();

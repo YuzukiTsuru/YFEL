@@ -70,6 +70,7 @@ void MainWindow::on_scan_pushButton_clicked() {
     _fel.fel_scan_chip();
     ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
     ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
+    _fel.fel_close_usb();
 }
 
 void MainWindow::on_chip_chip_name_pushButton_clicked() {
