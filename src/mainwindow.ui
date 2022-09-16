@@ -137,42 +137,42 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="chip_chip_dflag_label_6">
+        <widget class="QLabel" name="chip_chip_spi_nor_label_6">
          <property name="text">
-          <string>Dflag</string>
+          <string>SPI NOR</string>
          </property>
         </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLineEdit" name="chip_dflag_lineEdit"/>
+          <widget class="QLineEdit" name="chip_spi_nor_lineEdit"/>
          </item>
          <item>
-          <widget class="QPushButton" name="chip_dflag_pushButton_5">
+          <widget class="QPushButton" name="chip_spi_nor_scan_pushButton">
            <property name="text">
-            <string>Copy</string>
+            <string>Scan</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="chip_chip_version_label_7">
+        <widget class="QLabel" name="chip_chip_spi_nand_label_7">
          <property name="text">
-          <string>Version</string>
+          <string>SPI NAND</string>
          </property>
         </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLineEdit" name="chip_version_lineEdit"/>
+          <widget class="QLineEdit" name="chip_spi_nand_lineEdit"/>
          </item>
          <item>
-          <widget class="QPushButton" name="chip_version_pushButton_6">
+          <widget class="QPushButton" name="chip_spi_nand_scan_pushButton">
            <property name="text">
-            <string>Copy</string>
+            <string>Scan</string>
            </property>
           </widget>
          </item>

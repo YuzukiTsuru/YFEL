@@ -10,15 +10,16 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
 
 private slots:
+
     void on_scan_pushButton_clicked();
 
     void on_chip_chip_name_pushButton_clicked();
@@ -29,13 +30,13 @@ private slots:
 
     void on_chip_chip_core_pushButton_4_clicked();
 
-    void on_chip_dflag_pushButton_5_clicked();
+    void on_chip_spi_nor_scan_pushButton_clicked();
 
-    void on_chip_version_pushButton_6_clicked();
+    void on_chip_spi_nand_scan_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QAction *exitAct;
+    QAction *exitAct{};
     fel _fel;
 
 private:
@@ -46,10 +47,11 @@ private:
     void initButtons();
 
 private:
-    void exitMenuClicked();
+    static void exitMenuClicked();
 
     void updateStatusBar(const QString &status);
 
     void copyToClipboard(const QString &data, QPushButton *button);
 };
+
 #endif // MAINWINDOW_H

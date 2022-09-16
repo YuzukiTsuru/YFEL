@@ -72,16 +72,11 @@ void MainWindow::on_scan_pushButton_clicked() {
         _fel.fel_scan_chip();
         ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id().id, 16));
         ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id().id, 16));
-        ui->chip_version_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id().firmware, 16));
-        ui->chip_dflag_lineEdit->setText("dflag = 0x" + QString::number(_fel.fel_get_chip_id().dflag, 16) +
-                                         "\tdlength = 0x" + QString::number(_fel.fel_get_chip_id().dlength, 16));
         _fel.fel_close_usb();
         updateStatusBar(tr("Done."));
     } catch (const std::exception &e) {
         ui->chip_label_2->setText(tr("NONE"));
         ui->chip_id_lineEdit->setText("");
-        ui->chip_version_lineEdit->setText("");
-        ui->chip_dflag_lineEdit->setText("");
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
@@ -102,10 +97,10 @@ void MainWindow::on_chip_chip_core_pushButton_4_clicked() {
     copyToClipboard(ui->chip_core_lineEdit->text(), ui->chip_chip_core_pushButton_4);
 }
 
-void MainWindow::on_chip_dflag_pushButton_5_clicked() {
-    copyToClipboard(ui->chip_dflag_lineEdit->text(), ui->chip_dflag_pushButton_5);
+void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
+    qDebug() << "Scanning SPI NOR...";
 }
 
-void MainWindow::on_chip_version_pushButton_6_clicked() {
-    copyToClipboard(ui->chip_version_lineEdit->text(), ui->chip_version_pushButton_6);
+void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
+    qDebug() << "Scanning SPI NAND...";
 }
