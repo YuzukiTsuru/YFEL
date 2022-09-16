@@ -48,12 +48,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 set(TS_FILES "i18n/YFEL_zh_CN.ts")
 
 set(CHIP_SOURCES
-    chips/a10.cpp
-    chips/a10.h
-    chips/a13.cpp
-    chips/a13.h
-    chips/r528.cpp
-    chips/r528.h
+    chips/a10.c
+    chips/a13.c
+    chips/r528.c
 )
 
 set(PROJECT_SOURCES
