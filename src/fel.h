@@ -11,6 +11,17 @@
 
 #include "chips.h"
 
+typedef struct _chip_version {
+    char magic[8];
+    uint32_t id;
+    uint32_t firmware;
+    uint16_t protocol;
+    uint8_t dflag;
+    uint8_t dlength;
+    uint32_t scratchpad;
+    uint8_t pad[8];
+} chip_version_t;
+
 class fel : public QObject {
 Q_OBJECT
 private:
@@ -36,17 +47,6 @@ private:
         uint32_t pad;
     } __attribute__((packed));
 
-    typedef struct _version {
-        char magic[8];
-        uint32_t id;
-        uint32_t firmware;
-        uint16_t protocol;
-        uint8_t dflag;
-        uint8_t dlength;
-        uint32_t scratchpad;
-        uint8_t pad[8];
-    } version_t;
-
     static const uint32_t usb_timeout = 10000;
     const char fel_send_magic[8] = {'A', 'W', 'U', 'C', '\0', '\0', '\0', '\0'};
     const char fel_recv_magic[8] = {'A', 'W', 'U', 'S', '\0', '\0', '\0', '\0'};
@@ -54,7 +54,7 @@ private:
 private:
     _usb_ctx_t ctx;
     chip_t chip_;
-    version_t version{};
+    chip_version_t version{};
 
     libusb_context *context{};
     libusb_device_descriptor desc{};
@@ -68,7 +68,7 @@ public:
 
     void fel_scan_chip();
 
-    [[nodiscard]] uint32_t fel_get_chip_id() const;
+    [[nodiscard]] chip_version_t fel_get_chip_id() const;
 
 private:
     void fel_init();
