@@ -46,10 +46,10 @@ private:
     void initButtons();
 
 private:
-    void exitMenuClicked();
+    static void exitMenuClicked();
 
-    void updateStatusBar(QString status);
+    void updateStatusBar(const QString& status);
 
-    void copyToClipboard(QString data, QPushButton *button);
+    void copyToClipboard(const QString& data, QPushButton *button);
 };
 #endif // MAINWINDOW_H

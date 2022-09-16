@@ -8,10 +8,6 @@ fel::fel() {
     qDebug() << "Init";
 }
 
-fel::~fel() {
-    libusb_close(ctx.hdl);
-}
-
 void fel::fel_open_usb() {
     qDebug() << "scaning target chip";
 
@@ -20,6 +16,7 @@ void fel::fel_open_usb() {
     size_t count = libusb_get_device_list(context, &list);
     qDebug() << "scan usb devices, count=" << count;
 
+    bool target_found = false;
     for (size_t i = 0; i < count; ++i) {
         libusb_device *device = list[i];
         int rc = libusb_get_device_descriptor(device, &desc);
@@ -32,15 +29,20 @@ void fel::fel_open_usb() {
                 qDebug("ERROR: Can't connect to device: %d\r\n", rc);
             } else {
                 uint8_t string_buffer_product[4096];
-                libusb_get_string_descriptor_ascii(ctx.hdl, desc.iProduct, string_buffer_product, sizeof(string_buffer_product));
+                libusb_get_string_descriptor_ascii(ctx.hdl, desc.iProduct,
+                                                   string_buffer_product, sizeof(string_buffer_product));
                 qDebug() << "Find Device: " << string_buffer_product;
+                target_found = true;
+                break;
             }
-            break;
         }
+    }
+    if (target_found == 0){
+        throw std::runtime_error("Can't find target FEL device");
     }
 }
 
-void fel::fel_close_usb(){
+void fel::fel_close_usb() {
     libusb_close(ctx.hdl);
 }
 
@@ -166,6 +168,6 @@ void fel::read_fel_status() {
     qDebug() << buf;
 }
 
-uint32_t fel::fel_get_chip_id() {
+uint32_t fel::fel_get_chip_id() const {
     return version.id;
 }

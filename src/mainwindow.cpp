@@ -53,7 +53,7 @@ void MainWindow::exitMenuClicked() {
     }
 }
 
-void MainWindow::copyToClipboard(QString data, QPushButton *button) {
+void MainWindow::copyToClipboard(const QString& data, QPushButton *button) {
     qDebug() << "Copy " << data << "to Clip Board";
     QClipboard *clip = QApplication::clipboard();
     clip->setText(data);
@@ -61,16 +61,21 @@ void MainWindow::copyToClipboard(QString data, QPushButton *button) {
     QTimer::singleShot(500, this, [button]() { button->setText(tr("Copy")); });
 }
 
-void MainWindow::updateStatusBar(QString status) {
+void MainWindow::updateStatusBar(const QString& status) {
     ui->statusbar->showMessage(status);
 }
 
 void MainWindow::on_scan_pushButton_clicked() {
-    _fel.fel_open_usb();
-    _fel.fel_scan_chip();
-    ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
-    ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
-    _fel.fel_close_usb();
+    try {
+        _fel.fel_open_usb();
+        _fel.fel_scan_chip();
+        ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
+        ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
+        _fel.fel_close_usb();
+    } catch (const std::exception &e) {
+        QMessageBox::critical(this, tr("Error"), e.what());
+        return;
+    }
 }
 
 void MainWindow::on_chip_chip_name_pushButton_clicked() {
