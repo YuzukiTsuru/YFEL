@@ -1,8 +1,10 @@
 #include "chips.h"
 
-chip_function_e Chips::chip_detect(uint32_t id)
+chip_function_e Chips::chip_detect()
 {
-    return chip_function_e::NotSupport;
+    if(chip_info.chip_id == 0x00000000)
+        return chip_function_e::Success;
+    return chip_function_e::Fail;
 }
 
 chip_function_e Chips::chip_reset()
