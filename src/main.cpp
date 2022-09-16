@@ -8,9 +8,7 @@
 
 int main(int argc, char *argv[]) {
     QApplication _(argc, argv);
-
     qSetMessagePattern("[%{type}] %{time MM-dd hh:mm:ss}  %{function}:%{line} %{message}");
-
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale: uiLanguages) {

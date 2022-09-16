@@ -53,7 +53,7 @@ void MainWindow::exitMenuClicked() {
     }
 }
 
-void MainWindow::copyToClipboard(const QString& data, QPushButton *button) {
+void MainWindow::copyToClipboard(const QString &data, QPushButton *button) {
     qDebug() << "Copy " << data << "to Clip Board";
     QClipboard *clip = QApplication::clipboard();
     clip->setText(data);
@@ -61,22 +61,28 @@ void MainWindow::copyToClipboard(const QString& data, QPushButton *button) {
     QTimer::singleShot(500, this, [button]() { button->setText(tr("Copy")); });
 }
 
-void MainWindow::updateStatusBar(const QString& status) {
-    ui->statusbar->showMessage(status);
+void MainWindow::updateStatusBar(const QString &status) {
+    ui->statusbar->showMessage(status, 1000);
 }
 
 void MainWindow::on_scan_pushButton_clicked() {
+    updateStatusBar(tr("Scanning..."));
     try {
         _fel.fel_open_usb();
         _fel.fel_scan_chip();
-        ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
-        ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
+        ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id().id, 16));
+        ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id().id, 16));
+        ui->chip_version_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id().firmware, 16));
+        ui->chip_dflag_lineEdit->setText("dflag = 0x" + QString::number(_fel.fel_get_chip_id().dflag, 16) +
+                                         "\tdlength = 0x" + QString::number(_fel.fel_get_chip_id().dlength, 16));
         _fel.fel_close_usb();
+        updateStatusBar(tr("Done."));
     } catch (const std::exception &e) {
         ui->chip_label_2->setText(tr("NONE"));
-        ui->chip_id_lineEdit->setText(tr(""));
+        ui->chip_id_lineEdit->setText("");
+        ui->chip_version_lineEdit->setText("");
+        ui->chip_dflag_lineEdit->setText("");
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
-        return;
     }
 }
 
