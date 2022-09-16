@@ -3,10 +3,10 @@
 #include "fel.h"
 #include "x.h"
 
-fel::fel(){
+fel::fel() {
     libusb_init(&context);
     qDebug() << "Init";
-};
+}
 
 fel::~fel() {
     libusb_close(ctx.hdl);
@@ -27,7 +27,7 @@ void fel::fel_open_usb() {
             qDebug("ERROR: Can't get device list: %d\r\n", rc);
         }
         if (desc.idVendor == 0x1f3a && desc.idProduct == 0xefe8) {
-            int rc = libusb_open(device, &ctx.hdl);
+            rc = libusb_open(device, &ctx.hdl);
             if (rc != 0) {
                 qDebug("ERROR: Can't connect to device: %d\r\n", rc);
             } else {
@@ -41,12 +41,13 @@ void fel::fel_open_usb() {
 }
 
 void fel::fel_scan_chip() {
+    fel_init();
     fel_chip_id();
 }
 
 void fel::fel_chip_id() {
     send_fel_request(0x001, 0, 0);
-    usb_read(&version, sizeof(&version));
+    usb_read(&version, sizeof(version));
     read_fel_status();
     version.id = le32_to_cpu(version.id);
     version.firmware = le32_to_cpu(version.firmware);
@@ -83,26 +84,26 @@ void fel::fel_init() {
     }
 }
 
-void fel::usb_bulk_send(int ep, uint8_t *buf, size_t len) {
+void fel::usb_bulk_send(int ep, uint8_t *buf, size_t len) const {
     size_t max_chunk = 128 * 1024;
     int bytes;
 
     while (len > 0) {
         size_t chunk = len < max_chunk ? len : max_chunk;
-        int r = libusb_bulk_transfer(ctx.hdl, ep, buf, chunk, &bytes, usb_timeout);
+        int r = libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(chunk), &bytes, usb_timeout);
         if (r != 0) {
-            throw "";
+            throw std::runtime_error("usb_bulk_send failed");
         }
         len -= bytes;
         buf += bytes;
     }
 }
 
-void fel::usb_bulk_recv(int ep, uint8_t *buf, size_t len) {
+void fel::usb_bulk_recv(int ep, uint8_t *buf, size_t len) const {
     int bytes;
 
     while (len > 0) {
-        int r = libusb_bulk_transfer(ctx.hdl, ep, buf, len, &bytes, usb_timeout);
+        int r = libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(len), &bytes, usb_timeout);
         if (r != 0) {
             throw "";
         }
@@ -112,8 +113,7 @@ void fel::usb_bulk_recv(int ep, uint8_t *buf, size_t len) {
 }
 
 void fel::send_usb_request(int type, size_t length) {
-    struct usb_request_t req;
-
+    usb_request_t req{};
     for (size_t i = 0; i < 8; ++i) {
         req.magic[i] = fel_send_magic[i];
     }
@@ -130,7 +130,7 @@ void fel::read_usb_response() {
     usb_bulk_recv(ctx.epin, (uint8_t *) buf, sizeof(buf));
     for (size_t i = 0; i < 4; ++i) {
         if (buf[i] != fel_recv_magic[i]) {
-            throw "";
+            throw "A";
         }
     }
 }
@@ -151,7 +151,8 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
     struct fel_request_t req = {
             .request = cpu_to_le32(type),
             .address = cpu_to_le32(addr),
-            .length = cpu_to_le32(length)};
+            .length = cpu_to_le32(length)
+    };
     usb_write(&req, sizeof(struct fel_request_t));
 }
 
@@ -159,4 +160,8 @@ void fel::read_fel_status() {
     char buf[8];
     usb_read(buf, sizeof(buf));
     qDebug() << buf;
+}
+
+uint32_t fel::fel_get_chip_id() {
+    return version.id;
 }

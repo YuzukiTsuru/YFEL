@@ -28,6 +28,8 @@ endif ()
 
 project(YFEL VERSION 0.0.${_git_version} LANGUAGES CXX)
 
+option(CMAKE_QT_CLION "Using CLion develop" OFF)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -47,38 +49,23 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
 set(TS_FILES "i18n/YFEL_zh_CN.ts")
 
-set(CHIP_SOURCES
-        chips/a10.c
-        chips/a13.c
-        chips/r528.c
-        )
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/chips CHIP_SOURCES)
+file(GLOB PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
 set(PROJECT_SOURCES
-        main.cpp
-        chips.h
-        chips.cpp
-        chipworker.cpp
-        chipworker.h
-        sha256.cpp
-        sha256.h
-        fel.cpp
-        fel.h
-        x.h
-        macros.h
-        mainwindow.cpp
-        mainwindow.h
+        ${PROJECT_SOURCES}
         mainwindow.ui
         icon.qrc
         ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
-        )
+)
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(YFEL
             MANUAL_FINALIZATION
             ${PROJECT_SOURCES}
-            )
+)
     # Define target properties for Android with Qt 6 as:
     #    set_property(TARGET YFEL APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
     #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -97,7 +84,6 @@ else ()
                 ${PROJECT_SOURCES}
                 )
     endif ()
-
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif ()
 
@@ -108,43 +94,46 @@ else ()
     target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets usb-1.0)
 endif ()
 
-set_target_properties(YFEL PROPERTIES
+set_target_properties(
+        YFEL PROPERTIES
         MACOSX_BUNDLE_GUI_IDENTIFIER yfel.gloomyghost.com
         MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
         MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
         MACOSX_BUNDLE TRUE
         WIN32_EXECUTABLE TRUE
-        )
+)
 
 if (QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(YFEL)
 endif ()
 
 if (WIN32)
-    set(DEBUG_SUFFIX)
-    if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")
-        set(DEBUG_SUFFIX "d")
-    endif ()
-    set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
-    if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
-        set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+    if (CMAKE_QT_CLION)
+        set(DEBUG_SUFFIX)
+        if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")
+            set(DEBUG_SUFFIX "d")
+        endif ()
+        set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
         if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
             set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+            if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+                set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+            endif ()
         endif ()
+        if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E make_directory
+                    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy
+                    "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
+        endif ()
+        foreach (QT_LIB Core Gui Widgets)
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy
+                    "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
+                    "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+        endforeach (QT_LIB)
     endif ()
-    if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
-    endif ()
-    foreach (QT_LIB Core Gui Widgets)
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
-                "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-    endforeach (QT_LIB)
 endif ()

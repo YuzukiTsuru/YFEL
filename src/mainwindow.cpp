@@ -8,7 +8,7 @@
 #include <qdesktopservices.h>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
+        : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     initMainwindowData();
     initMenubar();
@@ -30,7 +30,8 @@ void MainWindow::initMenubar() {
 
     // menu about
     connect(ui->actionAbout_YFEL, &QAction::triggered, this, [this]() {
-        QMessageBox::about(this, tr("About YFEL"), tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " + PROJECT_GIT_HASH);
+        QMessageBox::about(this, tr("About YFEL"),
+                           tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " + PROJECT_GIT_HASH);
     });
 
     // menu web
@@ -66,7 +67,9 @@ void MainWindow::updateStatusBar(QString status) {
 
 void MainWindow::on_scan_pushButton_clicked() {
     _fel.fel_open_usb();
-    //_fel->fel_scan_chip();
+    _fel.fel_scan_chip();
+    ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
+    ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
 }
 
 void MainWindow::on_chip_chip_name_pushButton_clicked() {

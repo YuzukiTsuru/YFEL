@@ -12,10 +12,10 @@
 #include "chips.h"
 
 class fel : public QObject {
-    Q_OBJECT
+Q_OBJECT
 private:
     typedef struct usb_ctx {
-        libusb_device_handle *hdl = 0;
+        libusb_device_handle *hdl = nullptr;
         int epout = 0;
         int epin = 0;
     } _usb_ctx_t;
@@ -54,19 +54,21 @@ private:
 private:
     _usb_ctx_t ctx;
     chip_t chip_;
-    version_t version;
+    version_t version{};
 
-    libusb_context *context;
-    libusb_device_descriptor desc;
+    libusb_context *context{};
+    libusb_device_descriptor desc{};
 
 public:
     fel();
 
-    ~fel();
+    ~fel() override;
 
     void fel_open_usb();
 
     void fel_scan_chip();
+
+    uint32_t fel_get_chip_id();
 
 private:
     void fel_init();
@@ -74,9 +76,9 @@ private:
     void fel_chip_id();
 
 private:
-    void usb_bulk_send(int ep, uint8_t *buf, size_t len);
+    void usb_bulk_send(int ep, uint8_t *buf, size_t len) const;
 
-    void usb_bulk_recv(int ep, uint8_t *buf, size_t len);
+    void usb_bulk_recv(int ep, uint8_t *buf, size_t len) const;
 
     void send_usb_request(int type, size_t length);
 

@@ -7,7 +7,7 @@
 #include "yfel_config.h"
 
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
+    QApplication _(argc, argv);
 
     qSetMessagePattern("[%{type}] %{time MM-dd hh:mm:ss}  %{function}:%{line} %{message}");
 
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     for (const QString &locale: uiLanguages) {
         const QString baseName = "YFEL_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName)) {
-            a.installTranslator(&translator);
+            QApplication::installTranslator(&translator);
             break;
         }
     }
@@ -24,5 +24,5 @@ int main(int argc, char *argv[]) {
     w.setWindowTitle(PROJECT_NAME + QString(" - ") + PROJECT_DESCRIPTION);
     w.setWindowIcon(QIcon(":/assets/img/icon.png"));
     w.show();
-    return a.exec();
+    return QApplication::exec();
 }
