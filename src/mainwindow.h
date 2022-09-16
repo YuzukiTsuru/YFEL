@@ -35,6 +35,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QAction *exitAct;
     fel _fel;
 
 private:
@@ -45,10 +46,10 @@ private:
     void initButtons();
 
 private:
-    static void exitMenuClicked();
+    void exitMenuClicked();
 
-    void updateStatusBar(const QString& status);
+    void updateStatusBar(const QString &status);
 
-    void copyToClipboard(const QString& data, QPushButton *button);
+    void copyToClipboard(const QString &data, QPushButton *button);
 };
 #endif // MAINWINDOW_H
