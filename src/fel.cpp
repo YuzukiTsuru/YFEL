@@ -111,7 +111,7 @@ void fel::usb_bulk_recv(int ep, uint8_t *buf, size_t len) const {
     while (len > 0) {
         int r = libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(len), &bytes, usb_timeout);
         if (r != 0) {
-            throw "";
+            throw std::runtime_error("usb_bulk_recv failed");
         }
         len -= bytes;
         buf += bytes;
@@ -136,7 +136,7 @@ void fel::read_usb_response() {
     usb_bulk_recv(ctx.epin, (uint8_t *) buf, sizeof(buf));
     for (size_t i = 0; i < 4; ++i) {
         if (buf[i] != fel_recv_magic[i]) {
-            throw "A";
+            throw std::runtime_error("read usb response failed");
         }
     }
 }
@@ -168,6 +168,6 @@ void fel::read_fel_status() {
     qDebug() << buf;
 }
 
-uint32_t fel::fel_get_chip_id() const {
-    return version.id;
+chip_version_t fel::fel_get_chip_id() const {
+    return version;
 }
