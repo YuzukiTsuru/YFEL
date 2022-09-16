@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 
+#include "fel.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -34,6 +36,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QAction *exitAct;
+    fel *_fel;
 
 private:
     void initMainwindowData();

@@ -44,8 +44,18 @@ private:
     const char fel_send_magic[8] = {'A', 'W', 'U', 'C', '\0', '\0', '\0', '\0'};
     const char fel_recv_magic[8] = {'A', 'W', 'U', 'S', '\0', '\0', '\0', '\0'};
 
+private:
+    _usb_ctx_t *ctx;
+    chip_t chip_;
+    version_t version;
+
+    libusb_device **list;
+    libusb_context *context;
+
 public:
-    fel(libusb_device_handle *hdl);
+    fel();
+
+    void fel_open_usb();
 
     void fel_scan_chip();
 
@@ -70,11 +80,6 @@ private:
     void send_fel_request(int type, uint32_t addr, uint32_t length);
 
     void read_fel_status();
-
-private:
-    _usb_ctx_t ctx{};
-    chip_t chip_{};
-    version_t version{};
 };
 
 #endif// FEL_H
