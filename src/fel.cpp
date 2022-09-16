@@ -3,7 +3,13 @@
 #include "fel.h"
 #include "x.h"
 
-fel::fel() = default;
+fel::fel(){
+
+};
+
+fel::~fel() {
+    libusb_close(ctx->hdl);
+}
 
 void fel::fel_open_usb() {
     qDebug() << "scaning target chip";
@@ -15,7 +21,6 @@ void fel::fel_open_usb() {
 
     for (size_t i = 0; i < count; ++i) {
         libusb_device *device = list[i];
-        libusb_device_descriptor desc;
         int rc = libusb_get_device_descriptor(device, &desc);
         if (rc != 0) {
             qDebug("ERROR: Can't get device list: %d\r\n", rc);

@@ -1,16 +1,18 @@
 #ifndef FEL_H
 #define FEL_H
 
-#include "chips.h"
-#include "libusb-1.0/libusb.h"
 #include <QString>
+
+#include "libusb-1.0/libusb.h"
+
+#include "chips.h"
 
 class fel {
 private:
     typedef struct usb_ctx {
-        libusb_device_handle *hdl;
-        int epout;
-        int epin;
+        libusb_device_handle *hdl = 0;
+        int epout = 0;
+        int epin = 0;
     } _usb_ctx_t;
 
     struct usb_request_t {
@@ -29,7 +31,7 @@ private:
         uint32_t pad;
     } __attribute__((packed));
 
-    typedef struct _version{
+    typedef struct _version {
         char magic[8];
         uint32_t id;
         uint32_t firmware;
@@ -50,10 +52,13 @@ private:
     version_t version;
 
     libusb_device **list;
-    libusb_context *context;
+    libusb_context *context = 0;
+    libusb_device_descriptor desc;
 
 public:
     fel();
+
+    ~fel();
 
     void fel_open_usb();
 
