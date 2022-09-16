@@ -42,7 +42,7 @@ void fel::fel_open_usb() {
     }
 }
 
-void fel::fel_close_usb() {
+void fel::fel_close_usb() const {
     libusb_close(ctx.hdl);
 }
 

@@ -73,7 +73,9 @@ void MainWindow::on_scan_pushButton_clicked() {
         ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id(), 16));
         _fel.fel_close_usb();
     } catch (const std::exception &e) {
-        QMessageBox::critical(this, tr("Error"), e.what());
+        ui->chip_label_2->setText(tr("NONE"));
+        ui->chip_id_lineEdit->setText(tr(""));
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
         return;
     }
 }

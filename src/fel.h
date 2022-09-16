@@ -64,11 +64,11 @@ public:
 
     void fel_open_usb();
 
-    void fel_close_usb();
+    void fel_close_usb() const;
 
     void fel_scan_chip();
 
-    uint32_t fel_get_chip_id() const;
+    [[nodiscard]] uint32_t fel_get_chip_id() const;
 
 private:
     void fel_init();
