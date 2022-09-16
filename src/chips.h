@@ -76,7 +76,7 @@ public:
 
     virtual chip_function_e chip_ddr(chip_ddr_type_e dram_type);
 
-    virtual chip_function_e chip_spi_init(uint32_t *swapbuf, uint32_t *swaplen, uint32_t *cmdlen);
+    virtual chip_function_e chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len);
 
     virtual chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen);
 

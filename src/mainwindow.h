@@ -36,7 +36,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QAction *exitAct;
-    fel *_fel;
+    fel _fel;
 
 private:
     void initMainwindowData();

@@ -74,3 +74,5 @@ Thumbs.db
 
 YFEL/
 build-*
+src/cmake-build-*
+src/.idea/

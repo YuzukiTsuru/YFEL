@@ -2,12 +2,17 @@
 #define FEL_H
 
 #include <QString>
+#include <QObject>
+#include <QThread>
+#include <QList>
+#include <QMultiMap>
 
 #include "libusb-1.0/libusb.h"
 
 #include "chips.h"
 
-class fel {
+class fel : public QObject {
+    Q_OBJECT
 private:
     typedef struct usb_ctx {
         libusb_device_handle *hdl = 0;
@@ -47,12 +52,11 @@ private:
     const char fel_recv_magic[8] = {'A', 'W', 'U', 'S', '\0', '\0', '\0', '\0'};
 
 private:
-    _usb_ctx_t *ctx;
+    _usb_ctx_t ctx;
     chip_t chip_;
     version_t version;
 
-    libusb_device **list;
-    libusb_context *context = 0;
+    libusb_context *context;
     libusb_device_descriptor desc;
 
 public:

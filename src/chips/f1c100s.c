@@ -21,20 +21,20 @@ static int chip_reset(struct xfel_ctx_t * ctx)
 
 static int chip_sid(struct xfel_ctx_t * ctx, char * sid)
 {
-	uint32_t swapbuf, swaplen, cmdlen;
+	uint32_t swap_buf, swap_len, cmd_len;
 	uint8_t tx[5], rx[8];
 
 	/*
 	 * The f1c100s have no sid, using spi nor flash's id.
 	 */
-	if(fel_spi_init(ctx, &swapbuf, &swaplen, &cmdlen))
+	if(fel_spi_init(ctx, &swap_buf, &swap_len, &cmd_len))
 	{
 		tx[0] = 0x4b;
 		tx[1] = 0x0;
 		tx[2] = 0x0;
 		tx[3] = 0x0;
 		tx[4] = 0x0;
-		if(fel_spi_xfer(ctx, swapbuf, swaplen, cmdlen, tx, 5, rx, 8))
+		if(fel_spi_xfer(ctx, swap_buf, swap_len, cmd_len, tx, 5, rx, 8))
 		{
 			sprintf(sid, "%02x%02x%02x%02x%02x%02x%02x%02x", rx[0], rx[1], rx[2], rx[3], rx[4], rx[5], rx[6], rx[7]);
 			return 1;
@@ -418,7 +418,7 @@ static int chip_ddr(struct xfel_ctx_t * ctx, const char * type)
 	return 1;
 }
 
-static int chip_spi_init(struct xfel_ctx_t * ctx, uint32_t * swapbuf, uint32_t * swaplen, uint32_t * cmdlen)
+static int chip_spi_init(struct xfel_ctx_t * ctx, uint32_t * swap_buf, uint32_t * swap_len, uint32_t * cmd_len)
 {
 	static const uint8_t payload[] = {
 		0xff, 0xff, 0xff, 0xea, 0x40, 0x00, 0xa0, 0xe3, 0x00, 0xd0, 0x80, 0xe5,
@@ -524,12 +524,12 @@ static int chip_spi_init(struct xfel_ctx_t * ctx, uint32_t * swapbuf, uint32_t *
 		0x01, 0x10, 0x00, 0x00
 	};
 	fel_write(ctx, 0x00008800, (void *)&payload[0], sizeof(payload));
-	if(swapbuf)
-		*swapbuf = 0x0000a800;
-	if(swaplen)
-		*swaplen = 3584;
-	if(cmdlen)
-		*cmdlen = 4096;
+	if(swap_buf)
+		*swap_buf = 0x0000a800;
+	if(swap_len)
+		*swap_len = 3584;
+	if(cmd_len)
+		*cmd_len = 4096;
 	return 1;
 }
 

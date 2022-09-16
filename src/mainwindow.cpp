@@ -65,7 +65,7 @@ void MainWindow::updateStatusBar(QString status) {
 }
 
 void MainWindow::on_scan_pushButton_clicked() {
-    _fel->fel_open_usb();
+    _fel.fel_open_usb();
     //_fel->fel_scan_chip();
 }
 

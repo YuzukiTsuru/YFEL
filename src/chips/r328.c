@@ -52,7 +52,7 @@ static int chip_ddr(struct xfel_ctx_t * ctx, const char * type)
 	return 0;
 }
 
-static int chip_spi_init(struct xfel_ctx_t * ctx, uint32_t * swapbuf, uint32_t * swaplen, uint32_t * cmdlen)
+static int chip_spi_init(struct xfel_ctx_t * ctx, uint32_t * swap_buf, uint32_t * swap_len, uint32_t * cmd_len)
 {
 	return 0;
 }

@@ -4,19 +4,20 @@
 #include "x.h"
 
 fel::fel(){
-
+    libusb_init(&context);
+    qDebug() << "Init";
 };
 
 fel::~fel() {
-    libusb_close(ctx->hdl);
+    libusb_close(ctx.hdl);
 }
 
 void fel::fel_open_usb() {
     qDebug() << "scaning target chip";
 
-    libusb_init(&context);
+    libusb_device **list;
 
-    int count = libusb_get_device_list(context, &list);
+    size_t count = libusb_get_device_list(context, &list);
     qDebug() << "scan usb devices, count=" << count;
 
     for (size_t i = 0; i < count; ++i) {
@@ -26,12 +27,12 @@ void fel::fel_open_usb() {
             qDebug("ERROR: Can't get device list: %d\r\n", rc);
         }
         if (desc.idVendor == 0x1f3a && desc.idProduct == 0xefe8) {
-            int rc = libusb_open(device, &ctx->hdl);
+            int rc = libusb_open(device, &ctx.hdl);
             if (rc != 0) {
                 qDebug("ERROR: Can't connect to device: %d\r\n", rc);
             } else {
                 uint8_t string_buffer_product[4096];
-                libusb_get_string_descriptor_ascii(ctx->hdl, desc.iProduct, string_buffer_product, sizeof(string_buffer_product));
+                libusb_get_string_descriptor_ascii(ctx.hdl, desc.iProduct, string_buffer_product, sizeof(string_buffer_product));
                 qDebug() << "Find Device: " << string_buffer_product;
             }
             break;
@@ -60,8 +61,8 @@ void fel::fel_init() {
     const struct libusb_endpoint_descriptor *ep;
     int if_idx, set_idx, ep_idx;
 
-    if (libusb_claim_interface(ctx->hdl, 0) == 0) {
-        if (libusb_get_active_config_descriptor(libusb_get_device(ctx->hdl), &config) == 0) {
+    if (libusb_claim_interface(ctx.hdl, 0) == 0) {
+        if (libusb_get_active_config_descriptor(libusb_get_device(ctx.hdl), &config) == 0) {
             for (if_idx = 0; if_idx < config->bNumInterfaces; if_idx++) {
                 iface = config->interface + if_idx;
                 for (set_idx = 0; set_idx < iface->num_altsetting; set_idx++) {
@@ -71,9 +72,9 @@ void fel::fel_init() {
                         if ((ep->bmAttributes & LIBUSB_TRANSFER_TYPE_MASK) != LIBUSB_TRANSFER_TYPE_BULK)
                             continue;
                         if ((ep->bEndpointAddress & LIBUSB_ENDPOINT_DIR_MASK) == LIBUSB_ENDPOINT_IN)
-                            ctx->epin = ep->bEndpointAddress;
+                            ctx.epin = ep->bEndpointAddress;
                         else
-                            ctx->epout = ep->bEndpointAddress;
+                            ctx.epout = ep->bEndpointAddress;
                     }
                 }
             }
@@ -88,7 +89,7 @@ void fel::usb_bulk_send(int ep, uint8_t *buf, size_t len) {
 
     while (len > 0) {
         size_t chunk = len < max_chunk ? len : max_chunk;
-        int r = libusb_bulk_transfer(ctx->hdl, ep, buf, chunk, &bytes, usb_timeout);
+        int r = libusb_bulk_transfer(ctx.hdl, ep, buf, chunk, &bytes, usb_timeout);
         if (r != 0) {
             throw "";
         }
@@ -101,7 +102,7 @@ void fel::usb_bulk_recv(int ep, uint8_t *buf, size_t len) {
     int bytes;
 
     while (len > 0) {
-        int r = libusb_bulk_transfer(ctx->hdl, ep, buf, len, &bytes, usb_timeout);
+        int r = libusb_bulk_transfer(ctx.hdl, ep, buf, len, &bytes, usb_timeout);
         if (r != 0) {
             throw "";
         }
@@ -121,12 +122,12 @@ void fel::send_usb_request(int type, size_t length) {
     req.unknown1 = cpu_to_le32(0x0c000000);
     req.length2 = req.length;
 
-    usb_bulk_send(ctx->epout, (uint8_t *) &req, sizeof(struct usb_request_t));
+    usb_bulk_send(ctx.epout, (uint8_t *) &req, sizeof(struct usb_request_t));
 }
 
 void fel::read_usb_response() {
     char buf[13];
-    usb_bulk_recv(ctx->epin, (uint8_t *) buf, sizeof(buf));
+    usb_bulk_recv(ctx.epin, (uint8_t *) buf, sizeof(buf));
     for (size_t i = 0; i < 4; ++i) {
         if (buf[i] != fel_recv_magic[i]) {
             throw "";
@@ -136,13 +137,13 @@ void fel::read_usb_response() {
 
 void fel::usb_write(const void *buf, size_t len) {
     send_usb_request(0x12, len);
-    usb_bulk_send(ctx->epout, (uint8_t *) buf, len);
+    usb_bulk_send(ctx.epout, (uint8_t *) buf, len);
     read_usb_response();
 }
 
 void fel::usb_read(const void *data, size_t len) {
     send_usb_request(0x11, len);
-    usb_bulk_send(ctx->epin, (uint8_t *) data, len);
+    usb_bulk_send(ctx.epin, (uint8_t *) data, len);
     read_usb_response();
 }
 

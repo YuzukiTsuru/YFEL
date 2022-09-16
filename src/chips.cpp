@@ -27,7 +27,7 @@ chip_function_e Chips::chip_ddr(chip_ddr_type_e dram_type)
     return chip_function_e::NotSupport;
 }
 
-chip_function_e Chips::chip_spi_init(uint32_t *swapbuf, uint32_t *swaplen, uint32_t *cmdlen)
+chip_function_e Chips::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len)
 {
     return chip_function_e::NotSupport;
 }
