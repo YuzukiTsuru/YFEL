@@ -1,7 +1,7 @@
 #ifndef CHIPWORKER_H
 #define CHIPWORKER_H
 
-#include "ChipList.h"
+#include "chips.h"
 #include <QString>
 
 class ChipWorker

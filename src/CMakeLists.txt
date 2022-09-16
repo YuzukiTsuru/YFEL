@@ -47,19 +47,32 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
 set(TS_FILES "i18n/YFEL_zh_CN.ts")
 
+set(CHIP_SOURCES
+    chips/a10.cpp
+    chips/a10.h
+    chips/a13.cpp
+    chips/a13.h
+    chips/r528.cpp
+    chips/r528.h
+)
+
 set(PROJECT_SOURCES
         main.cpp
-        ChipList.h
-        ChipWorker.cpp
-        ChipWorker.h
+        chips.h
+        chips.cpp
+        chipworker.cpp
+        chipworker.h
         sha256.cpp
         sha256.h
+        fel.cpp
+        fel.h
         x.h
         macros.h
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
         icon.qrc
+        ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
 )

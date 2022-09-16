@@ -91,7 +91,6 @@ void MainWindow::on_chip_chip_id_pushButton_2_clicked()
     copyToClipboard(ui->chip_id_lineEdit->text(), ui->chip_chip_id_pushButton_2);
 }
 
-
 void MainWindow::on_chip_chip_sid_pushButton_3_clicked()
 {
     copyToClipboard(ui->chip_sid_lineEdit->text(), ui->chip_chip_sid_pushButton_3);
