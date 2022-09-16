@@ -9,9 +9,10 @@
 
 #include "libusb-1.0/libusb.h"
 
+#include "usb.h"
 #include "chips.h"
 
-typedef struct _chip_version {
+typedef struct chip_version {
     char magic[8];
     uint32_t id;
     uint32_t firmware;
@@ -25,21 +26,6 @@ typedef struct _chip_version {
 class fel : public QObject {
 Q_OBJECT
 private:
-    typedef struct usb_ctx {
-        libusb_device_handle *hdl = nullptr;
-        int epout = 0;
-        int epin = 0;
-    } _usb_ctx_t;
-
-    struct usb_request_t {
-        char magic[8];
-        uint32_t length;
-        uint32_t unknown1;
-        uint16_t request;
-        uint32_t length2;
-        char pad[10];
-    } __attribute__((packed));
-
     struct fel_request_t {
         uint32_t request;
         uint32_t address;
@@ -47,46 +33,24 @@ private:
         uint32_t pad;
     } __attribute__((packed));
 
-    static const uint32_t usb_timeout = 10000;
-    const char fel_send_magic[8] = {'A', 'W', 'U', 'C', '\0', '\0', '\0', '\0'};
-    const char fel_recv_magic[8] = {'A', 'W', 'U', 'S', '\0', '\0', '\0', '\0'};
-
 private:
-    _usb_ctx_t ctx;
     chip_t chip_;
     chip_version_t version{};
-
-    libusb_context *context{};
-    libusb_device_descriptor desc{};
+    usb usb_handler;
 
 public:
     fel();
 
     void fel_open_usb();
 
-    void fel_close_usb() const;
+    void fel_close_usb();
 
     void fel_scan_chip();
 
     [[nodiscard]] chip_version_t fel_get_chip_id() const;
 
 private:
-    void fel_init();
-
     void fel_chip_id();
-
-private:
-    void usb_bulk_send(int ep, uint8_t *buf, size_t len) const;
-
-    void usb_bulk_recv(int ep, uint8_t *buf, size_t len) const;
-
-    void send_usb_request(int type, size_t length);
-
-    void read_usb_response();
-
-    void usb_write(const void *buf, size_t len);
-
-    void usb_read(const void *data, size_t len);
 
     void send_fel_request(int type, uint32_t addr, uint32_t length);
 
