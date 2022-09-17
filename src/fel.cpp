@@ -26,6 +26,15 @@ void fel::fel_chip_id() {
     version.firmware = le32_to_cpu(version.firmware);
     version.protocol = le16_to_cpu(version.protocol);
     version.scratchpad = le32_to_cpu(version.scratchpad);
+    version.dlength = le32_to_cpu(version.dlength);
+    version.dflag = le32_to_cpu(version.dflag);
+    // Debug
+    qDebug() << "chip id: " << version.id;
+    qDebug() << "chip firmware: " << version.firmware;
+    qDebug() << "chip protocol: " << version.protocol;
+    qDebug() << "chip scratchpad: " << version.scratchpad;
+    qDebug() << "chip dlength: " << version.dlength;
+    qDebug() << "chip dflag: " << version.dflag;
 }
 
 void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
