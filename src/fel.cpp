@@ -29,12 +29,12 @@ void fel::fel_chip_id() {
     version.dlength = le32_to_cpu(version.dlength);
     version.dflag = le32_to_cpu(version.dflag);
     // Debug
-    qDebug() << "chip id: " << version.id;
-    qDebug() << "chip firmware: " << version.firmware;
-    qDebug() << "chip protocol: " << version.protocol;
-    qDebug() << "chip scratchpad: " << version.scratchpad;
-    qDebug() << "chip dlength: " << version.dlength;
-    qDebug() << "chip dflag: " << version.dflag;
+    qDebug("chip id: 0x%x", version.id);
+    qDebug("chip firmware: 0x%x", version.firmware);
+    qDebug("chip protocol: 0x%x", version.protocol);
+    qDebug("chip scratchpad: 0x%x", version.scratchpad);
+    qDebug("chip dlength: 0x%x", version.dlength);
+    qDebug("chip dflag: 0x%x", version.dflag);
 }
 
 void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
@@ -49,7 +49,7 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
 void fel::read_fel_status() {
     char buf[8];
     usb_handler.usb_read(buf, sizeof(buf));
-    qDebug() << buf;
+    qDebug("0x%x", buf);
 }
 
 chip_version_t fel::fel_get_chip_id() const {
