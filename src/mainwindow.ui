@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -567,6 +567,39 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>280</y>
+          <width>191</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <item>
+          <widget class="QLabel" name="flash_felflash_label">
+           <property name="text">
+            <string>TARGET</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="flashfelflash_comboBox">
+           <property name="currentText">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="flash_felflash_pushButton">
+           <property name="text">
+            <string>Flash</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="aw_flash">
        <attribute name="title">
@@ -595,6 +628,9 @@
       <string>Misc</string>
      </attribute>
      <widget class="QPushButton" name="Misc_eyemaster_button">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>

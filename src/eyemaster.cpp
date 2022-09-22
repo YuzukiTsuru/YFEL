@@ -6,6 +6,7 @@ eyemaster::eyemaster(QWidget *parent) :
     ui(new Ui::eyemaster)
 {
     ui->setupUi(this);
+    ui->statusbar->showMessage(tr("Ready"), 5000);
 }
 
 eyemaster::~eyemaster()

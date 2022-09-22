@@ -49,7 +49,7 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
 void fel::read_fel_status() {
     char buf[8];
     usb_handler.usb_read(buf, sizeof(buf));
-    qDebug("0x%x", buf);
+    qDebug("0x%s", buf);
 }
 
 chip_version_t fel::fel_get_chip_id() const {
