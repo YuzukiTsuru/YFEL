@@ -55,6 +55,7 @@ file(GLOB PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOUR
 set(PROJECT_SOURCES
         ${PROJECT_SOURCES}
         mainwindow.ui
+        eyemaster.ui
         icon.qrc
         ${CHIP_SOURCES}
         ${TS_FILES}
