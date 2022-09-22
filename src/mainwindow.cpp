@@ -24,6 +24,8 @@ MainWindow::~MainWindow() {
 void MainWindow::initMainwindowData() {
     ui->chip_label_2->setText(tr("NONE"));
     ui->statusbar->showMessage(tr("Ready, Version: ") + PROJECT_GIT_HASH, 5000);
+    ui->flashfelflash_comboBox->addItem("SPI NAND");
+    ui->flashfelflash_comboBox->addItem("SPI NOR");
 }
 
 void MainWindow::initMenubar() {
