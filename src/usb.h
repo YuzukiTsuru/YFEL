@@ -9,9 +9,10 @@
 
 #include "libusb-1.0/libusb.h"
 
-#include "chips.h"
+#include "chipworker.h"
 
-class usb {
+class usb : QObject {
+Q_OBJECT
 public:
     usb();
 

@@ -110,8 +110,7 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
 }
 
-void MainWindow::on_Misc_eyemaster_button_clicked()
-{
+void MainWindow::on_Misc_eyemaster_button_clicked() {
     eyemaster *e = new eyemaster();
     e->setWindowTitle(tr("EYE Master") + " - " + PROJECT_NAME);
     e->setWindowIcon(QIcon(":/assets/img/icon.png"));
