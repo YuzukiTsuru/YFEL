@@ -71,7 +71,6 @@ if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     #    set_property(TARGET YFEL APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
     #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
     # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-    qt_add_translations(YFEL TS_FILES ${TS_FILES})
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else ()
     if (ANDROID)

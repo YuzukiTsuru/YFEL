@@ -21,7 +21,7 @@ enum chip_ddr_type_e {
     DDR4,
 };
 
-typedef const struct __chip_core_name {
+typedef const struct chip_core_name {
     QString ARM9         = "ARMv5 ARM926-EJS";
     QString CortexA7     = "ARM Cortex-A7 32Bit";
     QString CortexA8     = "ARM Cortex-A8 32Bit";
@@ -32,7 +32,7 @@ typedef const struct __chip_core_name {
     QString XuantieC906  = "XuanTie C906 RISC-V 64Bit";
 } chip_core_name_t;
 
-typedef const struct __chip_core_count {
+typedef const struct chip_core_count {
     QString core_count_1 = "1x";
     QString core_count_2 = "Dual-Core";
     QString core_count_3 = "3x";
@@ -42,7 +42,7 @@ typedef const struct __chip_core_count {
     QString core_count_8 = "Octa-Core";
 } chip_core_count_t;
 
-typedef struct __chip {
+typedef struct chip {
     QString chip_name;
     QString chip_sid;
     QString chip_version;
@@ -80,7 +80,7 @@ public:
 
     virtual chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen);
 
-    chip_t get_chip_info();
+    virtual chip_t get_chip_info();
 
 protected:
     chip_t chip_info{};
@@ -89,5 +89,4 @@ protected:
     chip_type_e chip_type_{};
 };
 
-
-#endif // CHIPID_H
+#endif // CHIPS_H
