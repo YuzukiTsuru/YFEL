@@ -2,6 +2,7 @@
 #define CHIPS_H
 
 #include <QString>
+#include "chips/chip_version.h"
 
 enum chip_type_e {
     Normal,
@@ -45,26 +46,19 @@ typedef const struct chip_core_count {
 typedef struct chip {
     QString chip_name;
     QString chip_sid;
-    QString chip_version;
+    uint32_t chip_id;
 
     chip_type_e chip_type;
-
-    uint32_t chip_id;
-    uint32_t chip_firmware;
-    uint16_t chip_protocol;
-    uint8_t chip_dflag;
-    uint8_t chip_dlength;
-    uint32_t chip_scratch_pad;
-    uint8_t chip_pad[8];
-
     uint64_t chip_core_count;
     QString core_count;
     QString chip_core;
+
+    chip_version_t chip_version;
 } chip_t;
 
 class Chips {
 public:
-    Chips() = default;
+    explicit Chips(chip_version_t chip_version);
 
     virtual chip_function_e chip_detect();
 
@@ -80,7 +74,7 @@ public:
 
     virtual chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen);
 
-    virtual chip_t get_chip_info();
+    chip_t get_chip_info();
 
 protected:
     chip_t chip_info{};
