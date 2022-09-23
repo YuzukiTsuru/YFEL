@@ -18,8 +18,9 @@ d1::~d1() {
 }
 
 chip_function_e d1::chip_detect() {
-    if (chip_info.chip_version.id == chip_info.chip_id)
+    if (chip_info.chip_version.id == chip_info.chip_id) {
         return chip_function_e::Success;
+    }
     return chip_function_e::Fail;
 }
 
