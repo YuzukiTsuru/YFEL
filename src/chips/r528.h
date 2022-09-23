@@ -2,15 +2,14 @@
 // Created by gloom on 2022/9/23.
 //
 
-#ifndef YFEL_D1_H
-#define YFEL_D1_H
+#ifndef YFEL_R528_H
+#define YFEL_R528_H
 
 #include "chip_type.h"
 #include "fel.h"
 
-class d1 : public Chips {
-
-    ~d1();
+class r528 : public Chips {
+    ~r528();
 
     chip_function_e chip_detect() override;
 
@@ -27,11 +26,10 @@ class d1 : public Chips {
     chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) override;
 
 public:
-    explicit d1(chip_version_t chip_version);
+    explicit r528(chip_version_t chip_version);
 
 private:
     fel *fel_ = new fel();
 };
 
-
-#endif //YFEL_D1_H
+#endif //YFEL_R528_H
