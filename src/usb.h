@@ -20,7 +20,7 @@ public:
 
     void close_usb() const;
 
-    void fel_init();
+    void usb_fel_init();
 
     void usb_bulk_send(int ep, uint8_t *buf, size_t len) const;
 
@@ -32,7 +32,7 @@ public:
 
     void usb_write(const void *buf, size_t len);
 
-    void usb_read(const void *data, size_t len);
+    void usb_read(void *data, size_t len);
 
 private:
     static const uint32_t usb_timeout = 10000;
@@ -60,6 +60,8 @@ private:
 
     libusb_context *context{};
     libusb_device_descriptor desc{};
+
+    void usb_read(const void *data, size_t len);
 };
 
 #endif // USB_H

@@ -47,7 +47,7 @@ void usb::open_usb() {
     }
 }
 
-void usb::fel_init() {
+void usb::usb_fel_init() {
     struct libusb_config_descriptor *config;
     const struct libusb_interface *iface;
     const struct libusb_interface_descriptor *setting;
@@ -133,7 +133,7 @@ void usb::usb_write(const void *buf, size_t len) {
     read_usb_response();
 }
 
-void usb::usb_read(const void *data, size_t len) {
+void usb::usb_read(void *data, size_t len) {
     send_usb_request(0x11, len);
     usb_bulk_send(ctx.epin, (uint8_t *) data, len);
     read_usb_response();

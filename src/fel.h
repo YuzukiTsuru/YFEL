@@ -30,16 +30,16 @@ private:
 public:
     fel();
 
-    void fel_open_usb();
-
-    void fel_close_usb();
-
     void fel_scan_chip();
 
     [[nodiscard]] chip_version_t fel_get_chip_id() const;
 
 private:
     void fel_chip_id();
+
+    void fel_open_usb();
+
+    void fel_close_usb();
 
     void send_fel_request(int type, uint32_t addr, uint32_t length);
 

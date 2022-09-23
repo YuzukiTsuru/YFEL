@@ -5,17 +5,19 @@
 
 fel::fel() = default;
 
+void fel::fel_scan_chip() {
+    fel_open_usb();
+    usb_handler.usb_fel_init();
+    fel_chip_id();
+    fel_close_usb();
+}
+
 void fel::fel_open_usb(){
     usb_handler.open_usb();
 }
 
 void fel::fel_close_usb() {
     usb_handler.close_usb();
-}
-
-void fel::fel_scan_chip() {
-    usb_handler.fel_init();
-    fel_chip_id();
 }
 
 void fel::fel_chip_id() {
