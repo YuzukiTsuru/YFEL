@@ -7,18 +7,14 @@ fel::fel() = default;
 
 void fel::fel_scan_chip() {
     fel_open_usb();
-    usb_handler.usb_fel_init();
     fel_chip_id();
     fel_close_usb();
 }
 
-void fel::fel_force_close() {
-    fel_close_usb();
-}
-
-void fel::fel_open_usb(){
+void fel::fel_open_usb() {
     usb_handler.usb_init();
     usb_handler.open_usb();
+    usb_handler.usb_fel_init();
 }
 
 void fel::fel_close_usb() {
@@ -27,7 +23,7 @@ void fel::fel_close_usb() {
 }
 
 void fel::fel_chip_id() {
-    send_fel_request(0x001, 0, 0);
+    send_fel_request(FEL_COMMAND::FEL_VERSION, 0, 0);
     usb_handler.usb_read(&version, sizeof(version));
     read_fel_status();
     version.id = le32_to_cpu(version.id);
@@ -45,6 +41,10 @@ void fel::fel_chip_id() {
     qDebug("chip dflag: 0x%x", version.dflag);
 }
 
+chip_version_t fel::fel_get_chip_version() const {
+    return version;
+}
+
 void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
     struct fel_request_t req = {
             .request = cpu_to_le32(type),
@@ -60,6 +60,29 @@ void fel::read_fel_status() {
     qDebug("read_fel_status 0x%x", buf);
 }
 
-chip_version_t fel::fel_get_chip_version() const {
-    return version;
+void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
+    send_fel_request(FEL_COMMAND::FEL_READRAW, addr, len);
+    usb_handler.usb_read(buf, len);
+    read_fel_status();
 }
+
+void fel::fel_write_raw(uint32_t addr, void *buf, size_t len) {
+    send_fel_request(FEL_COMMAND::FEL_WRITERAW, addr, len);
+    usb_handler.usb_read(buf, len);
+    read_fel_status();
+}
+
+uint32_t fel::fel_read32(uint32_t addr) {
+    uint32_t val = 0;
+    fel_open_usb();
+    fel_read_raw(addr, &val, sizeof(uint32_t));
+    fel_close_usb();
+    return val;
+}
+
+void fel::fel_write32(uint32_t addr, uint32_t val) {
+    fel_open_usb();
+    fel_write_raw(addr, &val, sizeof(uint32_t));
+    fel_close_usb();
+}
+

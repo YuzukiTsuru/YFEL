@@ -14,8 +14,15 @@
 #include "chips/chip_version.h"
 
 class fel : QObject {
-Q_OBJECT
+    Q_OBJECT
 private:
+    enum FEL_COMMAND {
+        FEL_VERSION = 0x001,
+        FEL_WRITERAW = 0x101,
+        FEL_EXEC = 0x102,
+        FEL_READRAW = 0x103,
+    };
+
     struct fel_request_t {
         uint32_t request;
         uint32_t address;
@@ -32,11 +39,11 @@ public:
 
     void fel_scan_chip();
 
-    void fel_force_close();
-
-    void fel_read_sid();
-
     [[nodiscard]] chip_version_t fel_get_chip_version() const;
+
+    uint32_t fel_read32(uint32_t addr);
+
+    void fel_write32(uint32_t addr, uint32_t val);
 
 private:
     void fel_chip_id();
@@ -48,6 +55,10 @@ private:
     void send_fel_request(int type, uint32_t addr, uint32_t length);
 
     void read_fel_status();
+
+    void fel_read_raw(uint32_t addr, void *buf, size_t len);
+
+    void fel_write_raw(uint32_t addr, void *buf, size_t len);
 };
 
 #endif// FEL_H

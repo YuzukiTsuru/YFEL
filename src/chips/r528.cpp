@@ -19,7 +19,9 @@ r528::~r528() {
 
 chip_function_e r528::chip_detect() {
     if (chip_info.chip_version.id == chip_info.chip_id)
-        return chip_function_e::Success;
+        // Check 0 addr is 0x43014281, ARM Cortex-A7
+        if (fel_->fel_read32(0x00000000) == 0xea000019)
+            return chip_function_e::Success;
     return chip_function_e::Fail;
 }
 
