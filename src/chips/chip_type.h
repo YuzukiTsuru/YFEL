@@ -23,14 +23,14 @@ enum chip_ddr_type_e {
 };
 
 typedef const struct chip_core_name {
-    QString ARM9         = "ARMv5 ARM926-EJS";
-    QString CortexA7     = "ARM Cortex-A7 32Bit";
-    QString CortexA8     = "ARM Cortex-A8 32Bit";
-    QString CortexA15    = "ARM Cortex-A15 32Bit";
+    QString ARM9 = "ARMv5 ARM926-EJS";
+    QString CortexA7 = "ARM Cortex-A7 32Bit";
+    QString CortexA8 = "ARM Cortex-A8 32Bit";
+    QString CortexA15 = "ARM Cortex-A15 32Bit";
     QString CortexA15_A7 = "ARM Cortex-A15/A7 big.LITTLE";
-    QString CortexA53    = "ARM Cortex-A53 64Bit";
-    QString CortexA55    = "ARM Cortex-A55 64Bit";
-    QString XuantieC906  = "XuanTie C906 RISC-V 64Bit";
+    QString CortexA53 = "ARM Cortex-A53 64Bit";
+    QString CortexA55 = "ARM Cortex-A55 64Bit";
+    QString XuantieC906 = "XuanTie C906 RISC-V 64Bit";
 } chip_core_name_t;
 
 typedef const struct chip_core_count {
@@ -49,9 +49,11 @@ typedef struct chip {
     uint32_t chip_id;
 
     chip_type_e chip_type;
-    uint64_t chip_core_count;
-    QString core_count;
+
     QString chip_core;
+    uint64_t chip_core_count;
+    QString chip_core_count_str;
+    QVector<QString> chip_heterogeneous_core;
 
     chip_version_t chip_version;
 } chip_t;
