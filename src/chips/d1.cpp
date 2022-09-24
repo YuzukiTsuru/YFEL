@@ -10,7 +10,8 @@ d1::d1(chip_version_t chip_version) : Chips(chip_version) {
     chip_info.chip_type = chip_type_e::Heterogeneous;
     chip_info.chip_core = core_name_.XuantieC906;
     chip_info.chip_core_count = 1;
-    chip_info.chip_core = core_count_.core_count_1;
+    chip_info.chip_core_count_str = core_count_.core_count_1;
+    chip_info.chip_heterogeneous_core.push_back("HIFI4");
 }
 
 d1::~d1() {
