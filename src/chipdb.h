@@ -1,14 +1,16 @@
-#ifndef CHIPWORKER_H
-#define CHIPWORKER_H
+#ifndef CHIPDB_H
+#define CHIPDB_H
 
 #include <QString>
 #include <QVector>
 #include "chips/chip_type.h"
 #include "libusb-1.0/libusb.h"
 
-class ChipWorker {
+class ChipDB {
 public:
-    explicit ChipWorker(chip_version_t chip_version);
+    explicit ChipDB(chip_version_t chip_version);
+
+    chip_t get_currect_chip();
 
 private:
     void generate_chip_db();
@@ -18,6 +20,8 @@ private:
 private:
     chip_version_t chip_version;
     QVector<Chips*> chip_db;
+
+    chip_t selected_chip;
 };
 
-#endif // CHIPWORKER_H
+#endif // CHIPDB_H
