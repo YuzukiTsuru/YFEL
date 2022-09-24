@@ -26,6 +26,7 @@ else ()
     set(PROJECT_GIT_HASH "")
 endif ()
 
+
 project(YFEL VERSION 0.0.${_git_version} LANGUAGES CXX)
 
 option(CMAKE_QT_CLION "Using CLion develop" OFF)
@@ -49,14 +50,13 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Con
 
 set(TS_FILES "i18n/YFEL_zh_CN.ts")
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/chips CHIP_SOURCES)
 file(GLOB PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
-file(GLOB PROJECT_CHIPS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.h)
+file(GLOB CHIP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.h)
 
 set(PROJECT_SOURCES
         ${PROJECT_SOURCES}
         mainwindow.ui
-        eyemaster.ui
+        eye_master.ui
         icon.qrc
         ${CHIP_SOURCES}
         ${TS_FILES}

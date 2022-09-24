@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -207,7 +207,7 @@
           <x>10</x>
           <y>7</y>
           <width>661</width>
-          <height>301</height>
+          <height>308</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,10,0,0,0">
@@ -593,9 +593,9 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>450</x>
       <y>0</y>
-      <width>211</width>
+      <width>231</width>
       <height>21</height>
      </rect>
     </property>
