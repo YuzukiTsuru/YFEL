@@ -95,7 +95,7 @@ void usb::usb_bulk_send(int ep, uint8_t *buf, size_t len) const {
         int r = libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(chunk), &bytes, usb_timeout);
         if (r != 0) {
             qDebug() << "usb_bulk_send failed, ret =" << r << libusb_strerror(r);
-            throw std::runtime_error("usb_bulk_send failed");
+            throw std::runtime_error("usb bulk send failed, " + std::to_string(*libusb_strerror(r)));
         }
         len -= bytes;
         buf += bytes;
