@@ -5,11 +5,12 @@
 #include "r528.h"
 
 r528::r528(chip_version_t chip_version) : Chips(chip_version) {
-    chip_info.chip_name = "D1-H/D1s/F133-A/F133-B/R528-RV";
+    chip_info.chip_name = "R528-S1/R528-S2/R528-S3/R528-S4/T113-I/T113-S3";
     chip_info.chip_type = chip_type_e::Heterogeneous;
-    chip_info.chip_core = core_name_.XuantieC906;
-    chip_info.chip_core_count = 1;
-    chip_info.chip_core = core_count_.core_count_1;
+    chip_info.chip_core = core_name_.CortexA7;
+    chip_info.chip_core_count = 2;
+    chip_info.chip_core_count_str = core_count_.core_count_2;
+    chip_info.chip_heterogeneous_core.push_back("HIFI4");
 }
 
 r528::~r528() {

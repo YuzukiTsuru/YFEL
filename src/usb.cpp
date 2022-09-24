@@ -1,11 +1,20 @@
 #include <QDebug>
+#include <QFuture>
+#include <QtConcurrent>
 
 #include "usb.h"
 #include "x.h"
 
-usb::usb() {
+usb::usb() = default;
+
+void usb::usb_init() {
     libusb_init(&context);
-    qDebug() << "Init";
+    qDebug() << "USB INIT";
+}
+
+void usb::usb_exit() {
+    libusb_exit(context);
+    qDebug() << "DEINIT USB";
 }
 
 void usb::close_usb() const {
