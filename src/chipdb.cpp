@@ -1,7 +1,7 @@
 #include <QDebug>
 
-#include "chipdb.h"
 #include "chips/chip_db.h"
+#include "chipdb.h"
 
 ChipDB::ChipDB(chip_version_t chip_version) : chip_version(chip_version) {
     generate_chip_db();
@@ -19,6 +19,9 @@ void ChipDB::check_chip() {
             selected_chip = item->get_chip_info();
             qDebug() << "Currect Chip" << selected_chip.chip_name;
             break;
+        }else{
+            throw std::runtime_error("Unsupported Chip\nfunction not implemented");
+            selected_chip.chip_version = chip_version;
         }
     }
 }

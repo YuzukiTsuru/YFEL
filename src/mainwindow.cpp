@@ -94,7 +94,6 @@ void MainWindow::on_scan_pushButton_clicked() {
         // update status bar
         updateStatusBar(tr("Done."));
     } catch (const std::exception &e) {
-        _fel.fel_force_close();
         ui->chip_label_2->setText(tr("NONE"));
         ui->chip_id_lineEdit->setText("");
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
