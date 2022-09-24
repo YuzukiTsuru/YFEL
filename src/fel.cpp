@@ -68,7 +68,7 @@ void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
 
 void fel::fel_write_raw(uint32_t addr, void *buf, size_t len) {
     send_fel_request(FEL_COMMAND::FEL_WRITERAW, addr, len);
-    usb_handler.usb_read(buf, len);
+    usb_handler.usb_write(buf, len);
     read_fel_status();
 }
 
@@ -83,6 +83,13 @@ uint32_t fel::fel_read32(uint32_t addr) {
 void fel::fel_write32(uint32_t addr, uint32_t val) {
     fel_open_usb();
     fel_write_raw(addr, &val, sizeof(uint32_t));
+    fel_close_usb();
+}
+
+void fel::fel_exec(uint32_t addr) {
+    fel_open_usb();
+    send_fel_request(FEL_COMMAND::FEL_EXEC, addr, 0);
+    read_fel_status();
     fel_close_usb();
 }
 
