@@ -15,7 +15,7 @@ class r528 : public Chips {
 
     chip_function_e chip_reset() override;
 
-    chip_function_e chip_sid(uint8_t sid) override;
+    chip_function_e chip_sid() override;
 
     chip_function_e chip_jtag() override;
 

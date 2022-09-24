@@ -29,7 +29,7 @@ chip_function_e r528::chip_reset() {
     return chip_function_e::NotSupport;
 }
 
-chip_function_e r528::chip_sid(uint8_t sid) {
+chip_function_e r528::chip_sid() {
     return chip_function_e::NotSupport;
 }
 

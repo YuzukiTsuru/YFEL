@@ -16,16 +16,17 @@ void ChipDB::generate_chip_db() {
 void ChipDB::check_chip() {
     for (auto item: chip_db) {
         if (item->chip_detect() == chip_function_e::Success) {
-            selected_chip = item->get_chip_info();
-            qDebug() << "Currect Chip" << selected_chip.chip_name;
+            currect_chip = item;
+            // Read SID Here
+            currect_chip->chip_sid();
+            qDebug() << "Currect Chip" << currect_chip->get_chip_info().chip_name;
             break;
-        }else{
+        } else {
             throw std::runtime_error("Unsupported Chip\nfunction not implemented");
-            selected_chip.chip_version = chip_version;
         }
     }
 }
 
 chip_t ChipDB::get_currect_chip() {
-    return selected_chip;
+    return currect_chip->get_chip_info();
 }

@@ -14,7 +14,7 @@ chip_function_e Chips::chip_reset() {
     return chip_function_e::NotSupport;
 }
 
-chip_function_e Chips::chip_sid(uint8_t sid) {
+chip_function_e Chips::chip_sid() {
     return chip_function_e::NotSupport;
 }
 

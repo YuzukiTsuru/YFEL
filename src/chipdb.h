@@ -2,6 +2,10 @@
 #define CHIPDB_H
 
 #include <QString>
+#include <QObject>
+#include <QThread>
+#include <QList>
+#include <QMultiMap>
 #include <QVector>
 #include "chips/chip_type.h"
 #include "libusb-1.0/libusb.h"
@@ -20,8 +24,7 @@ private:
 private:
     chip_version_t chip_version;
     QVector<Chips*> chip_db;
-
-    chip_t selected_chip;
+    Chips *currect_chip = nullptr;
 };
 
 #endif // CHIPDB_H

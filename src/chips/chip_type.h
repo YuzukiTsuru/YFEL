@@ -66,7 +66,7 @@ public:
 
     virtual chip_function_e chip_reset();
 
-    virtual chip_function_e chip_sid(uint8_t sid);
+    virtual chip_function_e chip_sid();
 
     virtual chip_function_e chip_jtag();
 

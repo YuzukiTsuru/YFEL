@@ -81,6 +81,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         // Set CHip lines
         ui->chip_name_lineEdit->setText(chipdb.get_currect_chip().chip_name);
         ui->chip_id_lineEdit->setText("0x" + QString::number(chipdb.get_currect_chip().chip_id, 16));
+        ui->chip_sid_lineEdit->setText("0x" + chipdb.get_currect_chip().chip_sid);
 
         QString chip_core_names_ = chipdb.get_currect_chip().chip_core_count_str + chipdb.get_currect_chip().chip_core;
         if (chipdb.get_currect_chip().chip_type == chip_type_e::Heterogeneous) {
