@@ -10,7 +10,7 @@
 #include "libusb-1.0/libusb.h"
 
 #include "usb.h"
-#include "chipworker.h"
+#include "chipdb.h"
 #include "chips/chip_version.h"
 
 class fel : QObject {
@@ -32,7 +32,11 @@ public:
 
     void fel_scan_chip();
 
-    [[nodiscard]] chip_version_t fel_get_chip_id() const;
+    void fel_force_close();
+
+    void fel_read_sid();
+
+    [[nodiscard]] chip_version_t fel_get_chip_version() const;
 
 private:
     void fel_chip_id();

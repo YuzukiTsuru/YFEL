@@ -12,12 +12,18 @@ void fel::fel_scan_chip() {
     fel_close_usb();
 }
 
+void fel::fel_force_close() {
+    fel_close_usb();
+}
+
 void fel::fel_open_usb(){
+    usb_handler.usb_init();
     usb_handler.open_usb();
 }
 
 void fel::fel_close_usb() {
     usb_handler.close_usb();
+    usb_handler.usb_exit();
 }
 
 void fel::fel_chip_id() {
@@ -49,11 +55,11 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
 }
 
 void fel::read_fel_status() {
-    char buf[8];
+    uint8_t buf[8];
     usb_handler.usb_read(buf, sizeof(buf));
-    qDebug("0x%s", buf);
+    qDebug("read_fel_status 0x%x", buf);
 }
 
-chip_version_t fel::fel_get_chip_id() const {
+chip_version_t fel::fel_get_chip_version() const {
     return version;
 }
