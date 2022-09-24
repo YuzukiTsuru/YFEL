@@ -44,8 +44,8 @@ configure_file(
         "${PROJECT_BINARY_DIR}/yfel_config.h"
 )
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 
 set(TS_FILES "i18n/YFEL_zh_CN.ts")
 
@@ -61,13 +61,13 @@ set(PROJECT_SOURCES
         ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
-)
+        )
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(YFEL
             MANUAL_FINALIZATION
             ${PROJECT_SOURCES}
-    )
+            )
     # Define target properties for Android with Qt 6 as:
     #    set_property(TARGET YFEL APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
     #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -89,10 +89,11 @@ else ()
 endif ()
 
 if (WIN32)
-    target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/lib/libusb-1.0.a)
+    target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Concurrent
+            ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/lib/libusb-1.0.a)
     target_include_directories(YFEL PRIVATE ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/include)
 else ()
-    target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets usb-1.0)
+    target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Concurrent usb-1.0)
 endif ()
 
 set_target_properties(
