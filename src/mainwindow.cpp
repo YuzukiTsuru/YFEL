@@ -73,13 +73,28 @@ void MainWindow::updateStatusBar(const QString &status) {
 void MainWindow::on_scan_pushButton_clicked() {
     updateStatusBar(tr("Scanning..."));
     try {
-        _fel.fel_open_usb();
         _fel.fel_scan_chip();
-        ui->chip_label_2->setText("0x" + QString::number(_fel.fel_get_chip_id().id, 16));
-        ui->chip_id_lineEdit->setText("0x" + QString::number(_fel.fel_get_chip_id().id, 16));
-        _fel.fel_close_usb();
+        ChipDB chipdb(_fel.fel_get_chip_version());
+        // Set Scan Button label
+        ui->chip_label_2->setText("0x" + QString::number(chipdb.get_currect_chip().chip_id, 16));
+
+        // Set CHip lines
+        ui->chip_name_lineEdit->setText(chipdb.get_currect_chip().chip_name);
+        ui->chip_id_lineEdit->setText("0x" + QString::number(chipdb.get_currect_chip().chip_id, 16));
+
+        QString chip_core_names_ = chipdb.get_currect_chip().chip_core_count_str + chipdb.get_currect_chip().chip_core;
+        if (chipdb.get_currect_chip().chip_type == chip_type_e::Heterogeneous) {
+            for (auto const &item: chipdb.get_currect_chip().chip_heterogeneous_core) {
+                chip_core_names_.append(" + ");
+                chip_core_names_.append(item);
+            }
+        }
+        ui->chip_core_lineEdit->setText(chip_core_names_);
+
+        // update status bar
         updateStatusBar(tr("Done."));
     } catch (const std::exception &e) {
+        _fel.fel_force_close();
         ui->chip_label_2->setText(tr("NONE"));
         ui->chip_id_lineEdit->setText("");
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -111,7 +126,7 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
 }
 
 void MainWindow::on_Misc_eyemaster_button_clicked() {
-    eyemaster *e = new eyemaster();
+    auto *e = new eyemaster();
     e->setWindowTitle(tr("EYE Master") + " - " + PROJECT_NAME);
     e->setWindowIcon(QIcon(":/assets/img/icon.png"));
     e->show();

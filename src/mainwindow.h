@@ -5,6 +5,7 @@
 #include <QPushButton>
 
 #include "fel.h"
+#include "chipdb.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

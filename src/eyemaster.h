@@ -4,16 +4,16 @@
 #include <QMainWindow>
 
 namespace Ui {
-class eyemaster;
+    class eyemaster;
 }
 
-class eyemaster : public QMainWindow
-{
-    Q_OBJECT
+class eyemaster : public QMainWindow {
+Q_OBJECT
 
 public:
     explicit eyemaster(QWidget *parent = nullptr);
-    ~eyemaster();
+
+    ~eyemaster() override;
 
 private:
     Ui::eyemaster *ui;

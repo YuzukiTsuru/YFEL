@@ -9,12 +9,16 @@
 
 #include "libusb-1.0/libusb.h"
 
-#include "chipworker.h"
+#include "chipdb.h"
 
-class usb : QObject {
+class usb : public QObject {
 Q_OBJECT
 public:
     usb();
+
+    void usb_init();
+
+    void usb_exit();
 
     void open_usb();
 
@@ -35,7 +39,7 @@ public:
     void usb_read(void *data, size_t len);
 
 private:
-    static const uint32_t usb_timeout = 10000;
+    static const uint32_t usb_timeout = 1000;
     const char fel_send_magic[8] = {'A', 'W', 'U', 'C', '\0', '\0', '\0', '\0'};
     const char fel_recv_magic[8] = {'A', 'W', 'U', 'S', '\0', '\0', '\0', '\0'};
 
@@ -60,8 +64,6 @@ private:
 
     libusb_context *context{};
     libusb_device_descriptor desc{};
-
-    void usb_read(const void *data, size_t len);
 };
 
 #endif // USB_H
