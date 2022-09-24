@@ -45,6 +45,38 @@ public:
 
     void fel_write32(uint32_t addr, uint32_t val);
 
+    void fel_exec(uint32_t addr);
+
+
+public:
+    template<typename T>
+    void fel_read(uint32_t addr, T *buf, size_t len) {
+        fel_open_usb();
+        size_t n;
+        while (len > 0) {
+            n = len > 65536 ? 65536 : len;
+            fel_read_raw(addr, (void *) buf, n);
+            addr += n;
+            buf += n;
+            len -= n;
+        }
+        fel_close_usb();
+    };
+
+    template<typename T>
+    void fel_write(uint32_t addr, T *buf, size_t len) {
+        fel_open_usb();
+        size_t n;
+        while (len > 0) {
+            n = len > 65536 ? 65536 : len;
+            fel_write_raw(addr, (void *) buf, n);
+            addr += n;
+            buf += n;
+            len -= n;
+        }
+        fel_close_usb();
+    };
+
 private:
     void fel_chip_id();
 
