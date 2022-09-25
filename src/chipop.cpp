@@ -24,7 +24,17 @@ void ChipOP::scan_chip() {
 
 void ChipOP::reset_chip() {
     try {
-        current_chip->chip_reset();
+        if (current_chip->chip_reset() == chip_function_e::NotSupport)
+            throw std::runtime_error("Function not implemented");
+    } catch (const std::runtime_error &error) {
+        qDebug() << "Reset Done";
+    }
+}
+
+void ChipOP::rnable_jtag() {
+    try {
+        if (current_chip->chip_jtag() == chip_function_e::NotSupport)
+            throw std::runtime_error("Function not implemented");
     } catch (const std::runtime_error &error) {
         qDebug() << "Reset Done";
     }
