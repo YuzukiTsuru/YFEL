@@ -46,6 +46,8 @@ private:
 public:
     fel();
 
+    ~fel() override;
+
     void fel_scan_chip();
 
     [[nodiscard]] chip_version_t fel_get_chip_version() const;

@@ -13,7 +13,13 @@
 #include "fel.h"
 #include "x.h"
 
-fel::fel() = default;
+fel::fel() {
+    usb_handler.usb_init();
+};
+
+fel::~fel(){
+    usb_handler.usb_exit();
+}
 
 void fel::fel_scan_chip() {
     fel_open_usb();
@@ -22,14 +28,12 @@ void fel::fel_scan_chip() {
 }
 
 void fel::fel_open_usb() {
-    usb_handler.usb_init();
     usb_handler.open_usb();
     usb_handler.usb_fel_init();
 }
 
 void fel::fel_close_usb() {
     usb_handler.close_usb();
-    usb_handler.usb_exit();
 }
 
 void fel::fel_chip_id() {
