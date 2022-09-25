@@ -21,6 +21,10 @@ enum chip_ddr_type_e {
     DDR2,
     DDR3,
     DDR4,
+    LPDDR2,
+    LPDDR3,
+    LPDDR4,
+    LPDDR4X,
 };
 
 typedef const struct chip_core_name {
