@@ -9,9 +9,6 @@
 #include "fel.h"
 
 class d1 : public Chips {
-
-    ~d1();
-
     chip_function_e chip_detect() override;
 
     chip_function_e chip_reset() override;
@@ -27,10 +24,7 @@ class d1 : public Chips {
     chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) override;
 
 public:
-    explicit d1(chip_version_t chip_version);
-
-private:
-    fel *fel_ = new fel();
+    d1(class fel *f, chip_version_t chip_version);
 };
 
 

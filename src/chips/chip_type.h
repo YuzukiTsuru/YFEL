@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "chips/chip_version.h"
+#include "fel.h"
 
 enum chip_type_e {
     Normal,
@@ -60,29 +61,36 @@ typedef struct chip {
 
 class Chips {
 public:
-    explicit Chips(chip_version_t chip_version);
+    Chips(fel *f, chip_version_t chip_version) : fel_(f) {
+        chip_info.chip_version = chip_version;
+    };
 
-    virtual chip_function_e chip_detect();
+    virtual chip_function_e chip_detect() { return chip_function_e::NotSupport; };
 
-    virtual chip_function_e chip_reset();
+    virtual chip_function_e chip_reset() { return chip_function_e::NotSupport; };
 
-    virtual chip_function_e chip_sid();
+    virtual chip_function_e chip_sid() { return chip_function_e::NotSupport; };
 
-    virtual chip_function_e chip_jtag();
+    virtual chip_function_e chip_jtag() { return chip_function_e::NotSupport; };
 
-    virtual chip_function_e chip_ddr(chip_ddr_type_e dram_type);
+    virtual chip_function_e chip_ddr(chip_ddr_type_e dram_type) { return chip_function_e::NotSupport; };
 
-    virtual chip_function_e chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len);
+    virtual chip_function_e chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {
+        return chip_function_e::NotSupport;
+    };
 
-    virtual chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen);
+    virtual chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) { return chip_function_e::NotSupport; };
 
-    chip_t get_chip_info();
+    chip_t get_chip_info() {
+        return chip_info;
+    };
 
 protected:
     chip_t chip_info{};
     chip_core_name_t core_name_{};
     chip_core_count_t core_count_{};
     chip_type_e chip_type_{};
+    fel *fel_ = nullptr;
 };
 
 #endif // CHIPS_H

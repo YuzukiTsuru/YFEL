@@ -4,7 +4,7 @@
 
 #include "r528.h"
 
-r528::r528(chip_version_t chip_version) : Chips(chip_version) {
+r528::r528(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_name = "R528-S1/R528-S2/R528-S3/R528-S4/T113-I/T113-S3/H133";
     chip_info.chip_id = 0x00185900;
     chip_info.chip_type = chip_type_e::Heterogeneous;
@@ -12,10 +12,6 @@ r528::r528(chip_version_t chip_version) : Chips(chip_version) {
     chip_info.chip_core_count = 2;
     chip_info.chip_core_count_str = core_count_.core_count_2;
     chip_info.chip_heterogeneous_core.push_back("HIFI4");
-}
-
-r528::~r528() {
-    delete fel_;
 }
 
 chip_function_e r528::chip_detect() {
@@ -39,6 +35,7 @@ chip_function_e r528::chip_sid() {
     id[2] = fel_->payload_arm_read32(0x03006200 + 0x8);
     id[3] = fel_->payload_arm_read32(0x03006200 + 0xc);
 
+    chip_info.chip_sid = "";
     for (const uint32_t &j: id) {
         chip_info.chip_sid.append(QString::number(j, 16));
     }

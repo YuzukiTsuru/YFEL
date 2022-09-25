@@ -9,8 +9,6 @@
 #include "fel.h"
 
 class r528 : public Chips {
-    ~r528();
-
     chip_function_e chip_detect() override;
 
     chip_function_e chip_reset() override;
@@ -26,10 +24,7 @@ class r528 : public Chips {
     chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) override;
 
 public:
-    explicit r528(chip_version_t chip_version);
-
-private:
-    fel *fel_ = new fel();
+    r528(class fel *f, chip_version_t chip_version);
 };
 
 #endif //YFEL_R528_H

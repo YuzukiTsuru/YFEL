@@ -4,7 +4,7 @@
 
 #include "d1.h"
 
-d1::d1(chip_version_t chip_version) : Chips(chip_version) {
+d1::d1(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_name = "D1-H/D1s/F133-A/F133-B/R528-RV";
     chip_info.chip_id = 0x00185900;
     chip_info.chip_type = chip_type_e::Heterogeneous;
@@ -12,10 +12,6 @@ d1::d1(chip_version_t chip_version) : Chips(chip_version) {
     chip_info.chip_core_count = 1;
     chip_info.chip_core_count_str = core_count_.core_count_1;
     chip_info.chip_heterogeneous_core.push_back("HIFI4");
-}
-
-d1::~d1() {
-    delete fel_;
 }
 
 chip_function_e d1::chip_detect() {
@@ -52,6 +48,7 @@ chip_function_e d1::chip_sid() {
     fel_->fel_exec(0x00020000);
     fel_->fel_read(0x00021000, id, sizeof(id));
 
+    chip_info.chip_sid = "";
     for (const uint32_t &j: id) {
         chip_info.chip_sid.append(QString::number(j, 16));
     }
