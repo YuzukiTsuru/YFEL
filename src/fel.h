@@ -10,7 +10,6 @@
 #include "libusb-1.0/libusb.h"
 
 #include "usb.h"
-#include "chipdb.h"
 #include "chips/chip_version.h"
 
 class fel : QObject {
