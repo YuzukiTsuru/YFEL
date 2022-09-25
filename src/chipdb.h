@@ -19,11 +19,11 @@ public:
 private:
     void generate_chip_db();
 
-    void check_chip();
+    bool check_chip();
 
 private:
     chip_version_t chip_version;
-    QVector<Chips*> chip_db;
+    QVector<Chips *> chip_db;
     Chips *current_chip = nullptr;
 };
 

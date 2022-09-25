@@ -36,7 +36,8 @@ void MainWindow::initMenubar() {
     // menu about
     connect(ui->actionAbout_YFEL, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, tr("About YFEL"),
-                           tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " + PROJECT_GIT_HASH);
+                           tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " +
+                           PROJECT_GIT_HASH);
     });
 
     // menu web
@@ -83,7 +84,8 @@ void MainWindow::on_scan_pushButton_clicked() {
         ui->chip_id_lineEdit->setText("0x" + QString::number(chipdb.get_current_chip().chip_id, 16));
         ui->chip_sid_lineEdit->setText("0x" + chipdb.get_current_chip().chip_sid);
 
-        QString chip_core_names_ = chipdb.get_current_chip().chip_core_count_str + chipdb.get_current_chip().chip_core;
+        QString chip_core_names_ = chipdb.get_current_chip().chip_core_count_str + " "
+                                   + chipdb.get_current_chip().chip_core;
         if (chipdb.get_current_chip().chip_type == chip_type_e::Heterogeneous) {
             for (auto const &item: chipdb.get_current_chip().chip_heterogeneous_core) {
                 chip_core_names_.append(" + ");
