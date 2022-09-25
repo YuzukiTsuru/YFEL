@@ -679,6 +679,7 @@
     </property>
     <addaction name="actionInit_DDR"/>
     <addaction name="actionEnable_JTAG"/>
+    <addaction name="actionReset_CPU"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTool"/>
@@ -708,6 +709,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionReset_CPU">
+   <property name="text">
+    <string>Reset CPU</string>
    </property>
   </action>
  </widget>
