@@ -31,7 +31,16 @@ chip_function_e r528::chip_reset() {
 }
 
 chip_function_e r528::chip_sid() {
-    return chip_function_e::NotSupport;
+    uint32_t id[4];
+    id[0] = fel_->payload_arm_read32(0x03006200 + 0x0);
+    id[1] = fel_->payload_arm_read32(0x03006200 + 0x4);
+    id[2] = fel_->payload_arm_read32(0x03006200 + 0x8);
+    id[3] = fel_->payload_arm_read32(0x03006200 + 0xc);
+
+    for (const uint32_t &j: id) {
+        chip_info.chip_sid.append(QString::number(j, 16));
+    }
+    return chip_function_e::Success;
 }
 
 chip_function_e r528::chip_jtag() {

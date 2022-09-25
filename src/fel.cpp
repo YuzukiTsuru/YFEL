@@ -93,3 +93,23 @@ void fel::fel_exec(uint32_t addr) {
     fel_close_usb();
 }
 
+uint32_t fel::payload_arm_read32(uint32_t addr) {
+    // Scan chip info, get scratchpad
+    fel_scan_chip();
+
+    // load asm code
+    uint32_t payload[] = {
+            cpu_to_le32(0xe59f000c), /* ldr r0, [pc, #12] */
+            cpu_to_le32(0xe28f100c), /* add r1, pc, #12   */
+            cpu_to_le32(0xe4902000), /* ldr r2, [r0], #0  */
+            cpu_to_le32(0xe4812000), /* str r2, [r1], #0  */
+            cpu_to_le32(0xe12fff1e), /* bx lr             */
+            cpu_to_le32(addr),
+    };
+
+    uint32_t val;
+    fel_write(version.scratchpad, payload, sizeof(payload));
+    fel_exec(version.scratchpad);
+    fel_read(version.scratchpad + sizeof(payload), &val, sizeof(val));
+    return le32_to_cpu(val);
+}

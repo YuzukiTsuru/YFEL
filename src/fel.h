@@ -47,6 +47,7 @@ public:
 
     void fel_exec(uint32_t addr);
 
+    uint32_t payload_arm_read32(uint32_t addr);
 
 public:
     template<typename T>
