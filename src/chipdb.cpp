@@ -3,7 +3,10 @@
 #include "chips/chip_db.h"
 #include "chipdb.h"
 
-ChipDB::ChipDB(chip_version_t chip_version) : chip_version(chip_version) {
+ChipDB::ChipDB() {
+    fel_->fel_scan_chip();
+    chip_version = fel_->fel_get_chip_version();
+
     // Generate chip db
     generate_chip_db();
 
@@ -11,6 +14,14 @@ ChipDB::ChipDB(chip_version_t chip_version) : chip_version(chip_version) {
     if (!check_chip()) {
         throw std::runtime_error("Unsupported Chip\nfunction not implemented");
     }
+}
+
+ChipDB::~ChipDB() {
+    delete fel_;
+}
+
+chip_t ChipDB::get_current_chip() {
+    return current_chip->get_chip_info();
 }
 
 void ChipDB::generate_chip_db() {
@@ -30,8 +41,4 @@ bool ChipDB::check_chip() {
         }
     }
     return false;
-}
-
-chip_t ChipDB::get_current_chip() {
-    return current_chip->get_chip_info();
 }

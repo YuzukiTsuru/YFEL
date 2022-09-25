@@ -8,11 +8,14 @@
 #include <QMultiMap>
 #include <QVector>
 #include "chips/chip_type.h"
-#include "libusb-1.0/libusb.h"
+
+#include "fel.h"
 
 class ChipDB {
 public:
-    explicit ChipDB(chip_version_t chip_version);
+    ChipDB();
+
+    ~ChipDB();
 
     chip_t get_current_chip();
 
@@ -22,7 +25,8 @@ private:
     bool check_chip();
 
 private:
-    chip_version_t chip_version;
+    fel *fel_ = new fel();
+    chip_version_t chip_version{};
     QVector<Chips *> chip_db;
     Chips *current_chip = nullptr;
 };
