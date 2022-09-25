@@ -3,7 +3,7 @@
 #include "./ui_mainwindow.h"
 
 #include "eye_master.h"
-#include "ui_eye_master.h"
+#include "./ui_eye_master.h"
 
 #include <QClipboard>
 #include <QMessageBox>
@@ -74,20 +74,26 @@ void MainWindow::updateStatusBar(const QString &status) {
 void MainWindow::on_scan_pushButton_clicked() {
     updateStatusBar(tr("Scanning..."));
     try {
-        _fel.fel_scan_chip();
-        ChipDB chipdb(_fel.fel_get_chip_version());
+        if (fel_status == chip_fel_e::fel_chip_none) {
+            chipdb = new ChipDB();
+            fel_status = chip_fel_e::fel_chip_ok;
+        } else {
+            delete chipdb;
+            chipdb = new ChipDB();
+            fel_status = chip_fel_e::fel_chip_ok;
+        }
         // Set Scan Button label
-        ui->chip_label_2->setText("0x" + QString::number(chipdb.get_current_chip().chip_id, 16));
+        ui->chip_label_2->setText("0x" + QString::number(chipdb->get_current_chip().chip_id, 16));
 
         // Set CHip lines
-        ui->chip_name_lineEdit->setText(chipdb.get_current_chip().chip_name);
-        ui->chip_id_lineEdit->setText("0x" + QString::number(chipdb.get_current_chip().chip_id, 16));
-        ui->chip_sid_lineEdit->setText("0x" + chipdb.get_current_chip().chip_sid);
+        ui->chip_name_lineEdit->setText(chipdb->get_current_chip().chip_name);
+        ui->chip_id_lineEdit->setText("0x" + QString::number(chipdb->get_current_chip().chip_id, 16));
+        ui->chip_sid_lineEdit->setText("0x" + chipdb->get_current_chip().chip_sid);
 
-        QString chip_core_names_ = chipdb.get_current_chip().chip_core_count_str + " "
-                                   + chipdb.get_current_chip().chip_core;
-        if (chipdb.get_current_chip().chip_type == chip_type_e::Heterogeneous) {
-            for (auto const &item: chipdb.get_current_chip().chip_heterogeneous_core) {
+        QString chip_core_names_ = chipdb->get_current_chip().chip_core_count_str + " "
+                                   + chipdb->get_current_chip().chip_core;
+        if (chipdb->get_current_chip().chip_type == chip_type_e::Heterogeneous) {
+            for (auto const &item: chipdb->get_current_chip().chip_heterogeneous_core) {
                 chip_core_names_.append(" + ");
                 chip_core_names_.append(item);
             }
@@ -132,5 +138,9 @@ void MainWindow::on_Misc_eyemaster_button_clicked() {
     e->setWindowTitle(tr("EYE Master") + " - " + PROJECT_NAME);
     e->setWindowIcon(QIcon(":/assets/img/icon.png"));
     e->show();
+}
+
+void MainWindow::on_Misc_reset_pushButton_clicked() {
+    qDebug() << "Reset Chip";
 }
 

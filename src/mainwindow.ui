@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -572,21 +572,48 @@
      <attribute name="title">
       <string>Misc</string>
      </attribute>
-     <widget class="QPushButton" name="Misc_eyemaster_button">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
+     <widget class="QWidget" name="gridLayoutWidget_2">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
-        <width>75</width>
-        <height>24</height>
+        <y>0</y>
+        <width>661</width>
+        <height>341</height>
        </rect>
       </property>
-      <property name="text">
-       <string>EYE Master</string>
-      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="Misc_eyemaster_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>EYE Master</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="Misc_enable_smp_pushButton">
+         <property name="text">
+          <string>Enable SMP</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="Misc_enable_neon_pushButton">
+         <property name="text">
+          <string>Enable NEON</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QPushButton" name="Misc_reset_pushButton">
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
@@ -596,7 +623,7 @@
       <x>450</x>
       <y>0</y>
       <width>231</width>
-      <height>21</height>
+      <height>26</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_7">

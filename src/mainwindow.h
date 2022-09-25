@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QPushButton>
 
-#include "fel.h"
 #include "chipdb.h"
 
 QT_BEGIN_NAMESPACE
@@ -13,11 +12,16 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
+private:
+    enum chip_fel_e {
+        fel_chip_none,
+        fel_chip_ok,
+    };
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
-    ~MainWindow();
+    ~MainWindow() override;
 
 private slots:
 
@@ -37,17 +41,20 @@ private slots:
 
     void on_Misc_eyemaster_button_clicked();
 
+    void on_Misc_reset_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *exitAct{};
-    fel _fel;
+
+    chip_fel_e fel_status = fel_chip_none;
+
+    ChipDB *chipdb = nullptr;
 
 private:
     void initMainwindowData();
 
     void initMenubar();
-
-    void initButtons();
 
 private:
     static void exitMenuClicked();
