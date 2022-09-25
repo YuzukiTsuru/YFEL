@@ -12,6 +12,7 @@
 // Created by gloom on 2022/9/23.
 //
 
+#include "dram_header.h"
 #include "d1.h"
 
 d1::d1(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
@@ -89,6 +90,69 @@ chip_function_e d1::chip_jtag() {
 }
 
 chip_function_e d1::chip_ddr(chip_ddr_type_e dram_type) {
+    if (dram_type == chip_ddr_type_e::DDR3) {
+        const dram_param_t ddr3 = {
+                .dram_clk = 792,
+                .dram_type = 3,
+                .dram_zq = 0x7b7bfb,
+                .dram_odt_en = 0x01,
+                .dram_para1 = 0x000010d2,
+                .dram_para2 = 0x0000,
+                .dram_mr0 = 0x1c70,
+                .dram_mr1 = 0x042,
+                .dram_mr2 = 0x18,
+                .dram_mr3 = 0x0,
+                .dram_tpr0 = 0x004A2195,
+                .dram_tpr1 = 0x02423190,
+                .dram_tpr2 = 0x0008B061,
+                .dram_tpr3 = 0xB4787896,
+                .dram_tpr4 = 0x0,
+                .dram_tpr5 = 0x48484848,
+                .dram_tpr6 = 0x00000048,
+                .dram_tpr7 = 0x1620121e,
+                .dram_tpr8 = 0x0,
+                .dram_tpr9 = 0x0,
+                .dram_tpr10 = 0x0,
+                .dram_tpr11 = 0x00870000,
+                .dram_tpr12 = 0x00000024,
+                .dram_tpr13 = 0x34050100,
+        };
+        fel_->fel_write(0x00020000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
+        fel_->fel_write(0x00020018, &ddr3, sizeof(ddr3));
+        fel_->fel_exec(0x00020000);
+        return chip_function_e::Success;
+    } else if (dram_type == chip_ddr_type_e::DDR2) {
+        const dram_param_t ddr2 = {
+                .dram_clk = 528,
+                .dram_type = 2,
+                .dram_zq = 0x07b7bf9,
+                .dram_odt_en = 0x00,
+                .dram_para1 = 0x000000d2,
+                .dram_para2 = 0x00000000,
+                .dram_mr0 = 0x00000e73,
+                .dram_mr1 = 0x02,
+                .dram_mr2 = 0x0,
+                .dram_mr3 = 0x0,
+                .dram_tpr0 = 0x00471992,
+                .dram_tpr1 = 0x0131a10c,
+                .dram_tpr2 = 0x00057041,
+                .dram_tpr3 = 0xb4787896,
+                .dram_tpr4 = 0x0,
+                .dram_tpr5 = 0x48484848,
+                .dram_tpr6 = 0x48,
+                .dram_tpr7 = 0x1621121e,
+                .dram_tpr8 = 0x0,
+                .dram_tpr9 = 0x0,
+                .dram_tpr10 = 0x00000000,
+                .dram_tpr11 = 0x00030010,
+                .dram_tpr12 = 0x00000035,
+                .dram_tpr13 = 0x34000000,
+        };
+        fel_->fel_write(0x00020000, &ddr2_dram_payload[0], sizeof(ddr2_dram_payload));
+        fel_->fel_write(0x00020018, &ddr2, sizeof(ddr2));
+        fel_->fel_exec(0x00020000);
+        return chip_function_e::Success;
+    }
     return chip_function_e::NotSupport;
 }
 
