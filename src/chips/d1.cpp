@@ -12,7 +12,6 @@
 // Created by gloom on 2022/9/23.
 //
 
-#include "dram_header.h"
 #include "d1.h"
 
 d1::d1(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
@@ -154,6 +153,19 @@ chip_function_e d1::chip_ddr(chip_ddr_type_e dram_type) {
         return chip_function_e::Success;
     }
     return chip_function_e::NotSupport;
+}
+
+chip_function_e d1::chip_ddr(dram_param_t param) {
+    if (param.dram_type == chip_ddr_type_e::DDR2) {
+        fel_->fel_write(0x00020000, &ddr2_dram_payload[0], sizeof(ddr2_dram_payload));
+    } else if (param.dram_type == chip_ddr_type_e::DDR3) {
+        fel_->fel_write(0x00020000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
+    } else {
+        return chip_function_e::NotSupport;
+    }
+    fel_->fel_write(0x00020018, &param, sizeof(param));
+    fel_->fel_exec(0x00020000);
+    return chip_function_e::Success;
 }
 
 chip_function_e d1::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {

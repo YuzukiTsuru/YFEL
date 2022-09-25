@@ -29,6 +29,8 @@ class d1 : public Chips {
 
     chip_function_e chip_ddr(chip_ddr_type_e dram_type) override;
 
+    chip_function_e chip_ddr(dram_param_t param) override;
+
     chip_function_e chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) override;
 
     chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) override;

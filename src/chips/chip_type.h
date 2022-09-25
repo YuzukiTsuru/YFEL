@@ -12,6 +12,8 @@
 #define CHIPS_H
 
 #include <QString>
+
+#include "dram_header.h"
 #include "chips/chip_version.h"
 #include "fel.h"
 
@@ -27,12 +29,11 @@ enum chip_function_e {
 };
 
 enum chip_ddr_type_e {
-    DDR1,
-    DDR2,
-    DDR3,
-    DDR4,
-    LPDDR2,
-    LPDDR3,
+    DDR2 = 2,
+    DDR3 = 3,
+    DDR4 = 4,
+    LPDDR2 = 6,
+    LPDDR3 = 7,
     LPDDR4,
     LPDDR4X,
 };
@@ -88,6 +89,8 @@ public:
     virtual chip_function_e chip_jtag() { return chip_function_e::NotSupport; };
 
     virtual chip_function_e chip_ddr(chip_ddr_type_e dram_type) { return chip_function_e::NotSupport; };
+
+    virtual chip_function_e chip_ddr(dram_param_t param) { return chip_function_e::NotSupport; };
 
     virtual chip_function_e chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {
         return chip_function_e::NotSupport;

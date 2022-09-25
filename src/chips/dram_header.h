@@ -43,7 +43,8 @@ typedef struct dram_param {
     uint32_t dram_tpr11;
     uint32_t dram_tpr12;
     uint32_t dram_tpr13;
-    uint32_t reserve[8];
+    uint32_t dram_tpr14;
+    uint32_t reserve[7];
 } dram_param_t;
 
 #endif //YFEL_DRAM_HEADER_H
