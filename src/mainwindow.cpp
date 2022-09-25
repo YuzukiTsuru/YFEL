@@ -168,6 +168,7 @@ void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
     try {
         chip_op->reset_chip();
+        QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
