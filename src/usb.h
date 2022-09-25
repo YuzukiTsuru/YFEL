@@ -9,8 +9,6 @@
 
 #include "libusb-1.0/libusb.h"
 
-#include "chipdb.h"
-
 class usb : public QObject {
 Q_OBJECT
 public:
