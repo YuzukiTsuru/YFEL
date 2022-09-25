@@ -6,6 +6,7 @@
 
 r528::r528(chip_version_t chip_version) : Chips(chip_version) {
     chip_info.chip_name = "R528-S1/R528-S2/R528-S3/R528-S4/T113-I/T113-S3";
+    chip_info.chip_id = 0x00185900;
     chip_info.chip_type = chip_type_e::Heterogeneous;
     chip_info.chip_core = core_name_.CortexA7;
     chip_info.chip_core_count = 2;

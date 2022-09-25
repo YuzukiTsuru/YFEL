@@ -14,7 +14,7 @@ class ChipDB {
 public:
     explicit ChipDB(chip_version_t chip_version);
 
-    chip_t get_currect_chip();
+    chip_t get_current_chip();
 
 private:
     void generate_chip_db();
@@ -24,7 +24,7 @@ private:
 private:
     chip_version_t chip_version;
     QVector<Chips*> chip_db;
-    Chips *currect_chip = nullptr;
+    Chips *current_chip = nullptr;
 };
 
 #endif // CHIPDB_H

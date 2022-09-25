@@ -610,7 +610,7 @@
      <item>
       <widget class="QLabel" name="chip_label">
        <property name="text">
-        <string>Currect Chip: </string>
+        <string>current Chip: </string>
        </property>
       </widget>
      </item>
