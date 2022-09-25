@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -623,10 +623,16 @@
       <x>450</x>
       <y>0</y>
       <width>231</width>
-      <height>26</height>
+      <height>21</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QPushButton" name="scan_pushButton">
        <property name="text">
@@ -637,7 +643,7 @@
      <item>
       <widget class="QLabel" name="chip_label">
        <property name="text">
-        <string>current Chip: </string>
+        <string>Current Chip: </string>
        </property>
       </widget>
      </item>
