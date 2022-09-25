@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2022, YuzukiTsuru <GloomyGhost@GloomyGhost.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * See README and LICENSE for more details.
+ */
+
 #include <QDebug>
 #include <QFuture>
 #include <QtConcurrent>
@@ -40,7 +50,8 @@ void usb::open_usb() {
             rc = libusb_open(device, &ctx.hdl);
             if (rc != 0) {
                 qDebug("ERROR: Can't connect to device: %d\r\n", rc);
-                throw std::runtime_error("Find FEL Device but host driver is wrong\nPlease use libusb-win32 driver instead");
+                throw std::runtime_error(
+                        "Find FEL Device but host driver is wrong\nPlease use libusb-win32 driver instead");
             } else {
                 uint8_t string_buffer_product[4096];
                 libusb_get_string_descriptor_ascii(ctx.hdl, desc.iProduct,

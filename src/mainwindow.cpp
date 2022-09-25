@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2022, YuzukiTsuru <GloomyGhost@GloomyGhost.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * See README and LICENSE for more details.
+ */
+
 #include "yfel_config.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -46,6 +56,13 @@ void MainWindow::initMenubar() {
         QString URL = "https://github.com/YuzukiTsuru/YFEL";
         QDesktopServices::openUrl(QUrl(URL.toLatin1()));
     });
+
+    // enable jtag
+    connect(ui->actionEnable_JTAG, &QAction::triggered, this, &MainWindow::enableJtag);
+
+    // reset chip
+    connect(ui->actionReset_CPU, &QAction::triggered, this, &MainWindow::chipReset);
+    connect(ui->Misc_reset_pushButton, &QPushButton::clicked, this, &MainWindow::chipReset);
 }
 
 void MainWindow::exitMenuClicked() {
@@ -137,8 +154,22 @@ void MainWindow::on_Misc_eyemaster_button_clicked() {
     e->show();
 }
 
-void MainWindow::on_Misc_reset_pushButton_clicked() {
+void MainWindow::enableJtag() {
+    qDebug() << "Enable Chip JTAG";
+    try {
+        chip_op->enable_jtag();
+        QMessageBox::information(this, tr("Info"), tr("JTAG Enabled"));
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+}
+
+void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
-    chip_op->reset_chip();
+    try {
+        chip_op->reset_chip();
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
 }
 

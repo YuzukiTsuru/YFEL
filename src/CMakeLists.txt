@@ -61,7 +61,7 @@ set(PROJECT_SOURCES
         ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
-        )
+        chips/dram_header.h chips/dram_header.h chips/dram_header.h chips/dram_header.h)
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(YFEL

@@ -8,18 +8,11 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef MACROS_H
-#define MACROS_H
+//
+// Created by YuzukiTsuru on 2022/9/25.
+//
 
-#undef  YFEL_BEGIN_C_DECLS
-#undef  YFEL_END_C_DECLS
+#ifndef YFEL_DRAM_HEADER_H
+#define YFEL_DRAM_HEADER_H
 
-#ifdef __cplusplus
-#  define YFEL_BEGIN_C_DECLS extern "C" {
-#  define YFEL_END_C_DECLS }
-#else  // !__cplusplus
-#  define YFEL_BEGIN_C_DECLS
-#  define YFEL_END_C_DECLS
-#endif  // __cplusplus
-
-#endif // MACROS_H
+#endif //YFEL_DRAM_HEADER_H
