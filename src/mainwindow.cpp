@@ -12,9 +12,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#include "eye_master.h"
-#include "./ui_eye_master.h"
-
 #include <QClipboard>
 #include <QMessageBox>
 #include <QTimer>
@@ -145,13 +142,6 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
-}
-
-void MainWindow::on_Misc_eyemaster_button_clicked() {
-    auto *e = new eye_master();
-    e->setWindowTitle(tr("EYE Master") + " - " + PROJECT_NAME);
-    e->setWindowIcon(QIcon(":/assets/img/icon.png"));
-    e->show();
 }
 
 void MainWindow::enableJtag() {

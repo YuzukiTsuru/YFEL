@@ -553,7 +553,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="run_tab">
      <attribute name="title">
       <string>Run</string>
      </attribute>
@@ -566,6 +566,11 @@
     <widget class="QWidget" name="data_tab">
      <attribute name="title">
       <string>Data</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="dram_tab">
+     <attribute name="title">
+      <string>DRAM</string>
      </attribute>
     </widget>
     <widget class="QWidget" name="misc_tab">
@@ -582,34 +587,31 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="Misc_eyemaster_button">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>EYE Master</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QPushButton" name="Misc_enable_smp_pushButton">
          <property name="text">
           <string>Enable SMP</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QPushButton" name="Misc_enable_neon_pushButton">
          <property name="text">
           <string>Enable NEON</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="0" column="0">
         <widget class="QPushButton" name="Misc_reset_pushButton">
          <property name="text">
           <string>Reset</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="Misc_enable_jtag">
+         <property name="text">
+          <string>Enable JTAG</string>
          </property>
         </widget>
        </item>
@@ -635,6 +637,12 @@
      </property>
      <item>
       <widget class="QPushButton" name="scan_pushButton">
+       <property name="maximumSize">
+        <size>
+         <width>75</width>
+         <height>19</height>
+        </size>
+       </property>
        <property name="text">
         <string>Scan</string>
        </property>
