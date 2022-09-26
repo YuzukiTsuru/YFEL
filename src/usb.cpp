@@ -63,7 +63,6 @@ void usb::open_usb() {
         }
     }
     if (target_found == 0) {
-        usb_exit();
         throw std::runtime_error("Can't find target FEL device");
     }
 }
