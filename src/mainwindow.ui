@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -572,6 +572,75 @@
      <attribute name="title">
       <string>DRAM</string>
      </attribute>
+     <widget class="QWidget" name="gridLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>661</width>
+        <height>331</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="2">
+        <widget class="QComboBox" name="dram_load_preset_comboBox"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="dram_dram_zq_label">
+         <property name="text">
+          <string>dram zq</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="dram_dram_clk_lineEdit"/>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="dram_dram_zq_lineEdit"/>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLineEdit" name="dram_dram_odt_en_lineEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="dram_label_dram_clk">
+         <property name="text">
+          <string>dram clk</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="dram_dram_odt_en_label">
+         <property name="text">
+          <string>dram odt</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="dram_dram_type_label">
+         <property name="text">
+          <string>dram type</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="dram_load_preset_label">
+         <property name="text">
+          <string>Preset</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="dram_dram_type_lineEdit"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <widget class="QWidget" name="misc_tab">
      <attribute name="title">
