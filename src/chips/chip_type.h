@@ -12,7 +12,10 @@
 #define CHIPS_H
 
 #include <QString>
-#include "chips/chip_version.h"
+#include <QVector>
+
+#include "dram_header.h"
+#include "chip_version.h"
 #include "fel.h"
 
 enum chip_type_e {
@@ -99,8 +102,13 @@ public:
         return chip_info;
     };
 
+    QVector<dram_param_t> get_chip_dram_info() {
+        return dram_info;
+    };
+
 protected:
     chip_t chip_info{};
+    QVector<dram_param_t> dram_info{};
     chip_core_name_t core_name_{};
     chip_core_count_t core_count_{};
     chip_type_e chip_type_{};
