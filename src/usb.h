@@ -34,6 +34,11 @@ public:
 
     void usb_fel_init();
 
+    void usb_write(const void *buf, size_t len);
+
+    void usb_read(void *data, size_t len);
+
+private:
     void usb_bulk_send(int ep, uint8_t *buf, size_t len) const;
 
     void usb_bulk_recv(int ep, uint8_t *buf, size_t len) const;
@@ -41,10 +46,6 @@ public:
     void send_usb_request(int type, size_t length);
 
     void read_usb_response();
-
-    void usb_write(const void *buf, size_t len);
-
-    void usb_read(void *data, size_t len);
 
 private:
     static const uint32_t usb_timeout = 1000;
