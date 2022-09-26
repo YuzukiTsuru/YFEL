@@ -56,6 +56,7 @@ void MainWindow::initMenubar() {
 
     // enable jtag
     connect(ui->actionEnable_JTAG, &QAction::triggered, this, &MainWindow::enableJtag);
+    connect(ui->Misc_enable_jtag, &QPushButton::clicked, this, &MainWindow::enableJtag);
 
     // reset chip
     connect(ui->actionReset_CPU, &QAction::triggered, this, &MainWindow::chipReset);
