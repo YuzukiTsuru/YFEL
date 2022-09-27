@@ -17,7 +17,7 @@
 #include <QList>
 #include <QMultiMap>
 
-#include "libusb-1.0/libusb.h"
+#include <libusb-1.0/libusb.h>
 
 #include "usb.h"
 #include "chips/chip_version.h"

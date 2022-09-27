@@ -71,7 +71,7 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
 void fel::read_fel_status() {
     uint8_t buf[8];
     usb_handler.usb_read(buf, sizeof(buf));
-    qDebug("read_fel_status 0x%x", buf);
+    qDebug("read_fel_status 0x%hhn", buf);
 }
 
 void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
