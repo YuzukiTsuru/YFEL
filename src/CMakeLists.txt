@@ -39,10 +39,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (UNIX)
-    set(CMAKE_CXX_FLAGS "-fno-permissive")
-endif ()
-
 configure_file(
         "${PROJECT_SOURCE_DIR}/config.h.in"
         "${PROJECT_BINARY_DIR}/yfel_config.h"
