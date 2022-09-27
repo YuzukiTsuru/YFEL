@@ -90,7 +90,7 @@ void MainWindow::updateStatusBar(const QString &status) {
 void MainWindow::on_scan_pushButton_clicked() {
     updateStatusBar(tr("Scanning..."));
     try {
-        chip_op->scan_chip();
+        chip_op->chip_scan_chip();
         // Set Scan Button label
         ui->chip_label_2->setText("0x" + QString::number(chip_op->get_current_chip().chip_id, 16));
 
@@ -148,7 +148,7 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
 void MainWindow::enableJtag() {
     qDebug() << "Enable Chip JTAG";
     try {
-        chip_op->enable_jtag();
+        chip_op->chip_enable_jtag();
         QMessageBox::information(this, tr("Info"), tr("JTAG Enabled"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -158,7 +158,7 @@ void MainWindow::enableJtag() {
 void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
     try {
-        chip_op->reset_chip();
+        chip_op->chip_reset_chip();
         QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
