@@ -102,7 +102,8 @@ void usb::usb_bulk_send(int ep, uint8_t *buf, size_t len) const {
 
     while (len > 0) {
         size_t chunk = len < max_chunk ? len : max_chunk;
-        auto r = libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(chunk), &bytes, usb_timeout);
+        auto r = static_cast<libusb_error>(libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(chunk),
+                                                                &bytes, usb_timeout));
         if (r != 0) {
             qDebug() << "usb_bulk_send failed, ret =" << r << libusb_strerror(r);
             throw std::runtime_error("usb bulk send failed, " + std::to_string(*libusb_strerror(r)));
@@ -116,7 +117,8 @@ void usb::usb_bulk_recv(int ep, uint8_t *buf, size_t len) const {
     int bytes;
 
     while (len > 0) {
-        auto r = libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(len), &bytes, usb_timeout);
+        auto r = static_cast<libusb_error>(libusb_bulk_transfer(ctx.hdl, ep, buf, static_cast<int>(len),
+                                                                &bytes, usb_timeout));
         if (r != 0) {
             qDebug() << "usb_bulk_recv failed, ret =" << r << libusb_strerror(r);
             throw std::runtime_error("usb_bulk_recv failed, " + std::to_string(*libusb_strerror(r)));
