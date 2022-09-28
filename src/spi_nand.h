@@ -26,7 +26,15 @@ public:
     spi_nand(Chips *chips, fel *fels);
 
 private:
-    void get_spi_nand_info();
+    bool get_spi_nand_info();
+
+    void spi_nand_reset();
+
+    void spi_nand_get_feature(uint8_t addr, uint8_t *val);
+
+    void spi_nand_set_feature(uint8_t addr, uint8_t val);
+
+    void spi_nand_wait_for_busy();
 
 private:
     spinand_pdata_t pdata = {};
