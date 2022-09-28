@@ -13,3 +13,18 @@
 //
 
 #include "spi_nand.h"
+
+spi_nand::spi_nand(Chips *chips, fel *fels) : spi(chips, fels) {
+    spi_init(&pdata.swap_buf, &pdata.swap_len, &pdata.cmd_len);
+
+}
+
+void spi_nand::get_spi_nand_info() {
+    const spinand_info_t *info;
+    uint8_t tx[2], rx[4];
+
+    tx[0] = SPI_OPCODE::OPCODE_RDID;
+    tx[1] = 0x0;
+
+
+}

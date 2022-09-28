@@ -23,12 +23,13 @@
 
 class spi_nand : public spi {
 public:
-    spi_nand(Chips *chips, fel *fels) : spi(chips, fels) {
-
-    }
+    spi_nand(Chips *chips, fel *fels);
 
 private:
+    void get_spi_nand_info();
 
+private:
+    spinand_pdata_t pdata = {};
 };
 
 
