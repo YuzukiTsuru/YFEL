@@ -42,6 +42,8 @@ public:
     void spi_xfer(uint32_t swap_buf, uint32_t swap_len, uint32_t cmd_len, uint8_t *tx_buf,
                   uint32_t tx_len, uint8_t *rx_buf, uint32_t rx_len);
 
+    Chips *get_current_chip();
+
 private:
     Chips *current_chip = nullptr;
     fel *fel_ = nullptr;
