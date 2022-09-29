@@ -8,8 +8,8 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef YFEL_CONFIG_H
+#define YFEL_CONFIG_H
 
 #define PROJECT_NAME "@PROJECT_NAME@"
 #define PROJECT_VER  "@PROJECT_VERSION@"
@@ -19,4 +19,4 @@
 #define PTOJECT_VER_PATCH "@PROJECT_VERSION_PATCH@"
 #define PROJECT_DESCRIPTION "Yet another Allwinner FEL Toolkit"
 
-#endif // CONFIG_H
+#endif // YFEL_CONFIG_H

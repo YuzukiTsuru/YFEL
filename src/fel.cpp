@@ -127,3 +127,4 @@ uint32_t fel::payload_arm_read32(uint32_t addr) {
     fel_read(version.scratchpad + sizeof(payload), &val, sizeof(val));
     return le32_to_cpu(val);
 }
+

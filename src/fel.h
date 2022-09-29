@@ -8,8 +8,8 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef FEL_H
-#define FEL_H
+#ifndef YFEL_FEL_H
+#define YFEL_FEL_H
 
 #include <QString>
 #include <QObject>
@@ -105,4 +105,4 @@ private:
     void fel_write_raw(uint32_t addr, void *buf, size_t len);
 };
 
-#endif// FEL_H
+#endif// YFEL_FEL_H

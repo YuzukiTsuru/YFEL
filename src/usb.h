@@ -8,8 +8,8 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef USB_H
-#define USB_H
+#ifndef YFEL_USB_H
+#define YFEL_USB_H
 
 #include <QString>
 #include <QObject>
@@ -75,4 +75,4 @@ private:
     libusb_device_descriptor desc{};
 };
 
-#endif // USB_H
+#endif // YFEL_USB_H

@@ -8,8 +8,8 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef X_H
-#define X_H
+#ifndef YFEL_X_H
+#define YFEL_X_H
 
 #include "macros.h"
 
@@ -106,4 +106,4 @@ static inline uint32_t __swahb32(uint32_t x) {
 
 YFEL_END_C_DECLS
 
-#endif// X_H
+#endif// YFEL_X_H

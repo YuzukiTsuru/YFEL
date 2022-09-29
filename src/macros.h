@@ -8,8 +8,8 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef MACROS_H
-#define MACROS_H
+#ifndef YFEL_MACROS_H
+#define YFEL_MACROS_H
 
 #undef  YFEL_BEGIN_C_DECLS
 #undef  YFEL_END_C_DECLS
@@ -22,4 +22,4 @@
 #  define YFEL_END_C_DECLS
 #endif  // __cplusplus
 
-#endif // MACROS_H
+#endif // YFEL_MACROS_H

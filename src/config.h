@@ -8,7 +8,7 @@
  * See README and LICENSE for more details.
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef YFEL_CONFIG_H
+#define YFEL_CONFIG_H
 
 #endif // CONFIG_H

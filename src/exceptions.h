@@ -5,15 +5,14 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * See README and LICENSE for more details.
+ *  See README and LICENSE for more details.
  */
 
-#ifndef YFEL_SHA256_H
-#define YFEL_SHA256_H
+//
+// Created by YuzukiTsuru on 2022/9/29.
+//
 
-class sha256 {
-public:
-    sha256();
-};
+#ifndef YFEL_EXCEPTIONS_H
+#define YFEL_EXCEPTIONS_H
 
-#endif // YFEL_SHA256_H
+#endif //YFEL_EXCEPTIONS_H
