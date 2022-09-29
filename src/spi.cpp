@@ -124,3 +124,7 @@ void spi::spi_xfer(uint32_t swap_buf, uint32_t swap_len, uint32_t cmd_len, uint8
         current_chip->chip_spi_run(cbuf, clen);
     }
 }
+
+Chips *spi::get_current_chip() {
+    return current_chip;
+}

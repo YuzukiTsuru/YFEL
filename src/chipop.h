@@ -19,6 +19,7 @@
 #include <QVector>
 #include "chips/chip_type.h"
 
+#include "spi_nand.h"
 #include "fel.h"
 
 class ChipOP {
@@ -41,6 +42,8 @@ public:
     void chip_reset_chip();
 
     void chip_enable_jtag();
+
+    void chip_scan_spi_nand();
 
 public: // getter
     chip_t get_current_chip();

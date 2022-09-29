@@ -21,13 +21,16 @@
 #include "spi_nand_info.h"
 #include "spi.h"
 
-class spi_nand : public spi {
+class spi_nand {
 public:
     spi_nand(Chips *chips, fel *fels);
 
-private:
+    ~spi_nand();
+
+public:
     bool get_spi_nand_info();
 
+private:
     void spi_nand_reset();
 
     void spi_nand_get_feature(uint8_t addr, uint8_t *val);
@@ -36,8 +39,11 @@ private:
 
     void spi_nand_wait_for_busy();
 
+    void spi_nand_init();
+
 private:
     spinand_pdata_t pdata = {};
+    spi *spi_ = nullptr;
 };
 
 

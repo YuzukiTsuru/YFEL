@@ -143,6 +143,7 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
+    chip_op->chip_scan_spi_nand();
 }
 
 void MainWindow::enableJtag() {
