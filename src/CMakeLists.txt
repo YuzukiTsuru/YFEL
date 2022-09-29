@@ -26,7 +26,6 @@ else ()
     set(PROJECT_GIT_HASH "")
 endif ()
 
-
 project(YFEL VERSION 0.0.${_git_version} LANGUAGES CXX)
 
 option(CMAKE_QT_CLION "Using CLion develop" OFF)
@@ -56,7 +55,6 @@ file(GLOB CHIP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_S
 set(PROJECT_SOURCES
         ${PROJECT_SOURCES}
         mainwindow.ui
-        eye_master.ui
         icon.qrc
         ${CHIP_SOURCES}
         ${TS_FILES}

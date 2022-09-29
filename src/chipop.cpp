@@ -19,7 +19,7 @@ ChipOP::~ChipOP() {
     delete fel_;
 }
 
-void ChipOP::scan_chip() {
+void ChipOP::chip_scan_chip() {
     fel_->fel_scan_chip();
     chip_version = fel_->fel_get_chip_version();
 
@@ -34,20 +34,21 @@ void ChipOP::scan_chip() {
     fel_status = chip_fel_e::fel_chip_ok;
 }
 
-void ChipOP::reset_chip() {
+void ChipOP::chip_reset_chip() {
     if (fel_status == chip_fel_e::fel_chip_ok) {
         try {
             if (current_chip->chip_reset() == chip_function_e::NotSupport)
                 throw std::runtime_error("Function not implemented");
-        } catch (const std::runtime_error &error) {
+        } catch (const std::runtime_error &error) { // Catch error handle as success
             qDebug() << "Reset Done";
+            fel_status = chip_fel_e::fel_chip_none;
         }
     } else {
         throw std::runtime_error("reScan First");
     }
 }
 
-void ChipOP::enable_jtag() {
+void ChipOP::chip_enable_jtag() {
     if (fel_status == chip_fel_e::fel_chip_ok) {
         try {
             if (current_chip->chip_jtag() == chip_function_e::NotSupport)

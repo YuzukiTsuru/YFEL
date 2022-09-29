@@ -12,9 +12,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#include "eye_master.h"
-#include "./ui_eye_master.h"
-
 #include <QClipboard>
 #include <QMessageBox>
 #include <QTimer>
@@ -59,6 +56,7 @@ void MainWindow::initMenubar() {
 
     // enable jtag
     connect(ui->actionEnable_JTAG, &QAction::triggered, this, &MainWindow::enableJtag);
+    connect(ui->Misc_enable_jtag, &QPushButton::clicked, this, &MainWindow::enableJtag);
 
     // reset chip
     connect(ui->actionReset_CPU, &QAction::triggered, this, &MainWindow::chipReset);
@@ -92,7 +90,7 @@ void MainWindow::updateStatusBar(const QString &status) {
 void MainWindow::on_scan_pushButton_clicked() {
     updateStatusBar(tr("Scanning..."));
     try {
-        chip_op->scan_chip();
+        chip_op->chip_scan_chip();
         // Set Scan Button label
         ui->chip_label_2->setText("0x" + QString::number(chip_op->get_current_chip().chip_id, 16));
 
@@ -147,17 +145,10 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
 }
 
-void MainWindow::on_Misc_eyemaster_button_clicked() {
-    auto *e = new eye_master();
-    e->setWindowTitle(tr("EYE Master") + " - " + PROJECT_NAME);
-    e->setWindowIcon(QIcon(":/assets/img/icon.png"));
-    e->show();
-}
-
 void MainWindow::enableJtag() {
     qDebug() << "Enable Chip JTAG";
     try {
-        chip_op->enable_jtag();
+        chip_op->chip_enable_jtag();
         QMessageBox::information(this, tr("Info"), tr("JTAG Enabled"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -167,7 +158,7 @@ void MainWindow::enableJtag() {
 void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
     try {
-        chip_op->reset_chip();
+        chip_op->chip_reset_chip();
         QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));

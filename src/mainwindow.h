@@ -44,8 +44,6 @@ private slots:
 
     void on_chip_spi_nand_scan_pushButton_clicked();
 
-    void on_Misc_eyemaster_button_clicked();
-
 private:
     Ui::MainWindow *ui;
 

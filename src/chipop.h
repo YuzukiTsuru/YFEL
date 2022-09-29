@@ -36,14 +36,13 @@ public:
     /*
      * Scan Chip, will add fel_status -> fel_chip_ok
      */
-    void scan_chip();
+    void chip_scan_chip();
 
-    void reset_chip();
+    void chip_reset_chip();
 
-    void enable_jtag();
+    void chip_enable_jtag();
 
 public: // getter
-
     chip_t get_current_chip();
 
 private:
