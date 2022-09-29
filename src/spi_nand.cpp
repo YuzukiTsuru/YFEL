@@ -24,12 +24,18 @@ spi_nand::~spi_nand() {
     delete spi_;
 }
 
+QString spi_nand::get_spi_nand_name() const {
+    return pdata.info.name;
+}
+
 bool spi_nand::get_spi_nand_info() {
-    const spinand_info_t *info;
     uint8_t tx[2], rx[4];
 
     tx[0] = SPI_NAND_OPCODE::OPCODE_RDID;
     tx[1] = 0x0;
+
+    if (spi_ == nullptr)
+        throw std::runtime_error("spi_ null");
 
     try {
         spi_->spi_xfer(pdata.swap_buf, pdata.cmd_len, pdata.swap_len, tx, 2, rx, 4);
@@ -64,8 +70,13 @@ bool spi_nand::get_spi_nand_info() {
 
 void spi_nand::spi_nand_reset() {
     uint8_t tx[1] = {SPI_NAND_OPCODE::OPCODE_RESET};
+
+    if (spi_ == nullptr)
+        throw std::runtime_error("spi_ null");
+
     try {
-        spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 1, 0, 0);
+        spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len,
+                       tx, 1, nullptr, 0);
     }
     catch (const std::runtime_error &e) {
         qDebug() << e.what();
@@ -75,10 +86,14 @@ void spi_nand::spi_nand_reset() {
 void spi_nand::spi_nand_get_feature(uint8_t addr, uint8_t *val) {
     uint8_t tx[2];
 
+    if (spi_ == nullptr)
+        throw std::runtime_error("spi_ null");
+
     tx[0] = OPCODE_GET_FEATURE;
     tx[1] = addr;
     try {
-        spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 2, val, 1);
+        spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 2,
+                       val, 1);
     } catch (const std::runtime_error &e) {
         qDebug() << e.what();
     }
@@ -87,11 +102,15 @@ void spi_nand::spi_nand_get_feature(uint8_t addr, uint8_t *val) {
 void spi_nand::spi_nand_set_feature(uint8_t addr, uint8_t val) {
     uint8_t tx[3];
 
+    if (spi_ == nullptr)
+        throw std::runtime_error("spi_ null");
+
     tx[0] = OPCODE_GET_FEATURE;
     tx[1] = addr;
     tx[2] = val;
     try {
-        spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 3, 0, 0);
+        spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 3,
+                       nullptr, 0);
     } catch (const std::runtime_error &e) {
         qDebug() << e.what();
     }
@@ -100,6 +119,9 @@ void spi_nand::spi_nand_set_feature(uint8_t addr, uint8_t val) {
 void spi_nand::spi_nand_wait_for_busy() {
     uint8_t cbuf[256];
     uint32_t clen = 0;
+
+    if (spi_ == nullptr)
+        throw std::runtime_error("spi_ null");
 
     cbuf[clen++] = SPI_CMD_SELECT;
     cbuf[clen++] = SPI_CMD_SPINAND_WAIT;
@@ -113,6 +135,10 @@ void spi_nand::spi_nand_wait_for_busy() {
 
 void spi_nand::spi_nand_init() {
     uint8_t val;
+
+    if (spi_ == nullptr)
+        throw std::runtime_error("spi_ null");
+
     spi_->get_current_chip()->chip_spi_init(&pdata.swap_buf, &pdata.swap_len, &pdata.cmd_len);
     if (get_spi_nand_info()) {
         spi_nand_reset();

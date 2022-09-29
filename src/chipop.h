@@ -43,7 +43,7 @@ public:
 
     void chip_enable_jtag();
 
-    void chip_scan_spi_nand();
+    QString chip_scan_spi_nand();
 
 public: // getter
     chip_t get_current_chip();

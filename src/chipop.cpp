@@ -88,8 +88,9 @@ bool ChipOP::check_chip() {
     return false;
 }
 
-void ChipOP::chip_scan_spi_nand() {
+QString ChipOP::chip_scan_spi_nand() {
     spi_nand spinand(current_chip, fel_);
-    spinand.get_spi_nand_info();
+    spinand.spi_nand_init();
+    return spinand.get_spi_nand_name();
 }
 

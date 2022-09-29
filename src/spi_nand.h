@@ -27,10 +27,11 @@ public:
 
     ~spi_nand();
 
+    [[nodiscard]] QString get_spi_nand_name() const;
+
 public:
     bool get_spi_nand_info();
 
-private:
     void spi_nand_reset();
 
     void spi_nand_get_feature(uint8_t addr, uint8_t *val);
