@@ -23,20 +23,20 @@ typedef struct spinand_info {
         uint8_t val[4];
         uint8_t len;
     } id;
-    uint32_t page_size;
-    uint32_t spare_size;
-    uint32_t pages_per_block;
-    uint32_t blocks_per_die;
-    uint32_t planes_per_die;
-    uint32_t ndies;
+    uint32_t page_size = 0;
+    uint32_t spare_size = 0;
+    uint32_t pages_per_block = 0;
+    uint32_t blocks_per_die = 0;
+    uint32_t planes_per_die = 0;
+    uint32_t ndies = 0;
 } spinand_info_t;
 
-struct spinand_pdata_t {
+typedef struct spinand_pdata {
     spinand_info_t info;
-    uint32_t swap_buf;
-    uint32_t swap_len;
-    uint32_t cmd_len;
-};
+    uint32_t swap_buf = 0;
+    uint32_t swap_len = 0;
+    uint32_t cmd_len = 0;
+} spinand_pdata_t;
 
 enum SPI_NAND_OPCODE {
     OPCODE_RDID = 0x9f,

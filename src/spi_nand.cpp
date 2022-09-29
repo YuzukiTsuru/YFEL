@@ -16,7 +16,11 @@
 #include "x.h"
 
 spi_nand::spi_nand(Chips *chips, fel *fels) {
-    spi_ = new spi(chips, fels);
+    spi_ = new (std::nothrow) spi(chips, fels);
+
+    if (spi_ == nullptr)
+        exit(0xff);
+
     spi_->spi_init(&pdata.swap_buf, &pdata.swap_len, &pdata.cmd_len);
 }
 
