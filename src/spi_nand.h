@@ -33,7 +33,7 @@ public:
 
     [[nodiscard]] QString get_spi_nand_name() const;
 
-    [[nodiscard]] uint64_t get_spi_nand_size() const;
+    [[nodiscard]] uint64_t get_spi_nand_size();
 
 private:
     bool get_spi_nand_info();

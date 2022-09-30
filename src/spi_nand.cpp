@@ -36,7 +36,9 @@ QString spi_nand::get_spi_nand_name() const {
     return pdata.info.name;
 }
 
-uint64_t spi_nand::get_spi_nand_size() const {
+uint64_t spi_nand::get_spi_nand_size() {
+    pdata.info.nand_size = pdata.info.page_size * pdata.info.pages_per_block
+                           * pdata.info.blocks_per_die * pdata.info.ndies;
     return pdata.info.nand_size;
 }
 
