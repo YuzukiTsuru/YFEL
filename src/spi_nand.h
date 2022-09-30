@@ -29,6 +29,10 @@ public:
 
     [[nodiscard]] QString get_spi_nand_name() const;
 
+    [[nodiscard]] uint64_t get_spi_nand_size() const;
+
+    void erase(uint64_t addr, uint64_t len);
+
 public:
     bool get_spi_nand_info();
 
@@ -41,6 +45,8 @@ public:
     void spi_nand_wait_for_busy();
 
     void spi_nand_init();
+
+    void spi_nand_erase(uint64_t addr, uint64_t count);
 
 private:
     spinand_pdata_t pdata = {};

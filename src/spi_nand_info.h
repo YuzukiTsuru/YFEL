@@ -29,6 +29,7 @@ typedef struct spinand_info {
     uint32_t blocks_per_die = 0;
     uint32_t planes_per_die = 0;
     uint32_t ndies = 0;
+    uint64_t nand_size = 0;
 } spinand_info_t;
 
 typedef struct spinand_pdata {
