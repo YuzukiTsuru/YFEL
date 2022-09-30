@@ -27,13 +27,15 @@ public:
 
     ~spi_nand();
 
+    void init();
+
+    void erase(uint64_t addr, uint64_t len);
+
     [[nodiscard]] QString get_spi_nand_name() const;
 
     [[nodiscard]] uint64_t get_spi_nand_size() const;
 
-    void erase(uint64_t addr, uint64_t len);
-
-public:
+private:
     bool get_spi_nand_info();
 
     void spi_nand_reset();

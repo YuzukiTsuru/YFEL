@@ -90,7 +90,7 @@ bool ChipOP::check_chip() {
 
 QString ChipOP::chip_scan_spi_nand() {
     spi_nand spinand(current_chip, fel_);
-    spinand.spi_nand_init();
+    spinand.init();
     return spinand.get_spi_nand_name();
 }
 

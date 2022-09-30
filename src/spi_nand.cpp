@@ -28,6 +28,10 @@ spi_nand::~spi_nand() {
     delete spi_;
 }
 
+void spi_nand::init() {
+    spi_nand_init();
+}
+
 QString spi_nand::get_spi_nand_name() const {
     return pdata.info.name;
 }
