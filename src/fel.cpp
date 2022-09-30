@@ -40,6 +40,8 @@ void fel::fel_chip_id() {
     send_fel_request(FEL_COMMAND::FEL_VERSION, 0, 0);
     usb_handler.usb_read(&version, sizeof(version));
     read_fel_status();
+
+    // byte order convert
     version.id = le32_to_cpu(version.id);
     version.firmware = le32_to_cpu(version.firmware);
     version.protocol = le16_to_cpu(version.protocol);
