@@ -15,4 +15,29 @@
 #ifndef YFEL_EXCEPTIONS_H
 #define YFEL_EXCEPTIONS_H
 
+#include <QException>
+#include <string>
+
+class function_not_implemented : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] function_not_implemented *clone() const override {
+        return new function_not_implemented(*this);
+    }
+};
+
+class spi_len_error : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] spi_len_error *clone() const override {
+        return new spi_len_error(*this);
+    }
+};
+
 #endif //YFEL_EXCEPTIONS_H

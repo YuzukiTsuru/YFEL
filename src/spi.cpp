@@ -13,29 +13,26 @@
 //
 
 #include "spi.h"
+#include "exceptions.h"
 
-spi::spi(Chips *chips, fel *fels) : current_chip(chips), fel_(fels) {
-
-}
+spi::spi(Chips *chips, fel *fels) : current_chip(chips), fel_(fels) {}
 
 void spi::spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {
     uint8_t cbuf[2] = {0, 0};
     if (current_chip->chip_spi_init(swap_buf, swap_len, cmd_len) == chip_function_e::NotSupport)
-        throw std::runtime_error("Function not implemented");
+        throw function_not_implemented();
     cbuf[0] = chip_spi_ctrl_e::SPI_CMD_INIT;
     cbuf[1] = chip_spi_ctrl_e::SPI_CMD_END;
     if (current_chip->chip_spi_run(cbuf, sizeof(cbuf)) == chip_function_e::NotSupport)
-        throw std::runtime_error("Function not implemented");
+        throw function_not_implemented();
 }
 
 void spi::spi_xfer(uint32_t swap_buf, uint32_t swap_len, uint32_t cmd_len, uint8_t *tx_buf,
                    uint32_t tx_len, uint8_t *rx_buf, uint32_t rx_len) {
-    uint8_t cbuf[256];
-    uint32_t clen;
-    uint32_t n;
 
+    uint8_t cbuf[256];
     if ((tx_len <= swap_len) && (rx_len <= swap_len)) {
-        clen = 0;
+        uint32_t clen = 0;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
 
         if (tx_len > 0) {
@@ -70,12 +67,13 @@ void spi::spi_xfer(uint32_t swap_buf, uint32_t swap_len, uint32_t cmd_len, uint8
         if (rx_len > 0)
             fel_->fel_read(swap_buf, rx_buf, rx_len);
     } else {
-        clen = 0;
+        uint32_t clen = 0;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_END;
 
         current_chip->chip_spi_run(cbuf, clen);
 
+        uint32_t n;
         while (tx_len > 0) {
             n = tx_len > swap_len ? swap_len : tx_len;
             clen = 0;
@@ -120,7 +118,7 @@ void spi::spi_xfer(uint32_t swap_buf, uint32_t swap_len, uint32_t cmd_len, uint8
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_END;
         if (clen > cmd_len)
-            throw std::runtime_error("clen > cmd_len");
+            throw spi_len_error();
         current_chip->chip_spi_run(cbuf, clen);
     }
 }
