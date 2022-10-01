@@ -45,6 +45,8 @@ public:
 
     QString chip_scan_spi_nand();
 
+    void chip_erase_spi_nand(uint32_t addr, uint32_t len);
+
 public: // getter
     chip_t get_current_chip();
 

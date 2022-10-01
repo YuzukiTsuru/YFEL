@@ -89,8 +89,22 @@ bool ChipOP::check_chip() {
 }
 
 QString ChipOP::chip_scan_spi_nand() {
-    spi_nand spinand(current_chip, fel_);
-    spinand.init();
-    return spinand.get_spi_nand_name();
+    if (fel_status == chip_fel_e::fel_chip_ok) {
+        spi_nand spinand(current_chip, fel_);
+        spinand.init();
+        return spinand.get_spi_nand_name();
+    } else {
+        throw std::runtime_error("reScan First");
+    }
+}
+
+void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
+    if (fel_status == chip_fel_e::fel_chip_ok) {
+        spi_nand spinand(current_chip, fel_);
+        spinand.init();
+        spinand.erase(addr, len);
+    } else {
+        throw std::runtime_error("reScan First");
+    }
 }
 
