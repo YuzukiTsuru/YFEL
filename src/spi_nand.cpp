@@ -235,66 +235,64 @@ void spi_nand::spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count) {
     auto txbuf = new uint8_t[pdata.swap_len];
 
     try {
-        if (cbuf && txbuf) {
-            auto granularity = pdata.swap_len - 3;
+        auto granularity = pdata.swap_len - 3;
 
-            if (pdata.info.page_size <= (pdata.swap_len - 3))
-                granularity = pdata.info.page_size;
+        if (pdata.info.page_size <= (pdata.swap_len - 3))
+            granularity = pdata.info.page_size;
 
-            while (count > 0) {
-                uint32_t clen = 0;
-                uint32_t txlen = 0;
-                while ((clen < (pdata.cmd_len - 33 - 1)) && (txlen < (pdata.swap_len - granularity - 3))) {
-                    auto n = count > granularity ? granularity : count;
-                    auto pa = addr / pdata.info.page_size;
-                    auto ca = addr & (pdata.info.page_size - 1);
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
-                    cbuf[clen++] = 1;
-                    cbuf[clen++] = SPI_NAND_OPCODE::OPCODE_WRITE_ENABLE;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_TXBUF;
-                    cbuf[clen++] = ((pdata.swap_buf + txlen) >> 0) & 0xff;
-                    cbuf[clen++] = ((pdata.swap_buf + txlen) >> 8) & 0xff;
-                    cbuf[clen++] = ((pdata.swap_buf + txlen) >> 16) & 0xff;
-                    cbuf[clen++] = ((pdata.swap_buf + txlen) >> 24) & 0xff;
-                    cbuf[clen++] = ((n + 3) >> 0) & 0xff;
-                    cbuf[clen++] = ((n + 3) >> 8) & 0xff;
-                    cbuf[clen++] = ((n + 3) >> 16) & 0xff;
-                    cbuf[clen++] = ((n + 3) >> 24) & 0xff;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
-                    cbuf[clen++] = 4;
-                    cbuf[clen++] = SPI_NAND_OPCODE::OPCODE_PROGRAM_EXEC;
-                    cbuf[clen++] = (pa >> 16);
-                    cbuf[clen++] = (pa >> 8);
-                    cbuf[clen++] = (pa >> 0);
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
-                    cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
-                    txbuf[txlen++] = SPI_NAND_OPCODE::OPCODE_PROGRAM_LOAD;
-                    txbuf[txlen++] = (ca >> 8);
-                    txbuf[txlen++] = (ca >> 0);
-                    std::copy(&buf[0], &buf[0] + n, &txbuf[txlen]);
-                    txlen += n;
-                    addr += n;
-                    buf += n;
-                    count -= n;
-                }
-                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_END;
-                spi_->get_current_fel()->fel_write(pdata.swap_buf, txbuf, txlen);
-                if (clen <= pdata.cmd_len)
-                    spi_->get_current_chip()->chip_spi_run(cbuf, clen);
+        while (count > 0) {
+            uint32_t clen = 0;
+            uint32_t txlen = 0;
+            while ((clen < (pdata.cmd_len - 33 - 1)) && (txlen < (pdata.swap_len - granularity - 3))) {
+                auto n = count > granularity ? granularity : count;
+                auto pa = addr / pdata.info.page_size;
+                auto ca = addr & (pdata.info.page_size - 1);
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+                cbuf[clen++] = 1;
+                cbuf[clen++] = SPI_NAND_OPCODE::OPCODE_WRITE_ENABLE;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_TXBUF;
+                cbuf[clen++] = ((pdata.swap_buf + txlen) >> 0) & 0xff;
+                cbuf[clen++] = ((pdata.swap_buf + txlen) >> 8) & 0xff;
+                cbuf[clen++] = ((pdata.swap_buf + txlen) >> 16) & 0xff;
+                cbuf[clen++] = ((pdata.swap_buf + txlen) >> 24) & 0xff;
+                cbuf[clen++] = ((n + 3) >> 0) & 0xff;
+                cbuf[clen++] = ((n + 3) >> 8) & 0xff;
+                cbuf[clen++] = ((n + 3) >> 16) & 0xff;
+                cbuf[clen++] = ((n + 3) >> 24) & 0xff;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+                cbuf[clen++] = 4;
+                cbuf[clen++] = SPI_NAND_OPCODE::OPCODE_PROGRAM_EXEC;
+                cbuf[clen++] = (pa >> 16);
+                cbuf[clen++] = (pa >> 8);
+                cbuf[clen++] = (pa >> 0);
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+                txbuf[txlen++] = SPI_NAND_OPCODE::OPCODE_PROGRAM_LOAD;
+                txbuf[txlen++] = (ca >> 8);
+                txbuf[txlen++] = (ca >> 0);
+                std::copy(&buf[0], &buf[0] + n, &txbuf[txlen]);
+                txlen += n;
+                addr += n;
+                buf += n;
+                count -= n;
             }
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_END;
+            spi_->get_current_fel()->fel_write(pdata.swap_buf, txbuf, txlen);
+            if (clen <= pdata.cmd_len)
+                spi_->get_current_chip()->chip_spi_run(cbuf, clen);
         }
     } catch (const std::runtime_error &e) {
         // handle excptions
