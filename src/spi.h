@@ -44,6 +44,8 @@ public:
 
     Chips *get_current_chip();
 
+    fel *get_current_fel();
+
 private:
     Chips *current_chip = nullptr;
     fel *fel_ = nullptr;

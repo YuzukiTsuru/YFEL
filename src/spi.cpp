@@ -126,3 +126,7 @@ void spi::spi_xfer(uint32_t swap_buf, uint32_t swap_len, uint32_t cmd_len, uint8
 Chips *spi::get_current_chip() {
     return current_chip;
 }
+
+fel *spi::get_current_fel() {
+    return fel_;
+}
