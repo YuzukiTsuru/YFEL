@@ -108,3 +108,13 @@ void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
     }
 }
 
+void ChipOP::chip_exec(uint32_t addr) {
+    if (fel_status == chip_fel_e::fel_chip_ok) {
+        fel_->fel_exec(addr);
+    } else {
+        throw std::runtime_error("reScan First");
+    }
+}
+
+
+
