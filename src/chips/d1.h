@@ -40,6 +40,7 @@ public:
 
 private:
     const dram_param_t ddr3 = {
+            .dram_param_name = "D1-H DDR3 792M",
             .dram_clk = 792,
             .dram_type = 3,
             .dram_zq = 0x7b7bfb,
@@ -67,6 +68,7 @@ private:
     };
 
     const dram_param_t ddr2 = {
+            .dram_param_name = "D1s DDR2 528M",
             .dram_clk = 528,
             .dram_type = 2,
             .dram_zq = 0x07b7bf9,

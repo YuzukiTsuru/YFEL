@@ -19,6 +19,7 @@
 #include <QObject>
 
 typedef struct dram_param {
+    QString dram_param_name;
     uint32_t dram_clk;
     uint32_t dram_type;
     uint32_t dram_zq;
