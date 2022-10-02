@@ -17,6 +17,8 @@
 #include <QList>
 #include <QMultiMap>
 #include <QVector>
+#include <QtConcurrent>
+
 #include "chips/chip_type.h"
 
 #include "spi_nand.h"
@@ -45,7 +47,7 @@ public:
 
     void chip_exec(uint32_t addr);
 
-    QString chip_scan_spi_nand();
+    QFuture<QString> chip_scan_spi_nand();
 
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
 

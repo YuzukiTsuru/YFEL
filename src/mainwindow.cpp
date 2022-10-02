@@ -16,6 +16,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <qdesktopservices.h>
+#include <QFutureWatcher>
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -139,8 +140,10 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
-    auto nand_name = chip_op->chip_scan_spi_nand();
-    ui->chip_spi_nand_lineEdit->setText(nand_name);
+    QFutureWatcher<QString> watcher;
+    auto nand_scan = chip_op->chip_scan_spi_nand();
+    watcher.setFuture(nand_scan);
+    ui->chip_spi_nand_lineEdit->setText(watcher.result());
 }
 
 void MainWindow::enableJtag() {
