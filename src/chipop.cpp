@@ -92,7 +92,9 @@ QString ChipOP::chip_scan_spi_nand() {
     if (fel_status == chip_fel_e::fel_chip_ok) {
         spi_nand spinand(current_chip, fel_);
         spinand.init();
-        return spinand.get_spi_nand_name();
+        return spinand.get_spi_nand_name() + " "
+               + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x" +
+               QString::number(spinand.get_spi_nand_size(), 16);
     } else {
         throw std::runtime_error("reScan First");
     }
