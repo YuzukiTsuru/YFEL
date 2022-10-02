@@ -29,11 +29,15 @@ public:
 
     void init();
 
+    void read(uint64_t addr, uint8_t *buf, uint64_t len);
+
+    void write(uint64_t addr, uint8_t *buf, uint64_t len);
+
     void erase(uint64_t addr, uint64_t len);
 
     [[nodiscard]] QString get_spi_nand_name() const;
 
-    [[nodiscard]] uint64_t get_spi_nand_size();
+    [[nodiscard]] uint64_t get_spi_nand_size() const;
 
 private:
     bool get_spi_nand_info();
@@ -47,6 +51,10 @@ private:
     void spi_nand_wait_for_busy();
 
     void spi_nand_init();
+
+    void spi_nand_read(uint32_t addr, uint8_t *buf, uint32_t count);
+
+    void spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count);
 
     void spi_nand_erase(uint64_t addr, uint64_t count);
 
