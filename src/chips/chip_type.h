@@ -112,7 +112,6 @@ protected:
     QVector<dram_param_t> dram_info{};
     chip_core_name_t core_name_{};
     chip_core_count_t core_count_{};
-    chip_type_e chip_type_{};
     fel *fel_ = nullptr;
 };
 
