@@ -112,11 +112,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         // update status bar
         updateStatusBar(tr("Done."));
     } catch (const std::exception &e) {
-        ui->chip_label_2->setText(tr("NONE"));
-        ui->chip_id_lineEdit->setText("");
-        ui->chip_name_lineEdit->setText("");
-        ui->chip_sid_lineEdit->setText("");
-        ui->chip_core_lineEdit->setText("");
+        clearChip();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
@@ -161,9 +157,18 @@ void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
     try {
         chip_op->chip_reset_chip();
+        clearChip();
         QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+}
+
+void MainWindow::clearChip() {
+    ui->chip_label_2->setText(tr("NONE"));
+    ui->chip_id_lineEdit->setText("");
+    ui->chip_name_lineEdit->setText("");
+    ui->chip_sid_lineEdit->setText("");
+    ui->chip_core_lineEdit->setText("");
 }
 

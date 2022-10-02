@@ -65,6 +65,8 @@ private:
     void enableJtag();
 
     void chipReset();
+
+    void clearChip();
 };
 
 #endif // YFEL_MAINWINDOW_H
