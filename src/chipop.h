@@ -52,6 +52,8 @@ public:
 public: // getter
     chip_t get_current_chip();
 
+    fel *get_current_fel();
+
 private:
     void generate_chip_db();
 

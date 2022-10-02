@@ -116,5 +116,9 @@ void ChipOP::chip_exec(uint32_t addr) {
     }
 }
 
+fel *ChipOP::get_current_fel() {
+    return fel_;
+}
+
 
 
