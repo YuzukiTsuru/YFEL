@@ -88,14 +88,19 @@ bool ChipOP::check_chip() {
     return false;
 }
 
-QFuture<QString> ChipOP::chip_scan_spi_nand() {
+QFuture <QString> ChipOP::chip_scan_spi_nand() {
     if (fel_status == chip_fel_e::fel_chip_ok) {
-        QFuture<QString> future = QtConcurrent::run([=]() -> QString {
+        QFuture <QString> future = QtConcurrent::run([=]() -> QString {
             spi_nand spinand(current_chip, fel_);
             spinand.init();
-            return spinand.get_spi_nand_name() + " "
-                   + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x" +
-                   QString::number(spinand.get_spi_nand_size(), 16);
+
+            if (spinand.get_spi_nand_size() == 0) {
+                return {"No supported SPI NAND found"};
+            } else {
+                return spinand.get_spi_nand_name() + " "
+                       + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x"
+                       + QString::number(spinand.get_spi_nand_size(), 16);
+            }
         });
         return future;
     } else {

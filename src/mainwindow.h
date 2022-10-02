@@ -48,6 +48,8 @@ private:
     Ui::MainWindow *ui;
 
     QAction *exitAct{};
+
+    QFutureWatcher<QString> spi_nand_watcher;
     ChipOP *chip_op = new ChipOP();
 
 private:

@@ -23,6 +23,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     initMainwindowData();
     initMenubar();
+
+    connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&](){
+        qDebug() << "SPI NAND Get" + spi_nand_watcher.result();
+        ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
+        ui->chip_spi_nand_scan_pushButton->setEnabled(true);
+        updateStatusBar(tr("Done."));
+    });
 }
 
 MainWindow::~MainWindow() {
@@ -140,10 +147,14 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
-    QFutureWatcher<QString> watcher;
-    auto nand_scan = chip_op->chip_scan_spi_nand();
-    watcher.setFuture(nand_scan);
-    ui->chip_spi_nand_lineEdit->setText(watcher.result());
+    updateStatusBar(tr("Scanning SPI NAND..."));
+    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
+    try {
+        auto nand_scan = chip_op->chip_scan_spi_nand();
+        spi_nand_watcher.setFuture(nand_scan);
+    } catch (const std::runtime_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
 }
 
 void MainWindow::enableJtag() {
