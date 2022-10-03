@@ -12,6 +12,7 @@
 #include <QFuture>
 #include <QtConcurrent>
 
+#include "exceptions.h"
 #include "usb.h"
 #include "x.h"
 
@@ -63,7 +64,7 @@ void usb::open_usb() {
         }
     }
     if (target_found == 0) {
-        throw std::runtime_error("Can't find target FEL device");
+        throw cannot_find_fel_device();
     }
 }
 
@@ -106,7 +107,7 @@ void usb::usb_bulk_send(int ep, uint8_t *buf, size_t len) const {
                                                                 &bytes, usb_timeout));
         if (r != 0) {
             qDebug() << "usb_bulk_send failed, ret =" << r << libusb_strerror(r);
-            throw std::runtime_error("usb bulk send failed, " + std::to_string(*libusb_strerror(r)));
+            throw usb_bulk_send_error();
         }
         len -= bytes;
         buf += bytes;
@@ -121,7 +122,7 @@ void usb::usb_bulk_recv(int ep, uint8_t *buf, size_t len) const {
                                                                 &bytes, usb_timeout));
         if (r != 0) {
             qDebug() << "usb_bulk_recv failed, ret =" << r << libusb_strerror(r);
-            throw std::runtime_error("usb_bulk_recv failed, " + std::to_string(*libusb_strerror(r)));
+            throw usb_bulk_recv_error();
         }
         len -= bytes;
         buf += bytes;
@@ -146,7 +147,7 @@ void usb::read_usb_response() {
     usb_bulk_recv(ctx.epin, (uint8_t *) buf, sizeof(buf));
     for (size_t i = 0; i < 4; ++i) {
         if (buf[i] != fel_recv_magic[i]) {
-            throw std::runtime_error("read usb response failed");
+            throw read_usb_response_failed();
         }
     }
 }
