@@ -303,10 +303,10 @@ void MainWindow::on_tabWidget_currentChanged(int index) {
 void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged() {
     // Prevention of cross-border
     if (chip_op->get_dram_params().length() > 1) {
-        auto current_dram_param = chip_op->get_dram_params()[0];
+        auto current_dram_param = chip_op->get_dram_params()[0].dram_param;
         for (const auto &item: chip_op->get_dram_params()) {
             if (ui->dram_load_preset_comboBox->currentText() == item.dram_param_name) {
-                current_dram_param = item;
+                current_dram_param = item.dram_param;
             }
         }
         ui->dram_dram_clk_lineEdit->setText(QString::number(current_dram_param.dram_clk));
@@ -337,11 +337,39 @@ void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged() {
         ui->dram_dram_tpr11_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr11));
         ui->dram_dram_tpr12_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr12));
         ui->dram_dram_tpr13_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr13));
-        ui->dram_dram_tpr14_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr14));
     }
 }
 
 void MainWindow::on_dram_init_dram_btn_clicked() {
+    dram_param_t dramParam;
+    dramParam.dram_clk = ui->dram_dram_clk_lineEdit->text().toUInt();
+    dramParam.dram_type = ui->dram_dram_type_lineEdit->text().toUInt();
+    dramParam.dram_zq = ui->dram_dram_zq_lineEdit->text().toUInt();
+    dramParam.dram_odt_en = ui->dram_dram_odt_en_lineEdit->text().toUInt();
 
+    dramParam.dram_para1 = ui->dram_dram_para1_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_para2 = ui->dram_dram_para2_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_mr0 = ui->dram_dram_mr0_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_mr1 = ui->dram_dram_mr1_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_mr2 = ui->dram_dram_mr2_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_mr3 = ui->dram_dram_mr3_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr0 = ui->dram_dram_tpr0_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr1 = ui->dram_dram_tpr1_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr2 = ui->dram_dram_tpr2_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr3 = ui->dram_dram_tpr3_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr4 = ui->dram_dram_tpr4_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr5 = ui->dram_dram_tpr5_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr6 = ui->dram_dram_tpr6_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr7 = ui->dram_dram_tpr7_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr8 = ui->dram_dram_tpr8_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr9 = ui->dram_dram_tpr9_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr10 = ui->dram_dram_tpr10_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr11 = ui->dram_dram_tpr11_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr12 = ui->dram_dram_tpr12_lineEdit->text().remove(0, 2).toUInt();
+    dramParam.dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt();
+    if (chipStatus.isOK())
+        chip_op->chip_init_dram(dramParam);
+    else
+        scanChipWarning();
 }
 

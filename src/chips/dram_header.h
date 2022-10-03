@@ -19,7 +19,6 @@
 #include <QObject>
 
 typedef struct dram_param {
-    QString dram_param_name;
     uint32_t dram_clk;
     uint32_t dram_type;
     uint32_t dram_zq;
@@ -44,8 +43,12 @@ typedef struct dram_param {
     uint32_t dram_tpr11;
     uint32_t dram_tpr12;
     uint32_t dram_tpr13;
-    uint32_t dram_tpr14;
-    uint32_t reserve[7];
+    uint32_t reserve[8];
 } dram_param_t;
+
+typedef struct dram_info {
+    QString dram_param_name;
+    dram_param_t dram_param;
+} dram_info_t;
 
 #endif //YFEL_DRAM_HEADER_H

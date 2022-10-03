@@ -103,13 +103,13 @@ public:
         return chip_info;
     };
 
-    QVector<dram_param_t> get_chip_dram_info() {
+    QVector<dram_info_t> get_chip_dram_info() {
         return dram_info;
     };
 
 protected:
     chip_t chip_info{};
-    QVector<dram_param_t> dram_info{};
+    QVector<dram_info_t> dram_info{};
     chip_core_name_t core_name_{};
     chip_core_count_t core_count_{};
     fel *fel_ = nullptr;

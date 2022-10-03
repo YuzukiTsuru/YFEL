@@ -21,6 +21,11 @@ ChipOP::~ChipOP() {
     delete fel_;
 }
 
+void ChipOP::generate_chip_db() {
+    chip_db.push_back(new d1(fel_, chip_version));
+    chip_db.push_back(new r528(fel_, chip_version));
+}
+
 void ChipOP::chip_scan_chip() {
     fel_->fel_scan_chip();
     chip_version = fel_->fel_get_chip_version();
@@ -38,7 +43,9 @@ void ChipOP::chip_reset_chip() {
     try {
         if (current_chip->chip_reset() == chip_function_e::NotSupport)
             throw function_not_implemented();
-    } catch (const usb_bulk_recv_error &error) { // Catch error handle as success
+    } catch (const usb_bulk_recv_error &error) { // Catch usb_bulk_recv_error handle as success
+        qDebug() << "Reset Done";
+    } catch (const usb_bulk_send_error &error) { // Catch usb_bulk_send_error handle as success
         qDebug() << "Reset Done";
     }
 }
@@ -50,11 +57,6 @@ void ChipOP::chip_enable_jtag() {
 
 chip_t ChipOP::get_current_chip() {
     return current_chip->get_chip_info();
-}
-
-void ChipOP::generate_chip_db() {
-    chip_db.push_back(new d1(fel_, chip_version));
-    chip_db.push_back(new r528(fel_, chip_version));
 }
 
 bool ChipOP::check_chip() {
@@ -69,8 +71,12 @@ bool ChipOP::check_chip() {
     return false;
 }
 
-void ChipOP::chip_init_dram(dram_param_t param) {
-    current_chip->chip_ddr(std::move(param));
+void ChipOP::chip_init_dram(const dram_info_t &info) {
+    current_chip->chip_ddr(info.dram_param);
+}
+
+void ChipOP::chip_init_dram(const dram_param_t &param) {
+    current_chip->chip_ddr(param);
 }
 
 QFuture<QString> ChipOP::chip_scan_spi_nand() {
@@ -103,7 +109,7 @@ fel *ChipOP::get_current_fel() {
     return fel_;
 }
 
-QVector<dram_param_t> ChipOP::get_dram_params() {
+QVector<dram_info_t> ChipOP::get_dram_params() {
     return current_chip->get_chip_dram_info();
 }
 
@@ -111,5 +117,6 @@ void ChipOP::chip_sid() {
     // Read SID Here
     current_chip->chip_sid();
 }
+
 
 

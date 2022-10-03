@@ -41,7 +41,9 @@ public:
 
     void chip_exec(uint32_t addr);
 
-    void chip_init_dram(dram_param_t param);
+    void chip_init_dram(const dram_info_t& param);
+
+    void chip_init_dram(const dram_param_t& param);
 
     void chip_sid();
 
@@ -54,7 +56,7 @@ public: // getter
 
     fel *get_current_fel();
 
-    QVector<dram_param_t> get_dram_params();
+    QVector<dram_info_t> get_dram_params();
 
 private:
     void generate_chip_db();
