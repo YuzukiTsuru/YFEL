@@ -13,6 +13,7 @@
 
 #include "chips/chip_db.h"
 #include "chipop.h"
+#include "exceptions.h"
 
 ChipOP::ChipOP() = default;
 
@@ -36,7 +37,7 @@ void ChipOP::chip_scan_chip() {
 void ChipOP::chip_reset_chip() {
     try {
         if (current_chip->chip_reset() == chip_function_e::NotSupport)
-            throw std::runtime_error("Function not implemented");
+            throw function_not_implemented();
     } catch (const std::runtime_error &error) { // Catch error handle as success
         qDebug() << "Reset Done";
     }
@@ -45,7 +46,7 @@ void ChipOP::chip_reset_chip() {
 void ChipOP::chip_enable_jtag() {
     try {
         if (current_chip->chip_jtag() == chip_function_e::NotSupport)
-            throw std::runtime_error("Function not implemented");
+            throw function_not_implemented();
     } catch (const std::runtime_error &error) {
         qDebug() << "Reset Done";
     }

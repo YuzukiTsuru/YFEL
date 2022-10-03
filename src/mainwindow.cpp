@@ -11,6 +11,7 @@
 #include "yfel_config.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "exceptions.h"
 
 #include <QClipboard>
 #include <QMessageBox>
@@ -163,6 +164,8 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     } catch (const std::runtime_error &e) {
         chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     }
 }
 
@@ -177,6 +180,8 @@ void MainWindow::enableJtag() {
         QMessageBox::information(this, tr("Info"), tr("JTAG Enabled"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     }
 }
 
@@ -192,6 +197,8 @@ void MainWindow::chipReset() {
         QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     }
 }
 
@@ -201,6 +208,7 @@ void MainWindow::clearChipInfo() {
     ui->chip_name_lineEdit->setText("");
     ui->chip_sid_lineEdit->setText("");
     ui->chip_core_lineEdit->setText("");
+    chipStatus.setNone();
 }
 
 void MainWindow::on_Misc_exec_addr_btn_clicked() {
@@ -238,10 +246,18 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
         }
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     }
 }
 
 void MainWindow::scanChipWarning() {
-    QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
+    if (chipStatus.isNone())
+        QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
+    else if (chipStatus.isError())
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Chip operation error, please reset the chip manually"));
+    else
+        QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
 }
 
