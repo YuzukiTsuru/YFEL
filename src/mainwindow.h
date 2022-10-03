@@ -15,6 +15,7 @@
 #include <QPushButton>
 
 #include "chipop.h"
+#include "chip_status.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -52,7 +53,10 @@ private:
     QAction *exitAct{};
 
     QFutureWatcher<QString> spi_nand_watcher;
+
     ChipOP *chip_op = new ChipOP();
+
+    chip_status chipStatus;
 
 private:
     void initMainwindowData();
@@ -61,6 +65,8 @@ private:
 
 private:
     static void exitMenuClicked();
+
+    void scanChipWarning();
 
     void updateStatusBar(const QString &status);
 

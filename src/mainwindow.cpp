@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
         ui->chip_spi_nand_scan_pushButton->setEnabled(true);
         updateStatusBar(tr("Done."));
     });
+
+    chipStatus.setNone();
 }
 
 MainWindow::~MainWindow() {
@@ -99,6 +101,7 @@ void MainWindow::on_scan_pushButton_clicked() {
     updateStatusBar(tr("Scanning..."));
     try {
         chip_op->chip_scan_chip();
+        chip_op->chip_sid();
         // Set Scan Button label
         ui->chip_label_2->setText("0x" + QString::number(chip_op->get_current_chip().chip_id, 16));
 
@@ -119,6 +122,7 @@ void MainWindow::on_scan_pushButton_clicked() {
 
         // update status bar
         updateStatusBar(tr("Done."));
+        chipStatus.setOK();
     } catch (const std::exception &e) {
         clearChipInfo();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -147,18 +151,27 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
     updateStatusBar(tr("Scanning SPI NAND..."));
     try {
         auto nand_scan = chip_op->chip_scan_spi_nand();
         spi_nand_watcher.setFuture(nand_scan);
         ui->chip_spi_nand_scan_pushButton->setEnabled(false);
     } catch (const std::runtime_error &e) {
+        chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
 
 void MainWindow::enableJtag() {
     qDebug() << "Enable Chip JTAG";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
     try {
         chip_op->chip_enable_jtag();
         QMessageBox::information(this, tr("Info"), tr("JTAG Enabled"));
@@ -169,6 +182,10 @@ void MainWindow::enableJtag() {
 
 void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
     try {
         chip_op->chip_reset_chip();
         clearChipInfo();
@@ -187,6 +204,10 @@ void MainWindow::clearChipInfo() {
 }
 
 void MainWindow::on_Misc_exec_addr_btn_clicked() {
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
     // Check whether the address is entered
     if (ui->Misc_exec_addr_lineEdit->text().isEmpty()) {
         QMessageBox::warning(this, tr("Warning"), tr("Please enter address."));
@@ -218,5 +239,9 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+}
+
+void MainWindow::scanChipWarning() {
+    QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
 }
 

@@ -25,12 +25,6 @@
 #include "fel.h"
 
 class ChipOP {
-private:
-    enum chip_fel_e {
-        fel_chip_none,
-        fel_chip_ok,
-    };
-
 public:
     ChipOP();
 
@@ -47,6 +41,10 @@ public:
 
     void chip_exec(uint32_t addr);
 
+    void chip_init_dram(dram_param_t param);
+
+    void chip_sid();
+
     QFuture<QString> chip_scan_spi_nand();
 
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
@@ -55,6 +53,8 @@ public: // getter
     chip_t get_current_chip();
 
     fel *get_current_fel();
+
+    QVector<dram_param_t> get_dram_params();
 
 private:
     void generate_chip_db();
@@ -67,7 +67,7 @@ private:
 
     chip_version_t chip_version{};
     QVector<Chips *> chip_db;
-    chip_fel_e fel_status = fel_chip_none;
+    QVector<dram_param_t> dram_params;
 };
 
 #endif // ChipOP_H
