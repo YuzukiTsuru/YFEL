@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     initMainwindowData();
     initMenubar();
 
-    connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&](){
+    connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
         qDebug() << "SPI NAND Get" + spi_nand_watcher.result();
         ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
         ui->chip_spi_nand_scan_pushButton->setEnabled(true);
@@ -120,7 +120,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         // update status bar
         updateStatusBar(tr("Done."));
     } catch (const std::exception &e) {
-        clearChip();
+        clearChipInfo();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
@@ -148,10 +148,10 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     qDebug() << "Scanning SPI NAND...";
     updateStatusBar(tr("Scanning SPI NAND..."));
-    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
     try {
         auto nand_scan = chip_op->chip_scan_spi_nand();
         spi_nand_watcher.setFuture(nand_scan);
+        ui->chip_spi_nand_scan_pushButton->setEnabled(false);
     } catch (const std::runtime_error &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
@@ -171,18 +171,51 @@ void MainWindow::chipReset() {
     qDebug() << "Reset Chip";
     try {
         chip_op->chip_reset_chip();
-        clearChip();
+        clearChipInfo();
         QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
     } catch (const std::exception &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
 
-void MainWindow::clearChip() {
+void MainWindow::clearChipInfo() {
     ui->chip_label_2->setText(tr("NONE"));
     ui->chip_id_lineEdit->setText("");
     ui->chip_name_lineEdit->setText("");
     ui->chip_sid_lineEdit->setText("");
     ui->chip_core_lineEdit->setText("");
+}
+
+void MainWindow::on_Misc_exec_addr_btn_clicked() {
+    // Check whether the address is entered
+    if (ui->Misc_exec_addr_lineEdit->text().isEmpty()) {
+        QMessageBox::warning(this, tr("Warning"), tr("Please enter address."));
+        return;
+    }
+    try {
+        // Get the address
+        auto addrString = ui->Misc_exec_addr_lineEdit->text();
+        bool convertStatus = false;
+        uint32_t addr;
+
+        // Check whether the input address is HEX
+        if (addrString.startsWith("0x")) {
+            // In case of HEX, delete the first two char
+            addrString.remove(0, 2);
+            addr = static_cast<uint32_t>(addrString.toInt(&convertStatus, 16));
+        } else {
+            addr = static_cast<uint32_t>(addrString.toInt(&convertStatus));
+        }
+        // Check whether the address is actually entered
+        if (convertStatus) {
+            chip_op->chip_exec(addr);
+            // After execution, the device will disconnect the link and clear the UI
+            clearChipInfo();
+        } else {
+            QMessageBox::warning(this, tr("Warning"), tr("Please enter the correct address"));
+        }
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
 }
 

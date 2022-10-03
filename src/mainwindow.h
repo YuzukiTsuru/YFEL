@@ -44,6 +44,8 @@ private slots:
 
     void on_chip_spi_nand_scan_pushButton_clicked();
 
+    void on_Misc_exec_addr_btn_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -68,7 +70,7 @@ private:
 
     void chipReset();
 
-    void clearChip();
+    void clearChipInfo();
 };
 
 #endif // YFEL_MAINWINDOW_H
