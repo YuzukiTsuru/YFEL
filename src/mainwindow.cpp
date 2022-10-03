@@ -341,32 +341,32 @@ void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged() {
 }
 
 void MainWindow::on_dram_init_dram_btn_clicked() {
-    dram_param_t dramParam;
-    dramParam.dram_clk = ui->dram_dram_clk_lineEdit->text().toUInt();
-    dramParam.dram_type = ui->dram_dram_type_lineEdit->text().toUInt();
-    dramParam.dram_zq = ui->dram_dram_zq_lineEdit->text().toUInt();
-    dramParam.dram_odt_en = ui->dram_dram_odt_en_lineEdit->text().toUInt();
-
-    dramParam.dram_para1 = ui->dram_dram_para1_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_para2 = ui->dram_dram_para2_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr0 = ui->dram_dram_mr0_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr1 = ui->dram_dram_mr1_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr2 = ui->dram_dram_mr2_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr3 = ui->dram_dram_mr3_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr0 = ui->dram_dram_tpr0_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr1 = ui->dram_dram_tpr1_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr2 = ui->dram_dram_tpr2_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr3 = ui->dram_dram_tpr3_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr4 = ui->dram_dram_tpr4_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr5 = ui->dram_dram_tpr5_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr6 = ui->dram_dram_tpr6_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr7 = ui->dram_dram_tpr7_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr8 = ui->dram_dram_tpr8_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr9 = ui->dram_dram_tpr9_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr10 = ui->dram_dram_tpr10_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr11 = ui->dram_dram_tpr11_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr12 = ui->dram_dram_tpr12_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt();
+    dram_param_t dramParam{
+            .dram_clk = ui->dram_dram_clk_lineEdit->text().toUInt(),
+            .dram_type = ui->dram_dram_type_lineEdit->text().toUInt(),
+            .dram_zq = ui->dram_dram_zq_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_odt_en = ui->dram_dram_odt_en_lineEdit->text().toUInt(),
+            .dram_para1 = ui->dram_dram_para1_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_para2 = ui->dram_dram_para2_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr0 = ui->dram_dram_mr0_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr1 = ui->dram_dram_mr1_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr2 = ui->dram_dram_mr2_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr3 = ui->dram_dram_mr3_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr0 = ui->dram_dram_tpr0_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr1 = ui->dram_dram_tpr1_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr2 = ui->dram_dram_tpr2_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr3 = ui->dram_dram_tpr3_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr4 = ui->dram_dram_tpr4_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr5 = ui->dram_dram_tpr5_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr6 = ui->dram_dram_tpr6_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr7 = ui->dram_dram_tpr7_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr8 = ui->dram_dram_tpr8_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr9 = ui->dram_dram_tpr9_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr10 = ui->dram_dram_tpr10_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr11 = ui->dram_dram_tpr11_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr12 = ui->dram_dram_tpr12_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+    };
     if (chipStatus.isOK())
         chip_op->chip_init_dram(dramParam);
     else
