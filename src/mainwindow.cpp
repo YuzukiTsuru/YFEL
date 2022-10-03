@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
         qDebug() << "SPI NAND Get" + spi_nand_watcher.result();
         ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
-        ui->chip_spi_nand_scan_pushButton->setEnabled(true);
+        releaseUI();
         updateStatusBar(tr("Done."));
     });
 
@@ -45,7 +45,6 @@ void MainWindow::initMainwindowData() {
     ui->statusbar->showMessage(tr("Ready, Version: ") + PROJECT_GIT_HASH, 5000);
     ui->flashfelflash_comboBox->addItem("SPI NAND");
     ui->flashfelflash_comboBox->addItem("SPI NOR");
-    ui->dram_load_preset_comboBox->addItem("D1-H DDR3 792M");
 }
 
 void MainWindow::initMenubar() {
@@ -125,6 +124,14 @@ void MainWindow::on_scan_pushButton_clicked() {
         // update status bar
         updateStatusBar(tr("Done."));
         chipStatus.setOK();
+    } catch (const cannot_find_fel_device &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Can't find target FEL device"));
+    } catch (const usb_bulk_send_error &e) {
+        chipStatus.setError();
+        scanChipWarning();
+    } catch (const usb_bulk_recv_error &e) {
+        chipStatus.setError();
+        scanChipWarning();
     } catch (const std::exception &e) {
         clearChipInfo();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -161,12 +168,12 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     try {
         auto nand_scan = chip_op->chip_scan_spi_nand();
         spi_nand_watcher.setFuture(nand_scan);
-        ui->chip_spi_nand_scan_pushButton->setEnabled(false);
+        lockUI();
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {
         chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
-    } catch (const function_not_implemented &e) {
-        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     }
 }
 
@@ -179,10 +186,10 @@ void MainWindow::enableJtag() {
     try {
         chip_op->chip_enable_jtag();
         QMessageBox::information(this, tr("Info"), tr("JTAG Enabled"));
-    } catch (const std::exception &e) {
-        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
 
@@ -196,10 +203,10 @@ void MainWindow::chipReset() {
         chip_op->chip_reset_chip();
         clearChipInfo();
         QMessageBox::information(this, tr("Info"), tr("Chip Reseted"));
-    } catch (const std::exception &e) {
-        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
 
@@ -241,14 +248,16 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
             chip_op->chip_exec(addr);
             // After execution, the device will disconnect the link and clear the UI
             clearChipInfo();
-            QMessageBox::information(this, tr("Info"), tr("Run command sent, device disconnected"));
+            QMessageBox::information(this, tr("Info"),
+                                     tr("Run command sent, now device disconnected"));
+            chipStatus.setError();
         } else {
             QMessageBox::warning(this, tr("Warning"), tr("Please enter the correct address"));
         }
-    } catch (const std::exception &e) {
-        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
 
@@ -260,5 +269,45 @@ void MainWindow::scanChipWarning() {
                              tr("Chip operation error, please reset the chip manually"));
     else
         QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
+}
+
+void MainWindow::lockUI() {
+    ui->scan_pushButton->setEnabled(false);
+    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
+    ui->chip_spi_nor_scan_pushButton->setEnabled(false);
+}
+
+void MainWindow::releaseUI() {
+    ui->scan_pushButton->setEnabled(true);
+    ui->chip_spi_nand_scan_pushButton->setEnabled(true);
+    ui->chip_spi_nor_scan_pushButton->setEnabled(true);
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index) {
+    qDebug() << "change tabWidget to: " << index;
+    if (index == uiTabWidgetIndex::tab_dram) {
+        if (chipStatus.isNone()) {
+            scanChipWarning();
+        } else {
+            auto dram_paras = chip_op->get_dram_params();
+            ui->dram_load_preset_comboBox->clear();
+            for (const auto &item: dram_paras) {
+                ui->dram_load_preset_comboBox->addItem(item.dram_param_name);
+            }
+        }
+    }
+}
+
+void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged(int index) {
+    // Prevention of cross-border
+    if (chip_op->get_dram_params().length() > 1) {
+        auto current_dram_param = chip_op->get_dram_params()[0];
+        for (const auto &item: chip_op->get_dram_params()) {
+            if (ui->dram_load_preset_comboBox->currentText() == item.dram_param_name) {
+                current_dram_param = item;
+            }
+        }
+        ui->dram_dram_clk_lineEdit->setText(QString::number(current_dram_param.dram_clk));
+    }
 }
 

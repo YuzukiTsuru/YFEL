@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -207,7 +207,7 @@
           <x>10</x>
           <y>10</y>
           <width>661</width>
-          <height>301</height>
+          <height>308</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,10,0,0,0">
@@ -546,7 +546,7 @@
          <item row="10" column="0" colspan="4">
           <widget class="QProgressBar" name="progressBar">
            <property name="value">
-            <number>24</number>
+            <number>0</number>
            </property>
           </widget>
          </item>

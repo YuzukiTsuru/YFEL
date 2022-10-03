@@ -47,6 +47,10 @@ private slots:
 
     void on_Misc_exec_addr_btn_clicked();
 
+    void on_tabWidget_currentChanged(int index);
+
+    void on_dram_load_preset_comboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
 
@@ -57,6 +61,17 @@ private:
     ChipOP *chip_op = new ChipOP();
 
     chip_status chipStatus;
+
+private:
+    enum uiTabWidgetIndex {
+        tab_chip = 0,
+        tab_flash = 1,
+        tab_run = 2,
+        tab_dump = 3,
+        tab_data = 4,
+        tab_dram = 5,
+        tab_misc = 6,
+    };
 
 private:
     void initMainwindowData();
@@ -77,6 +92,10 @@ private:
     void chipReset();
 
     void clearChipInfo();
+
+    void lockUI();
+
+    void releaseUI();
 };
 
 #endif // YFEL_MAINWINDOW_H
