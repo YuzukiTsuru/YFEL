@@ -40,4 +40,48 @@ public:
     }
 };
 
+class usb_bulk_send_error : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] usb_bulk_send_error *clone() const override {
+        return new usb_bulk_send_error(*this);
+    }
+};
+
+class usb_bulk_recv_error : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] usb_bulk_recv_error *clone() const override {
+        return new usb_bulk_recv_error(*this);
+    }
+};
+
+class read_usb_response_failed : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] read_usb_response_failed *clone() const override {
+        return new read_usb_response_failed(*this);
+    }
+};
+
+class cannot_find_fel_device : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] cannot_find_fel_device *clone() const override {
+        return new cannot_find_fel_device(*this);
+    }
+};
+
 #endif //YFEL_EXCEPTIONS_H
