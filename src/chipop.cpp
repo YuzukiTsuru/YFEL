@@ -38,18 +38,14 @@ void ChipOP::chip_reset_chip() {
     try {
         if (current_chip->chip_reset() == chip_function_e::NotSupport)
             throw function_not_implemented();
-    } catch (const std::runtime_error &error) { // Catch error handle as success
+    } catch (const usb_bulk_recv_error &error) { // Catch error handle as success
         qDebug() << "Reset Done";
     }
 }
 
 void ChipOP::chip_enable_jtag() {
-    try {
-        if (current_chip->chip_jtag() == chip_function_e::NotSupport)
-            throw function_not_implemented();
-    } catch (const std::runtime_error &error) {
-        qDebug() << "Reset Done";
-    }
+    if (current_chip->chip_jtag() == chip_function_e::NotSupport)
+        throw function_not_implemented();
 }
 
 chip_t ChipOP::get_current_chip() {
