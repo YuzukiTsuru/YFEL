@@ -42,6 +42,7 @@ void MainWindow::initMainwindowData() {
     ui->statusbar->showMessage(tr("Ready, Version: ") + PROJECT_GIT_HASH, 5000);
     ui->flashfelflash_comboBox->addItem("SPI NAND");
     ui->flashfelflash_comboBox->addItem("SPI NOR");
+    ui->dram_load_preset_comboBox->addItem("D1-H DDR3 792M");
 }
 
 void MainWindow::initMenubar() {

@@ -750,13 +750,6 @@
        <item row="6" column="2">
         <widget class="QLineEdit" name="dram_dram_para2_lineEdit"/>
        </item>
-       <item row="11" column="5">
-        <widget class="QLabel" name="dram_dram_tpr22_label">
-         <property name="text">
-          <string>dram tpr22</string>
-         </property>
-        </widget>
-       </item>
        <item row="8" column="3">
         <widget class="QLabel" name="dram_dram_tpr8_label">
          <property name="text">
@@ -920,7 +913,18 @@
         <widget class="QLineEdit" name="dram_dram_tpr21_lineEdit"/>
        </item>
        <item row="11" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr22_lineEdit"/>
+        <widget class="QPushButton" name="dram_init_dram_btn">
+         <property name="text">
+          <string>Init DRAM</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="5">
+        <widget class="QCheckBox" name="dram_init_dram_uart_checkbox">
+         <property name="text">
+          <string>UART</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
