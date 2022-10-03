@@ -15,6 +15,7 @@
 #include <QPushButton>
 
 #include "chipop.h"
+#include "chip_status.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,13 +45,18 @@ private slots:
 
     void on_chip_spi_nand_scan_pushButton_clicked();
 
+    void on_Misc_exec_addr_btn_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     QAction *exitAct{};
 
     QFutureWatcher<QString> spi_nand_watcher;
+
     ChipOP *chip_op = new ChipOP();
+
+    chip_status chipStatus;
 
 private:
     void initMainwindowData();
@@ -60,6 +66,8 @@ private:
 private:
     static void exitMenuClicked();
 
+    void scanChipWarning();
+
     void updateStatusBar(const QString &status);
 
     void copyToClipboard(const QString &data, QPushButton *button);
@@ -68,7 +76,7 @@ private:
 
     void chipReset();
 
-    void clearChip();
+    void clearChipInfo();
 };
 
 #endif // YFEL_MAINWINDOW_H

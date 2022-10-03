@@ -52,14 +52,15 @@ set(TS_FILES "i18n/YFEL_zh_CN.ts")
 file(GLOB PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 file(GLOB CHIP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.h)
 
-set(PROJECT_SOURCES
+set(
+        PROJECT_SOURCES
         ${PROJECT_SOURCES}
         mainwindow.ui
         icon.qrc
         ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
-        chips/dram_header.h chips/dram_header.h chips/dram_header.h chips/dram_header.h exceptions.h)
+)
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(YFEL

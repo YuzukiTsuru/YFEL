@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -205,9 +205,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>7</y>
+          <y>10</y>
           <width>661</width>
-          <height>308</height>
+          <height>301</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,10,0,0,0">
@@ -540,6 +540,13 @@
           <widget class="QCheckBox" name="flash_checkBox_11">
            <property name="text">
             <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0" colspan="4">
+          <widget class="QProgressBar" name="progressBar">
+           <property name="value">
+            <number>24</number>
            </property>
           </widget>
          </item>
@@ -943,31 +950,48 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0">
-        <widget class="QPushButton" name="Misc_enable_smp_pushButton">
-         <property name="text">
-          <string>Enable SMP</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="Misc_enable_neon_pushButton">
-         <property name="text">
-          <string>Enable NEON</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
+       <item row="1" column="1">
         <widget class="QPushButton" name="Misc_reset_pushButton">
          <property name="text">
           <string>Reset</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="3" column="3">
+        <widget class="QPushButton" name="Misc_enable_neon_pushButton">
+         <property name="text">
+          <string>Enable NEON</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
         <widget class="QPushButton" name="Misc_enable_jtag">
          <property name="text">
           <string>Enable JTAG</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="Misc_exec_addr_lineEdit"/>
+       </item>
+       <item row="2" column="3">
+        <widget class="QPushButton" name="Misc_enable_smp_pushButton">
+         <property name="text">
+          <string>Enable SMP</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="Misc_exec_addr_btn">
+         <property name="text">
+          <string>Execute</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="Misc_exec_addr_label">
+         <property name="text">
+          <string>Address</string>
          </property>
         </widget>
        </item>
