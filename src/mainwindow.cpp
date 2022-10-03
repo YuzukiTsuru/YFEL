@@ -211,6 +211,7 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
             chip_op->chip_exec(addr);
             // After execution, the device will disconnect the link and clear the UI
             clearChipInfo();
+            QMessageBox::information(this, tr("Info"), tr("Run command sent, device disconnected"));
         } else {
             QMessageBox::warning(this, tr("Warning"), tr("Please enter the correct address"));
         }
