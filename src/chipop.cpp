@@ -108,7 +108,7 @@ fel *ChipOP::get_current_fel() {
 }
 
 QVector<dram_param_t> ChipOP::get_dram_params() {
-    return dram_params;
+    return current_chip->get_chip_dram_info();
 }
 
 void ChipOP::chip_sid() {

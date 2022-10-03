@@ -67,7 +67,6 @@ private:
 
     chip_version_t chip_version{};
     QVector<Chips *> chip_db;
-    QVector<dram_param_t> dram_params;
 };
 
 #endif // ChipOP_H
