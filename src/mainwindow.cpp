@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     initMenubar();
 
     connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
-        qDebug() << "SPI NAND Get" + spi_nand_watcher.result();
+        qDebug() << "SPI NAND Get: " + spi_nand_watcher.result();
         ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
         releaseUI();
         updateStatusBar(tr("Done."));
@@ -177,6 +177,10 @@ void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     }
 }
 
+QString MainWindow::fixedUint32ToString(uint32_t value) {
+    return "0x" + QString::number(value, 16).toUpper().rightJustified(8, '0');
+}
+
 void MainWindow::enableJtag() {
     qDebug() << "Enable Chip JTAG";
     if (chipStatus.isNone()) {
@@ -286,9 +290,7 @@ void MainWindow::releaseUI() {
 void MainWindow::on_tabWidget_currentChanged(int index) {
     qDebug() << "change tabWidget to: " << index;
     if (index == uiTabWidgetIndex::tab_dram) {
-        if (chipStatus.isNone()) {
-            scanChipWarning();
-        } else {
+        if (!chipStatus.isNone()) {
             auto dram_paras = chip_op->get_dram_params();
             ui->dram_load_preset_comboBox->clear();
             for (const auto &item: dram_paras) {
@@ -298,7 +300,7 @@ void MainWindow::on_tabWidget_currentChanged(int index) {
     }
 }
 
-void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged(int index) {
+void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged() {
     // Prevention of cross-border
     if (chip_op->get_dram_params().length() > 1) {
         auto current_dram_param = chip_op->get_dram_params()[0];
@@ -308,6 +310,38 @@ void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged(int index) {
             }
         }
         ui->dram_dram_clk_lineEdit->setText(QString::number(current_dram_param.dram_clk));
+        ui->dram_dram_type_lineEdit->setText(QString::number(current_dram_param.dram_type));
+
+        ui->dram_dram_zq_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_zq));
+
+        ui->dram_dram_odt_en_lineEdit->setText(QString::number(current_dram_param.dram_odt_en));
+
+        ui->dram_dram_para1_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_para1));
+        ui->dram_dram_para2_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_para2));
+
+        ui->dram_dram_mr0_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_mr0));
+        ui->dram_dram_mr1_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_mr1));
+        ui->dram_dram_mr2_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_mr2));
+        ui->dram_dram_mr3_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_mr3));
+        ui->dram_dram_tpr0_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr0));
+        ui->dram_dram_tpr1_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr1));
+        ui->dram_dram_tpr2_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr2));
+        ui->dram_dram_tpr3_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr3));
+        ui->dram_dram_tpr4_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr4));
+        ui->dram_dram_tpr5_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr5));
+        ui->dram_dram_tpr6_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr6));
+        ui->dram_dram_tpr7_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr7));
+        ui->dram_dram_tpr8_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr8));
+        ui->dram_dram_tpr9_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr9));
+        ui->dram_dram_tpr10_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr10));
+        ui->dram_dram_tpr11_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr11));
+        ui->dram_dram_tpr12_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr12));
+        ui->dram_dram_tpr13_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr13));
+        ui->dram_dram_tpr14_lineEdit->setText(fixedUint32ToString(current_dram_param.dram_tpr14));
     }
+}
+
+void MainWindow::on_dram_init_dram_btn_clicked() {
+
 }
 

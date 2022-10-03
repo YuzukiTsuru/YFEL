@@ -49,7 +49,9 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
-    void on_dram_load_preset_comboBox_currentIndexChanged(int index);
+    void on_dram_load_preset_comboBox_currentIndexChanged();
+
+    void on_dram_init_dram_btn_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -80,6 +82,8 @@ private:
 
 private:
     static void exitMenuClicked();
+
+    static QString fixedUint32ToString(uint32_t value);
 
     void scanChipWarning();
 
