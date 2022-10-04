@@ -8,19 +8,19 @@
  * See README and LICENSE for more details.
  */
 
-#include "yfel_config.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "exceptions.h"
+#include "yfel_config.h"
 
 #include <QClipboard>
+#include <QFutureWatcher>
 #include <QMessageBox>
 #include <QTimer>
 #include <qdesktopservices.h>
-#include <QFutureWatcher>
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow) {
+    : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     initMainwindowData();
     initMenubar();
@@ -56,7 +56,7 @@ void MainWindow::initMenubar() {
     connect(ui->actionAbout_YFEL, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, tr("About YFEL"),
                            tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " +
-                           PROJECT_GIT_HASH);
+                                   PROJECT_GIT_HASH);
     });
 
     // menu web
@@ -111,8 +111,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         ui->chip_id_lineEdit->setText("0x" + QString::number(chip_op->get_current_chip().chip_id, 16));
         ui->chip_sid_lineEdit->setText("0x" + chip_op->get_current_chip().chip_sid);
 
-        QString chip_core_names_ = chip_op->get_current_chip().chip_core_count_str + " "
-                                   + chip_op->get_current_chip().chip_core;
+        QString chip_core_names_ = chip_op->get_current_chip().chip_core_count_str + " " + chip_op->get_current_chip().chip_core;
         if (chip_op->get_current_chip().chip_type == chip_type_e::Heterogeneous) {
             for (auto const &item: chip_op->get_current_chip().chip_heterogeneous_core) {
                 chip_core_names_.append(" + ");
@@ -373,3 +372,9 @@ void MainWindow::on_dram_init_dram_btn_clicked() {
         scanChipWarning();
 }
 
+void MainWindow::on_flash_spi_erase_spi_nand_scan_button_clicked() {
+    if (!chipStatus.isOK()) {
+        scanChipWarning();
+        return;
+    }
+}

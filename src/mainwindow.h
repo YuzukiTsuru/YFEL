@@ -53,6 +53,8 @@ private slots:
 
     void on_dram_init_dram_btn_clicked();
 
+    void on_flash_spi_erase_spi_nand_scan_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
