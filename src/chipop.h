@@ -41,9 +41,13 @@ public:
 
     void chip_exec(uint32_t addr);
 
-    void chip_init_dram(const dram_info_t& param);
+    void chip_init_dram(const dram_info_t &param);
 
-    void chip_init_dram(const dram_param_t& param);
+    void chip_init_dram(const dram_param_t &param);
+
+    void chip_erase_spi_nand(const uint64_t addr, const uint64_t len);
+
+    void chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64_t len);
 
     void chip_sid();
 

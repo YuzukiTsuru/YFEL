@@ -118,5 +118,13 @@ void ChipOP::chip_sid() {
     current_chip->chip_sid();
 }
 
+void ChipOP::chip_erase_spi_nand(const uint64_t addr, const uint64_t len) {
+
+}
+
+void ChipOP::chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64_t len) {
+
+}
+
 
 
