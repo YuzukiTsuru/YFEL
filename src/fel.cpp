@@ -113,7 +113,7 @@ uint32_t fel::payload_arm_read32(uint32_t addr) {
     // Scan chip info, get scratchpad
     fel_scan_chip();
 
-    // load asm code
+    // load precompiled machine code
     uint32_t payload[] = {
             cpu_to_le32(0xe59f000c), /* ldr r0, [pc, #12] */
             cpu_to_le32(0xe28f100c), /* add r1, pc, #12   */
