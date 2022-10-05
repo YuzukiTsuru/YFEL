@@ -20,7 +20,7 @@
 #include <qdesktopservices.h>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
+        : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     initMainwindowData();
     initMenubar();
@@ -56,7 +56,7 @@ void MainWindow::initMenubar() {
     connect(ui->actionAbout_YFEL, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, tr("About YFEL"),
                            tr("Copyright 2022 YuzukiTsuru\n\nGNU General Public License v3.0") + "\n\tVersion: " +
-                                   PROJECT_GIT_HASH);
+                           PROJECT_GIT_HASH);
     });
 
     // menu web
@@ -158,22 +158,7 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 }
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
-    qDebug() << "Scanning SPI NAND...";
-    if (chipStatus.isNone()) {
-        scanChipWarning();
-        return;
-    }
-    updateStatusBar(tr("Scanning SPI NAND..."));
-    try {
-        auto nand_scan = chip_op->chip_scan_spi_nand();
-        spi_nand_watcher.setFuture(nand_scan);
-        lockUI();
-    } catch (const function_not_implemented &e) {
-        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
-    } catch (const std::runtime_error &e) {
-        chipStatus.setNone();
-        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
-    }
+    scanSpiNand();
 }
 
 QString MainWindow::fixedUint32ToString(uint32_t value) {
@@ -264,28 +249,6 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
     }
 }
 
-void MainWindow::scanChipWarning() {
-    if (chipStatus.isNone())
-        QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
-    else if (chipStatus.isError())
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("Chip operation error, please reset the chip manually"));
-    else
-        QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
-}
-
-void MainWindow::lockUI() {
-    ui->scan_pushButton->setEnabled(false);
-    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
-    ui->chip_spi_nor_scan_pushButton->setEnabled(false);
-}
-
-void MainWindow::releaseUI() {
-    ui->scan_pushButton->setEnabled(true);
-    ui->chip_spi_nand_scan_pushButton->setEnabled(true);
-    ui->chip_spi_nor_scan_pushButton->setEnabled(true);
-}
-
 void MainWindow::on_tabWidget_currentChanged(int index) {
     qDebug() << "change tabWidget to: " << index;
     if (index == uiTabWidgetIndex::tab_dram) {
@@ -373,8 +336,46 @@ void MainWindow::on_dram_init_dram_btn_clicked() {
 }
 
 void MainWindow::on_flash_spi_erase_spi_nand_scan_button_clicked() {
+    scanSpiNand();
+}
+
+void MainWindow::scanChipWarning() {
+    if (chipStatus.isNone())
+        QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
+    else if (chipStatus.isError())
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Chip operation error, please reset the chip manually"));
+    else
+        QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
+}
+
+void MainWindow::lockUI() {
+    ui->scan_pushButton->setEnabled(false);
+    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
+    ui->chip_spi_nor_scan_pushButton->setEnabled(false);
+}
+
+void MainWindow::releaseUI() {
+    ui->scan_pushButton->setEnabled(true);
+    ui->chip_spi_nand_scan_pushButton->setEnabled(true);
+    ui->chip_spi_nor_scan_pushButton->setEnabled(true);
+}
+
+void MainWindow::scanSpiNand() {
+    qDebug() << "Scanning SPI NAND...";
     if (!chipStatus.isOK()) {
         scanChipWarning();
         return;
+    }
+    updateStatusBar(tr("Scanning SPI NAND..."));
+    try {
+        auto nand_scan = chip_op->chip_scan_spi_nand();
+        spi_nand_watcher.setFuture(nand_scan);
+        lockUI();
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        chipStatus.setNone();
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
