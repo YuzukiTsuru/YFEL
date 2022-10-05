@@ -24,11 +24,12 @@
 #include "spi_nand.h"
 #include "fel.h"
 
-class ChipOP {
+class ChipOP : public QObject {
+Q_OBJECT
 public:
     ChipOP();
 
-    ~ChipOP();
+    ~ChipOP() override;
 
     /*
      * Scan Chip, will add fel_status -> fel_chip_ok
@@ -51,7 +52,7 @@ public:
 
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
 
-    void chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64_t len);
+    void chip_write_spi_nand(uint64_t addr, uint8_t *buf, uint64_t len);
 
 public: // getter
     chip_t get_current_chip();

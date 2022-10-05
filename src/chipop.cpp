@@ -14,7 +14,6 @@
 #include "chips/chip_db.h"
 #include "chipop.h"
 #include "exceptions.h"
-#include "spi_nand.h"
 
 ChipOP::ChipOP() = default;
 
