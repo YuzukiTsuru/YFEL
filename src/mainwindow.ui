@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="fel_flash">
        <attribute name="title">
@@ -513,65 +513,71 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="2">
-          <widget class="QPushButton" name="flash_spi_erase_spi_nand_scan_button">
-           <property name="text">
-            <string>Scan SPI NAND</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="flash_spi_erase_spi_nor_label">
-           <property name="text">
-            <string>SPI NOR</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="flash_spi_erase_spi_nor_scan_button">
-           <property name="text">
-            <string>Scan SPI NOR</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="flash_spi_erase_spi_nand_lineEdit"/>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_lineEdit"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="flash_spi_erase_spi_nand_label">
-           <property name="text">
-            <string>SPI NAND</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QPushButton" name="flash_spi_erase_spi_nand_erase_button">
-           <property name="text">
-            <string>Erase</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
+         <item row="6" column="3">
           <widget class="QPushButton" name="flash_spi_erase_spi_nor_erase_button">
            <property name="text">
             <string>Erase</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QProgressBar" name="flash_spi_erase_spi_nand_progressBar">
-           <property name="value">
-            <number>0</number>
+         <item row="5" column="2">
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_lineEdit"/>
+         </item>
+         <item row="3" column="3">
+          <widget class="QPushButton" name="flash_spi_erase_spi_nand_erase_button">
+           <property name="text">
+            <string>Erase</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="flash_spi_erase_spi_nand_address_label">
+           <property name="text">
+            <string>Address</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nand_length_lineEdit"/>
+         </item>
+         <item row="5" column="3">
+          <widget class="QPushButton" name="flash_spi_erase_spi_nor_scan_button">
+           <property name="text">
+            <string>Scan SPI NOR</string>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QProgressBar" name="flash_spi_erase_spi_nor_progressBar">
-           <property name="value">
-            <number>0</number>
+          <widget class="QLabel" name="flash_spi_erase_spi_nand_length_label">
+           <property name="text">
+            <string>Length</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nand_addr_lineEdit"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="flash_spi_erase_spi_nand_label">
+           <property name="text">
+            <string>SPI NAND</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLabel" name="flash_spi_erase_spi_nor_label">
+           <property name="text">
+            <string>SPI NOR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nand_currect_nand_chip_lineEdit"/>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="flash_spi_erase_spi_nand_scan_button">
+           <property name="text">
+            <string>Scan SPI NAND</string>
            </property>
           </widget>
          </item>
