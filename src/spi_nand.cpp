@@ -82,19 +82,14 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     auto cnt = (addr & emask) + len;
     cnt = (cnt + ((cnt & emask) ? esize : 0)) & ~emask;
 
-    auto process = new processbar();
-    process->show();
-    process->initWork(100, "aaa");
-
     uint64_t n;
+    // TODO: add process handler
     while (cnt > 0) {
         n = cnt > esize ? esize : cnt;
         spi_nand_erase(base, n);
         base += n;
         cnt -= n;
     }
-
-    process->deleteLater();
 }
 
 bool spi_nand::get_spi_nand_info() {

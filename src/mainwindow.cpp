@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
         qDebug() << "SPI NAND Get: " + spi_nand_watcher.result();
         ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
+        ui->flash_spi_erase_spi_nand_lineEdit->setText(spi_nand_watcher.result());
+
         releaseUI();
         updateStatusBar(tr("Done."));
     });
