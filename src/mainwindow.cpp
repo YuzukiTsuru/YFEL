@@ -396,7 +396,16 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
     updateStatusBar(tr("Erasing SPI NAND..."));
     try {
         lockUI();
-        chip_op->chip_erase_spi_nand(0, 0x800000);
+
+        auto addr = ui->flash_spi_erase_spi_nand_addr_lineEdit->text().toUInt(nullptr, 10);
+        if(ui->flash_spi_erase_spi_nand_addr_lineEdit->text().startsWith("0x"))
+           addr = ui->flash_spi_erase_spi_nand_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+
+        auto len = ui->flash_spi_erase_spi_nand_length_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->flash_spi_erase_spi_nand_length_lineEdit->text().startsWith("0x"))
+            len = ui->flash_spi_erase_spi_nand_length_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+
+        chip_op->chip_erase_spi_nand(addr, len);
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {
