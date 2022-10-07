@@ -56,7 +56,6 @@ set(
         PROJECT_SOURCES
         ${PROJECT_SOURCES}
         mainwindow.ui
-        processbar.ui
         icon.qrc
         ${CHIP_SOURCES}
         ${TS_FILES}

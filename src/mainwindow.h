@@ -54,6 +54,8 @@ private slots:
 
     void on_flash_spi_erase_spi_nand_scan_button_clicked();
 
+    void on_flash_spi_erase_spi_nand_erase_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 

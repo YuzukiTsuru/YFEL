@@ -15,6 +15,9 @@
 #ifndef YFEL_SPI_NAND_H
 #define YFEL_SPI_NAND_H
 
+#include <QProgressDialog>
+#include <QFutureWatcher>
+#include <QtConcurrent>
 #include <QObject>
 #include <QDebug>
 
@@ -23,6 +26,11 @@
 
 class spi_nand : public QObject {
 Q_OBJECT
+signals:
+    void update_progress(int value);
+
+    void release_ui();
+
 public:
     spi_nand(Chips *chips, fel *fels);
 
@@ -62,7 +70,10 @@ private:
 private:
     spinand_pdata_t pdata = {};
     spi *spi_ = nullptr;
-};
 
+    QProgressDialog dialog;
+    QEventLoop loop;
+    QFutureWatcher<void> *watcher = nullptr;
+};
 
 #endif //YFEL_SPI_NAND_H

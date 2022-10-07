@@ -28,8 +28,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
         qDebug() << "SPI NAND Get: " + spi_nand_watcher.result();
         ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
-        ui->flash_spi_erase_spi_nand_lineEdit->setText(spi_nand_watcher.result());
+        ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText(spi_nand_watcher.result());
 
+        releaseUI();
+        updateStatusBar(tr("Done."));
+    });
+
+    connect(chip_op, &ChipOP::release_ui, this, [&]() {
         releaseUI();
         updateStatusBar(tr("Done."));
     });
@@ -113,7 +118,8 @@ void MainWindow::on_scan_pushButton_clicked() {
         ui->chip_id_lineEdit->setText("0x" + QString::number(chip_op->get_current_chip().chip_id, 16));
         ui->chip_sid_lineEdit->setText("0x" + chip_op->get_current_chip().chip_sid);
 
-        QString chip_core_names_ = chip_op->get_current_chip().chip_core_count_str + " " + chip_op->get_current_chip().chip_core;
+        QString chip_core_names_ =
+                chip_op->get_current_chip().chip_core_count_str + " " + chip_op->get_current_chip().chip_core;
         if (chip_op->get_current_chip().chip_type == chip_type_e::Heterogeneous) {
             for (auto const &item: chip_op->get_current_chip().chip_heterogeneous_core) {
                 chip_core_names_.append(" + ");
@@ -371,8 +377,7 @@ void MainWindow::scanSpiNand() {
     }
     updateStatusBar(tr("Scanning SPI NAND..."));
     try {
-        auto nand_scan = chip_op->chip_scan_spi_nand();
-        spi_nand_watcher.setFuture(nand_scan);
+        spi_nand_watcher.setFuture(chip_op->chip_scan_spi_nand());
         lockUI();
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
@@ -381,3 +386,22 @@ void MainWindow::scanSpiNand() {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
+
+void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
+    qDebug() << "Erasing SPI NAND...";
+    if (!chipStatus.isOK()) {
+        scanChipWarning();
+        return;
+    }
+    updateStatusBar(tr("Erasing SPI NAND..."));
+    try {
+        lockUI();
+        chip_op->chip_erase_spi_nand(0, 0x80000);
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        chipStatus.setNone();
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+}
+

@@ -12,21 +12,31 @@
 // Created by gloom on 2022/9/27.
 //
 
+#include <QMessageBox>
+
 #include "spi_nand.h"
 #include "x.h"
 
-#include "processbar.h"
-
 spi_nand::spi_nand(Chips *chips, fel *fels) {
-    spi_ = new(std::nothrow) spi(chips, fels);
+    // Init spi handler
+    spi_ = new spi(chips, fels);
 
-    if (spi_ == nullptr)
-        exit(0xff);
+    connect(watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
+    connect(watcher, &QFutureWatcher<void>::finished, this, [=]() {
+        emit release_ui();
+        qDebug("ReEEE=====================================");
+    });
+    connect(watcher, &QFutureWatcher<void>::finished, watcher, &QFutureWatcher<void>::deleteLater);
+    connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
 
+    dialog.reset();
+
+    // init spi peripheral
     spi_->spi_init(&pdata.swap_buf, &pdata.swap_len, &pdata.cmd_len);
 }
 
 spi_nand::~spi_nand() {
+    // delete spi handler
     delete spi_;
 }
 
@@ -40,16 +50,16 @@ void spi_nand::init() {
 }
 
 QString spi_nand::get_spi_nand_name() const {
+    // return spi nand name
     return pdata.info.name;
 }
 
 uint64_t spi_nand::get_spi_nand_size() const {
+    // return spi nand size
     return pdata.info.nand_size;
 }
 
 void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
-    // init spi nand memory
-    spi_nand_init();
     // for progress
     while (len > 0) {
         auto n = len > 65536 ? 65536 : len;
@@ -61,8 +71,6 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
 }
 
 void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
-    // init spi nand memory
-    spi_nand_init();
     // write data
     while (len > 0) {
         auto n = len > 65536 ? 65536 : len;
@@ -75,21 +83,32 @@ void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
 
 void spi_nand::erase(uint64_t addr, uint64_t len) {
     // init spi nand memory
-    spi_nand_init();
     auto esize = pdata.info.page_size * pdata.info.pages_per_block;
     auto emask = esize - 1;
     auto base = addr & ~emask;
     auto cnt = (addr & emask) + len;
     cnt = (cnt + ((cnt & emask) ? esize : 0)) & ~emask;
 
-    uint64_t n;
-    // TODO: add process handler
-    while (cnt > 0) {
-        n = cnt > esize ? esize : cnt;
-        spi_nand_erase(base, n);
-        base += n;
-        cnt -= n;
-    }
+    dialog.setCancelButton(nullptr);
+    dialog.setWindowTitle(tr("Erasing"));
+    dialog.setRange(static_cast<int>(base), static_cast<int>(cnt));
+    dialog.setValue(static_cast<int>(base));
+    dialog.show();
+    dialog.setLabelText(tr("Erasing SPI NAND From: 0x%1 to 0x%2").arg(QString::number(base, 16),
+                                                                      QString::number(base + cnt, 16)));
+    watcher = new QFutureWatcher<void>;
+
+    watcher->setFuture(QtConcurrent::run([=]() mutable {
+        uint32_t n;
+        while (cnt > 0) {
+            n = cnt > esize ? esize : cnt;
+            spi_nand_erase(base, n);
+            base += n;
+            cnt -= n;
+            emit update_progress(static_cast<int>(base));
+        }
+    }));
+    loop.exec();
 }
 
 bool spi_nand::get_spi_nand_info() {
