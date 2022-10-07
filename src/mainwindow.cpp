@@ -396,7 +396,7 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
     updateStatusBar(tr("Erasing SPI NAND..."));
     try {
         lockUI();
-        chip_op->chip_erase_spi_nand(0, 0x80000);
+        chip_op->chip_erase_spi_nand(0, 0x800000);
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {

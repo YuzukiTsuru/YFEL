@@ -76,7 +76,6 @@ private:
 private:
     fel *fel_ = new fel();
     Chips *current_chip = nullptr;
-    spi_nand *spi_nand_ = nullptr;
 
     chip_version_t chip_version{};
     QVector<Chips *> chip_db;

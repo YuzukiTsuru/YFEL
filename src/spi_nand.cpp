@@ -21,16 +21,6 @@ spi_nand::spi_nand(Chips *chips, fel *fels) {
     // Init spi handler
     spi_ = new spi(chips, fels);
 
-    connect(watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
-    connect(watcher, &QFutureWatcher<void>::finished, this, [=]() {
-        emit release_ui();
-        qDebug("ReEEE=====================================");
-    });
-    connect(watcher, &QFutureWatcher<void>::finished, watcher, &QFutureWatcher<void>::deleteLater);
-    connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
-
-    dialog.reset();
-
     // init spi peripheral
     spi_->spi_init(&pdata.swap_buf, &pdata.swap_len, &pdata.cmd_len);
 }
@@ -82,12 +72,22 @@ void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
 }
 
 void spi_nand::erase(uint64_t addr, uint64_t len) {
-    // init spi nand memory
     auto esize = pdata.info.page_size * pdata.info.pages_per_block;
     auto emask = esize - 1;
     auto base = addr & ~emask;
     auto cnt = (addr & emask) + len;
     cnt = (cnt + ((cnt & emask) ? esize : 0)) & ~emask;
+
+    QProgressDialog dialog;
+    QEventLoop loop;
+    QFutureWatcher<void> watcher;
+
+    connect(&watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
+    connect(&watcher, &QFutureWatcher<void>::finished, this, [=]() {
+        emit release_ui();
+    });
+    connect(&watcher, &QFutureWatcher<void>::finished, &watcher, &QFutureWatcher<void>::deleteLater);
+    connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
 
     dialog.setCancelButton(nullptr);
     dialog.setWindowTitle(tr("Erasing"));
@@ -96,9 +96,8 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     dialog.show();
     dialog.setLabelText(tr("Erasing SPI NAND From: 0x%1 to 0x%2").arg(QString::number(base, 16),
                                                                       QString::number(base + cnt, 16)));
-    watcher = new QFutureWatcher<void>;
 
-    watcher->setFuture(QtConcurrent::run([=]() mutable {
+    watcher.setFuture(QtConcurrent::run([=]() mutable {
         uint32_t n;
         while (cnt > 0) {
             n = cnt > esize ? esize : cnt;

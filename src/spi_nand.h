@@ -70,10 +70,6 @@ private:
 private:
     spinand_pdata_t pdata = {};
     spi *spi_ = nullptr;
-
-    QProgressDialog dialog;
-    QEventLoop loop;
-    QFutureWatcher<void> *watcher = nullptr;
 };
 
 #endif //YFEL_SPI_NAND_H

@@ -15,9 +15,7 @@
 #include "chipop.h"
 #include "exceptions.h"
 
-ChipOP::ChipOP() {
-    connect(spi_nand_, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
-}
+ChipOP::ChipOP() = default;
 
 ChipOP::~ChipOP() {
     delete fel_;
@@ -71,9 +69,6 @@ bool ChipOP::check_chip() {
         qDebug() << "Checking chip " << item->get_chip_info().chip_id;
         if (item->chip_detect() == chip_function_e::Success) {
             current_chip = item;
-
-            // init spi nand here
-            spi_nand_ = new spi_nand(current_chip, fel_);
             qDebug() << "Current Chip" << current_chip->get_chip_info().chip_name;
             return true;
         }
@@ -91,22 +86,26 @@ void ChipOP::chip_init_dram(const dram_param_t &param) {
 
 QFuture<QString> ChipOP::chip_scan_spi_nand() {
     QFuture<QString> future = QtConcurrent::run([=]() -> QString {
-        spi_nand_->init();
+        spi_nand spinand(current_chip, fel_);
+        spinand.init();
 
-        if (spi_nand_->get_spi_nand_size() == 0) {
+        if (spinand.get_spi_nand_size() == 0) {
             return {"No supported SPI NAND found"};
         } else {
-            return spi_nand_->get_spi_nand_name() + " "
-                   + QString::number(spi_nand_->get_spi_nand_size() / 1024 / 1024) + "MB 0x"
-                   + QString::number(spi_nand_->get_spi_nand_size(), 16);
+            return spinand.get_spi_nand_name() + " "
+                   + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x"
+                   + QString::number(spinand.get_spi_nand_size(), 16);
         }
     });
     return future;
 }
 
 void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
-    spi_nand_->init();
-    spi_nand_->erase(addr, len);
+    spi_nand spinand(current_chip, fel_);
+    connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+    spinand.init();
+    spinand.erase(addr, len);
+    disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
 }
 
 void ChipOP::chip_exec(uint32_t addr) {
