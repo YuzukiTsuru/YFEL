@@ -8,16 +8,16 @@
  * See README and LICENSE for more details.
  */
 
-#include "yfel_config.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "exceptions.h"
+#include "yfel_config.h"
 
 #include <QClipboard>
+#include <QFutureWatcher>
 #include <QMessageBox>
 #include <QTimer>
 #include <qdesktopservices.h>
-#include <QFutureWatcher>
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
         qDebug() << "SPI NAND Get: " + spi_nand_watcher.result();
         ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
+        ui->flash_spi_erase_spi_nand_lineEdit->setText(spi_nand_watcher.result());
+
         releaseUI();
         updateStatusBar(tr("Done."));
     });
@@ -111,8 +113,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         ui->chip_id_lineEdit->setText("0x" + QString::number(chip_op->get_current_chip().chip_id, 16));
         ui->chip_sid_lineEdit->setText("0x" + chip_op->get_current_chip().chip_sid);
 
-        QString chip_core_names_ = chip_op->get_current_chip().chip_core_count_str + " "
-                                   + chip_op->get_current_chip().chip_core;
+        QString chip_core_names_ = chip_op->get_current_chip().chip_core_count_str + " " + chip_op->get_current_chip().chip_core;
         if (chip_op->get_current_chip().chip_type == chip_type_e::Heterogeneous) {
             for (auto const &item: chip_op->get_current_chip().chip_heterogeneous_core) {
                 chip_core_names_.append(" + ");
@@ -159,22 +160,7 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 }
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
-    qDebug() << "Scanning SPI NAND...";
-    if (chipStatus.isNone()) {
-        scanChipWarning();
-        return;
-    }
-    updateStatusBar(tr("Scanning SPI NAND..."));
-    try {
-        auto nand_scan = chip_op->chip_scan_spi_nand();
-        spi_nand_watcher.setFuture(nand_scan);
-        lockUI();
-    } catch (const function_not_implemented &e) {
-        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
-    } catch (const std::runtime_error &e) {
-        chipStatus.setNone();
-        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
-    }
+    scanSpiNand();
 }
 
 QString MainWindow::fixedUint32ToString(uint32_t value) {
@@ -265,28 +251,6 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
     }
 }
 
-void MainWindow::scanChipWarning() {
-    if (chipStatus.isNone())
-        QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
-    else if (chipStatus.isError())
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("Chip operation error, please reset the chip manually"));
-    else
-        QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
-}
-
-void MainWindow::lockUI() {
-    ui->scan_pushButton->setEnabled(false);
-    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
-    ui->chip_spi_nor_scan_pushButton->setEnabled(false);
-}
-
-void MainWindow::releaseUI() {
-    ui->scan_pushButton->setEnabled(true);
-    ui->chip_spi_nand_scan_pushButton->setEnabled(true);
-    ui->chip_spi_nor_scan_pushButton->setEnabled(true);
-}
-
 void MainWindow::on_tabWidget_currentChanged(int index) {
     qDebug() << "change tabWidget to: " << index;
     if (index == uiTabWidgetIndex::tab_dram) {
@@ -341,35 +305,79 @@ void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged() {
 }
 
 void MainWindow::on_dram_init_dram_btn_clicked() {
-    dram_param_t dramParam;
-    dramParam.dram_clk = ui->dram_dram_clk_lineEdit->text().toUInt();
-    dramParam.dram_type = ui->dram_dram_type_lineEdit->text().toUInt();
-    dramParam.dram_zq = ui->dram_dram_zq_lineEdit->text().toUInt();
-    dramParam.dram_odt_en = ui->dram_dram_odt_en_lineEdit->text().toUInt();
-
-    dramParam.dram_para1 = ui->dram_dram_para1_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_para2 = ui->dram_dram_para2_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr0 = ui->dram_dram_mr0_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr1 = ui->dram_dram_mr1_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr2 = ui->dram_dram_mr2_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_mr3 = ui->dram_dram_mr3_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr0 = ui->dram_dram_tpr0_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr1 = ui->dram_dram_tpr1_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr2 = ui->dram_dram_tpr2_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr3 = ui->dram_dram_tpr3_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr4 = ui->dram_dram_tpr4_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr5 = ui->dram_dram_tpr5_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr6 = ui->dram_dram_tpr6_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr7 = ui->dram_dram_tpr7_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr8 = ui->dram_dram_tpr8_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr9 = ui->dram_dram_tpr9_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr10 = ui->dram_dram_tpr10_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr11 = ui->dram_dram_tpr11_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr12 = ui->dram_dram_tpr12_lineEdit->text().remove(0, 2).toUInt();
-    dramParam.dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt();
+    dram_param_t dramParam{
+            .dram_clk = ui->dram_dram_clk_lineEdit->text().toUInt(),
+            .dram_type = ui->dram_dram_type_lineEdit->text().toUInt(),
+            .dram_zq = ui->dram_dram_zq_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_odt_en = ui->dram_dram_odt_en_lineEdit->text().toUInt(),
+            .dram_para1 = ui->dram_dram_para1_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_para2 = ui->dram_dram_para2_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr0 = ui->dram_dram_mr0_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr1 = ui->dram_dram_mr1_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr2 = ui->dram_dram_mr2_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_mr3 = ui->dram_dram_mr3_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr0 = ui->dram_dram_tpr0_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr1 = ui->dram_dram_tpr1_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr2 = ui->dram_dram_tpr2_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr3 = ui->dram_dram_tpr3_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr4 = ui->dram_dram_tpr4_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr5 = ui->dram_dram_tpr5_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr6 = ui->dram_dram_tpr6_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr7 = ui->dram_dram_tpr7_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr8 = ui->dram_dram_tpr8_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr9 = ui->dram_dram_tpr9_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr10 = ui->dram_dram_tpr10_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr11 = ui->dram_dram_tpr11_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr12 = ui->dram_dram_tpr12_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+            .dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
+    };
     if (chipStatus.isOK())
         chip_op->chip_init_dram(dramParam);
     else
         scanChipWarning();
 }
 
+void MainWindow::on_flash_spi_erase_spi_nand_scan_button_clicked() {
+    scanSpiNand();
+}
+
+void MainWindow::scanChipWarning() {
+    if (chipStatus.isNone())
+        QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
+    else if (chipStatus.isError())
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Chip operation error, please reset the chip manually"));
+    else
+        QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
+}
+
+void MainWindow::lockUI() {
+    ui->scan_pushButton->setEnabled(false);
+    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
+    ui->chip_spi_nor_scan_pushButton->setEnabled(false);
+}
+
+void MainWindow::releaseUI() {
+    ui->scan_pushButton->setEnabled(true);
+    ui->chip_spi_nand_scan_pushButton->setEnabled(true);
+    ui->chip_spi_nor_scan_pushButton->setEnabled(true);
+}
+
+void MainWindow::scanSpiNand() {
+    qDebug() << "Scanning SPI NAND...";
+    if (!chipStatus.isOK()) {
+        scanChipWarning();
+        return;
+    }
+    updateStatusBar(tr("Scanning SPI NAND..."));
+    try {
+        auto nand_scan = chip_op->chip_scan_spi_nand();
+        spi_nand_watcher.setFuture(nand_scan);
+        lockUI();
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        chipStatus.setNone();
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+}

@@ -24,11 +24,12 @@
 #include "spi_nand.h"
 #include "fel.h"
 
-class ChipOP {
+class ChipOP : public QObject {
+Q_OBJECT
 public:
     ChipOP();
 
-    ~ChipOP();
+    ~ChipOP() override;
 
     /*
      * Scan Chip, will add fel_status -> fel_chip_ok
@@ -41,15 +42,17 @@ public:
 
     void chip_exec(uint32_t addr);
 
-    void chip_init_dram(const dram_info_t& param);
+    void chip_init_dram(const dram_info_t &param);
 
-    void chip_init_dram(const dram_param_t& param);
+    void chip_init_dram(const dram_param_t &param);
 
     void chip_sid();
 
     QFuture<QString> chip_scan_spi_nand();
 
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
+
+    void chip_write_spi_nand(uint64_t addr, uint8_t *buf, uint64_t len);
 
 public: // getter
     chip_t get_current_chip();

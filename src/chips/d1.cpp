@@ -114,7 +114,7 @@ chip_function_e d1::chip_ddr(dram_param_t param) {
     } else {
         return chip_function_e::NotSupport;
     }
-    fel_->fel_write(0x00020018, &ddr3.dram_param, sizeof(param));
+    fel_->fel_write(0x00020018, &param, sizeof(param));
     fel_->fel_exec(0x00020000);
     return chip_function_e::Success;
 }

@@ -22,6 +22,7 @@ private:
         chip_none,
         chip_ok,
         chip_error,
+        chip_dram_inited,
     };
 
 public:

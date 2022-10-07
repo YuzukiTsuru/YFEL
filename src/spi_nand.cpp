@@ -15,6 +15,8 @@
 #include "spi_nand.h"
 #include "x.h"
 
+#include "processbar.h"
+
 spi_nand::spi_nand(Chips *chips, fel *fels) {
     spi_ = new(std::nothrow) spi(chips, fels);
 
@@ -29,7 +31,10 @@ spi_nand::~spi_nand() {
 }
 
 void spi_nand::init() {
+    // init spi pref
     spi_nand_init();
+
+    // calculate spi nand size
     pdata.info.nand_size = pdata.info.page_size * pdata.info.pages_per_block
                            * pdata.info.blocks_per_die * pdata.info.ndies;
 }
@@ -43,6 +48,8 @@ uint64_t spi_nand::get_spi_nand_size() const {
 }
 
 void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
+    // init spi nand memory
+    spi_nand_init();
     // for progress
     while (len > 0) {
         auto n = len > 65536 ? 65536 : len;
@@ -54,28 +61,14 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
 }
 
 void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
-    auto esize = pdata.info.page_size * pdata.info.pages_per_block;
-    auto emask = esize - 1;
-    auto base = addr & ~emask;
-    auto cnt = (addr & emask) + len;
-    cnt = (cnt + ((cnt & emask) ? esize : 0)) & ~emask;
-
-    // erase spi nand
-    while (cnt > 0) {
-        auto n = cnt > esize ? esize : cnt;
-        spi_nand_erase(base, n);
-        base += n;
-        cnt -= n;
-    }
-    base = addr;
-    cnt = len;
-
+    // init spi nand memory
+    spi_nand_init();
     // write data
-    while (cnt > 0) {
-        auto n = cnt > 65536 ? 65536 : cnt;
-        spi_nand_write(base, buf, n);
-        base += n;
-        cnt -= n;
+    while (len > 0) {
+        auto n = len > 65536 ? 65536 : len;
+        spi_nand_write(addr, buf, n);
+        addr += n;
+        len -= n;
         buf += n;
     }
 }
@@ -90,6 +83,7 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     cnt = (cnt + ((cnt & emask) ? esize : 0)) & ~emask;
 
     uint64_t n;
+    // TODO: add process handler
     while (cnt > 0) {
         n = cnt > esize ? esize : cnt;
         spi_nand_erase(base, n);
@@ -342,7 +336,4 @@ void spi_nand::spi_nand_erase(uint64_t addr, uint64_t count) {
         cnt -= esize;
     }
 }
-
-
-
 

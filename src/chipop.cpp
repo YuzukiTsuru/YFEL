@@ -119,5 +119,10 @@ void ChipOP::chip_sid() {
     current_chip->chip_sid();
 }
 
+void ChipOP::chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64_t len) {
+    spi_nand spinand(current_chip, fel_);
+    spinand.init();
+    spinand.write(addr, buf, len);
+}
 
 

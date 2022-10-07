@@ -21,11 +21,12 @@
 #include "spi_nand_info.h"
 #include "spi.h"
 
-class spi_nand {
+class spi_nand : public QObject {
+Q_OBJECT
 public:
     spi_nand(Chips *chips, fel *fels);
 
-    ~spi_nand();
+    ~spi_nand() override;
 
     void init();
 

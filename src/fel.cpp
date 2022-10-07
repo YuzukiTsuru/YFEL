@@ -73,7 +73,7 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
 void fel::read_fel_status() {
     uint8_t buf[8];
     usb_handler.usb_read(buf, sizeof(buf));
-    qDebug("read_fel_status 0x%hhn", buf);
+    qDebug("read_fel_status 0x%x", buf[0]);
 }
 
 void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
@@ -113,7 +113,7 @@ uint32_t fel::payload_arm_read32(uint32_t addr) {
     // Scan chip info, get scratchpad
     fel_scan_chip();
 
-    // load asm code
+    // load precompiled machine code
     uint32_t payload[] = {
             cpu_to_le32(0xe59f000c), /* ldr r0, [pc, #12] */
             cpu_to_le32(0xe28f100c), /* add r1, pc, #12   */
