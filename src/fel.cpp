@@ -36,6 +36,7 @@ void fel::fel_close_usb() {
     usb_handler.close_usb();
 }
 
+// Add long connect
 void fel::fel_chip_id() {
     send_fel_request(FEL_COMMAND::FEL_VERSION, 0, 0);
     usb_handler.usb_read(&version, sizeof(version));
