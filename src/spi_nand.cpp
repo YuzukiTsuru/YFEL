@@ -61,14 +61,36 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
 }
 
 void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
+    QProgressDialog dialog;
+    QEventLoop loop;
+    QFutureWatcher<void> watcher;
+
+    connect(&watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
+    connect(&watcher, &QFutureWatcher<void>::finished, this, [=]() {
+        emit release_ui();
+    });
+    connect(&watcher, &QFutureWatcher<void>::finished, &watcher, &QFutureWatcher<void>::deleteLater);
+    connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
+
+    dialog.setCancelButton(nullptr);
+    dialog.setWindowTitle(tr("Erasing"));
+    dialog.setRange(static_cast<int>(addr), static_cast<int>(addr + len));
+    dialog.setValue(static_cast<int>(addr));
+    dialog.show();
+    dialog.setLabelText(tr("Write SPI NAND From: 0x%1 to 0x%2").arg(QString::number(addr, 16),
+                                                                    QString::number(addr + len, 16)));
     // write data
-    while (len > 0) {
-        auto n = len > 65536 ? 65536 : len;
-        spi_nand_write(addr, buf, n);
-        addr += n;
-        len -= n;
-        buf += n;
-    }
+    watcher.setFuture(QtConcurrent::run([=]() mutable {
+        while (len > 0) {
+            auto n = len > 65536 ? 65536 : len;
+            spi_nand_write(addr, buf, n);
+            addr += n;
+            len -= n;
+            buf += n;
+            emit update_progress(static_cast<int>(addr));
+        }
+    }));
+    loop.exec();
 }
 
 void spi_nand::erase(uint64_t addr, uint64_t len) {
