@@ -116,11 +116,11 @@ uint32_t fel::payload_arm_read32(uint32_t addr) {
 
     // load precompiled machine code
     uint32_t payload[] = {
-            cpu_to_le32(0xe59f000c), /* ldr r0, [pc, #12] */
-            cpu_to_le32(0xe28f100c), /* add r1, pc, #12   */
-            cpu_to_le32(0xe4902000), /* ldr r2, [r0], #0  */
-            cpu_to_le32(0xe4812000), /* str r2, [r1], #0  */
-            cpu_to_le32(0xe12fff1e), /* bx lr             */
+            cpu_to_le32(0b11100101100111110000000000001100), /* ldr r0, [pc, #12] */
+            cpu_to_le32(0b11100010100011110001000000001100), /* add r1, pc, #12   */
+            cpu_to_le32(0b11100100100100000010000000000000), /* ldr r2, [r0], #0  */
+            cpu_to_le32(0b11100100100000010010000000000000), /* str r2, [r1], #0  */
+            cpu_to_le32(0b11100001001011111111111100011110), /* bx lr             */
             cpu_to_le32(addr),
     };
 

@@ -314,6 +314,7 @@ void spi_nand::spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count) {
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
                 txbuf[txlen++] = SPI_NAND_OPCODE::OPCODE_PROGRAM_LOAD;
                 txbuf[txlen++] = (ca >> 8);
                 txbuf[txlen++] = (ca >> 0);
