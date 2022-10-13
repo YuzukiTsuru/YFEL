@@ -63,6 +63,7 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
 
     dialog.setCancelButton(nullptr);
     dialog.setWindowTitle(tr("Erasing"));
+    dialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     dialog.setRange(static_cast<int>(addr), static_cast<int>(addr + len));
     dialog.setValue(static_cast<int>(addr));
     dialog.show();
@@ -95,6 +96,7 @@ void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
 
     dialog.setCancelButton(nullptr);
     dialog.setWindowTitle(tr("Erasing"));
+    dialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     dialog.setRange(static_cast<int>(addr), static_cast<int>(addr + len));
     dialog.setValue(static_cast<int>(addr));
     dialog.show();
@@ -134,6 +136,7 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
 
     dialog.setCancelButton(nullptr);
     dialog.setWindowTitle(tr("Erasing"));
+    dialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     dialog.setRange(static_cast<int>(base), static_cast<int>(cnt));
     dialog.setValue(static_cast<int>(base));
     dialog.show();
