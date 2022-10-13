@@ -44,6 +44,15 @@ configure_file(
         "${PROJECT_BINARY_DIR}/yfel_config.h"
 )
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    enable_language("RC")
+    configure_file(
+            "${PROJECT_SOURCE_DIR}/assets/YFEL.rc.in"
+            "${PROJECT_BINARY_DIR}/YFEL.rc"
+    )
+    set (WIN32_RESOURCES ${PROJECT_BINARY_DIR}/YFEL.rc)
+endif()
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 
@@ -60,6 +69,7 @@ set(
         ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
+        ${WIN32_RESOURCES}
 )
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
