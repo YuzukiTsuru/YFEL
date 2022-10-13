@@ -17,7 +17,7 @@ fel::fel() {
     usb_handler.usb_init();
 };
 
-fel::~fel(){
+fel::~fel() {
     usb_handler.usb_exit();
 }
 
@@ -78,22 +78,28 @@ void fel::send_fel_request(int type, uint32_t addr, uint32_t length) {
             .address = cpu_to_le32(addr),
             .length = cpu_to_le32(length)
     };
+    qDebug("send_fel_request: type: %d, addr: 0x%x, length: 0x%x", type, addr, length);
     usb_handler.usb_write(&req, sizeof(struct fel_request_t));
 }
 
 void fel::read_fel_status() {
     uint8_t buf[8];
     usb_handler.usb_read(buf, sizeof(buf));
-    qDebug("read_fel_status 0x%x", buf[0]);
+    qDebug("read_fel_status 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x",
+           buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7]);
 }
 
 void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
+    qDebug("fel_read_raw: addr: 0x%x, len: 0x%x", addr, len);
+
     send_fel_request(FEL_COMMAND::FEL_READRAW, addr, len);
     usb_handler.usb_read(buf, len);
     read_fel_status();
 }
 
 void fel::fel_write_raw(uint32_t addr, void *buf, size_t len) {
+    qDebug("fel_write_raw: addr: 0x%x, len: 0x%x", addr, len);
+
     send_fel_request(FEL_COMMAND::FEL_WRITERAW, addr, len);
     usb_handler.usb_write(buf, len);
     read_fel_status();
