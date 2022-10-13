@@ -337,10 +337,12 @@ void MainWindow::on_dram_init_dram_btn_clicked() {
             .dram_tpr12 = ui->dram_dram_tpr12_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
             .dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
     };
-    if (chipStatus.isOK())
+    if (chipStatus.isOK()) {
         chip_op->chip_init_dram(dramParam);
-    else
+        updateStatusBar("DRAM init done, Check the result in the UART log");
+    } else {
         scanChipWarning();
+    }
 }
 
 void MainWindow::on_flash_spi_erase_spi_nand_scan_button_clicked() {
@@ -398,8 +400,8 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
         lockUI();
 
         auto addr = ui->flash_spi_erase_spi_nand_addr_lineEdit->text().toUInt(nullptr, 10);
-        if(ui->flash_spi_erase_spi_nand_addr_lineEdit->text().startsWith("0x"))
-           addr = ui->flash_spi_erase_spi_nand_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+        if (ui->flash_spi_erase_spi_nand_addr_lineEdit->text().startsWith("0x"))
+            addr = ui->flash_spi_erase_spi_nand_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
 
         auto len = ui->flash_spi_erase_spi_nand_length_lineEdit->text().toUInt(nullptr, 10);
         if (ui->flash_spi_erase_spi_nand_length_lineEdit->text().startsWith("0x"))
