@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="fel_flash">
        <attribute name="title">
@@ -624,6 +624,11 @@
          </item>
         </layout>
        </widget>
+      </widget>
+      <widget class="QWidget" name="spi_write">
+       <attribute name="title">
+        <string>SPI Write</string>
+       </attribute>
       </widget>
      </widget>
     </widget>
