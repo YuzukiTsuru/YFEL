@@ -29,11 +29,12 @@ void usb::usb_exit() {
 }
 
 void usb::close_usb() const {
+    qDebug() << "close usb ctx";
     libusb_close(ctx.hdl);
 }
 
 void usb::open_usb() {
-    qDebug() << "scaning target chip";
+    qDebug() << "open usb ctx, scaning target chip";
 
     libusb_device **list;
 

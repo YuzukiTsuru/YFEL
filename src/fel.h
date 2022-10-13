@@ -23,13 +23,19 @@
 #include "chips/chip_version.h"
 
 class fel : QObject {
-    Q_OBJECT
-private:
+Q_OBJECT
+protected:
     enum FEL_COMMAND {
         FEL_VERSION = 0x001,
         FEL_WRITERAW = 0x101,
         FEL_EXEC = 0x102,
         FEL_READRAW = 0x103,
+    };
+
+    enum FEL_STATUS {
+        FEL_NONE = 0x00,
+        FEL_OK = 0x01,
+        FEL_ERROR = 0x02,
     };
 
     struct fel_request_t {
@@ -42,11 +48,16 @@ private:
 private:
     chip_version_t version{};
     usb usb_handler;
+    FEL_STATUS fel_status = FEL_STATUS::FEL_NONE;
 
 public:
     fel();
 
     ~fel() override;
+
+    void fel_open_connection();
+
+    void fel_close_connection();
 
     void fel_scan_chip();
 
@@ -63,7 +74,12 @@ public:
 public:
     template<typename T>
     void fel_read(uint32_t addr, T *buf, size_t len) {
-        fel_open_usb();
+        // Check current fel status, if enabled long connection, skip fel open usb
+        if (fel_status != FEL_STATUS::FEL_OK) {
+            fel_open_usb();
+        }
+
+        // do fel read raw
         size_t n;
         while (len > 0) {
             n = len > 65536 ? 65536 : len;
@@ -72,12 +88,21 @@ public:
             buf += n;
             len -= n;
         }
-        fel_close_usb();
+
+        // Check current fel status, if enabled long connection, skip fel close usb
+        if (fel_status != FEL_STATUS::FEL_OK) {
+            fel_close_usb();
+        }
     };
 
     template<typename T>
     void fel_write(uint32_t addr, T *buf, size_t len) {
-        fel_open_usb();
+        // Check current fel status, if enabled long connection, skip fel open usb
+        if (fel_status != FEL_STATUS::FEL_OK) {
+            fel_open_usb();
+        }
+
+        // do fel write raw
         size_t n;
         while (len > 0) {
             n = len > 65536 ? 65536 : len;
@@ -86,7 +111,11 @@ public:
             buf += n;
             len -= n;
         }
-        fel_close_usb();
+
+        // Check current fel status, if enabled long connection, skip fel close usb
+        if (fel_status != FEL_STATUS::FEL_OK) {
+            fel_close_usb();
+        }
     };
 
 private:

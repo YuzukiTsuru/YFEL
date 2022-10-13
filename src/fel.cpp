@@ -21,6 +21,16 @@ fel::~fel(){
     usb_handler.usb_exit();
 }
 
+void fel::fel_open_connection() {
+    fel_open_usb();
+    fel_status = FEL_STATUS::FEL_OK;
+}
+
+void fel::fel_close_connection() {
+    fel_close_usb();
+    fel_status = FEL_STATUS::FEL_NONE;
+}
+
 void fel::fel_scan_chip() {
     fel_open_usb();
     fel_chip_id();
@@ -91,23 +101,41 @@ void fel::fel_write_raw(uint32_t addr, void *buf, size_t len) {
 
 uint32_t fel::fel_read32(uint32_t addr) {
     uint32_t val = 0;
-    fel_open_usb();
+    // Check current fel status, if enabled long connection, skip fel open usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_open_usb();
+    }
     fel_read_raw(addr, &val, sizeof(uint32_t));
-    fel_close_usb();
+    // Check current fel status, if enabled long connection, skip fel close usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_close_usb();
+    }
     return val;
 }
 
 void fel::fel_write32(uint32_t addr, uint32_t val) {
-    fel_open_usb();
+    // Check current fel status, if enabled long connection, skip fel open usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_open_usb();
+    }
     fel_write_raw(addr, &val, sizeof(uint32_t));
-    fel_close_usb();
+    // Check current fel status, if enabled long connection, skip fel close usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_close_usb();
+    }
 }
 
 void fel::fel_exec(uint32_t addr) {
-    fel_open_usb();
+    // Check current fel status, if enabled long connection, skip fel open usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_open_usb();
+    }
     send_fel_request(FEL_COMMAND::FEL_EXEC, addr, 0);
     read_fel_status();
-    fel_close_usb();
+    // Check current fel status, if enabled long connection, skip fel close usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_close_usb();
+    }
 }
 
 uint32_t fel::payload_arm_read32(uint32_t addr) {
