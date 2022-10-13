@@ -87,6 +87,8 @@ void ChipOP::chip_init_dram(const dram_param_t &param) {
 QFuture<QString> ChipOP::chip_scan_spi_nand() {
     QFuture<QString> future = QtConcurrent::run([=]() -> QString {
         fel_->fel_open_connection();
+
+        // TODO: Need try...catch to handle exception
         spi_nand spinand(current_chip, fel_);
         spinand.init();
         fel_->fel_close_connection();
@@ -104,6 +106,7 @@ QFuture<QString> ChipOP::chip_scan_spi_nand() {
 
 void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
     fel_->fel_open_connection();
+    // TODO: Need try...catch to handle exception
     spi_nand spinand(current_chip, fel_);
     connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     spinand.init();
