@@ -1,6 +1,6 @@
 # YFEL
 
-Yet another FEL Toolkit - YFEL  [![CMake](https://github.com/YuzukiTsuru/YFEL/actions/workflows/cmake.yml/badge.svg)](https://github.com/YuzukiTsuru/YFEL/actions/workflows/cmake.yml)
+Yet another FEL Toolkit - YFEL  [![CMake Linux](https://github.com/YuzukiTsuru/YFEL/actions/workflows/cmake-linux.yml/badge.svg)](https://github.com/YuzukiTsuru/YFEL/actions/workflows/cmake-linux.yml)
 
 ## About Allwinner FEL 
 
