@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
     initMenubar();
 
     connect(chip_op, &ChipOP::release_ui, this, [=]() {
+        if (!this->isVisible()) {
+            this->show();
+        }
         releaseUI();
         updateStatusBar(tr("Done."));
     });
