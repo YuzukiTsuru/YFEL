@@ -13,6 +13,7 @@
 //
 
 #include <QMessageBox>
+#include <QFontDatabase>
 
 #include "spi_nand.h"
 #include "x.h"
@@ -133,6 +134,7 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     QProgressDialog dialog;
     QEventLoop loop;
     QFutureWatcher<void> watcher;
+    QFont fixedFont;
 
     connect(&watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
     connect(&watcher, &QFutureWatcher<void>::finished, this, [=]() {
@@ -140,6 +142,9 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     });
     connect(&watcher, &QFutureWatcher<void>::finished, &watcher, &QFutureWatcher<void>::deleteLater);
     connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
+    connect(this, &spi_nand::update_dialog_info, &dialog, &QProgressDialog::setLabelText);
+
+    fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
     dialog.setCancelButton(nullptr);
     dialog.setWindowTitle(tr("Erasing"));
@@ -147,8 +152,10 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     dialog.setRange(static_cast<int>(base), static_cast<int>(cnt));
     dialog.setValue(static_cast<int>(base));
     dialog.show();
-    dialog.setLabelText(tr("Erasing SPI NAND From: 0x%1 to 0x%2").arg(QString::number(base, 16),
-                                                                      QString::number(base + cnt, 16)));
+    dialog.setFont(fixedFont);
+    dialog.setLabelText(tr("Erasing SPI NAND From: 0x%1 to 0x%2")
+                                .arg(QString::number(base, 16),
+                                     QString::number(base + cnt, 16)));
 
     watcher.setFuture(QtConcurrent::run([=]() mutable {
         uint32_t n;
@@ -158,6 +165,9 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
             base += n;
             cnt -= n;
             emit update_progress(static_cast<int>(base));
+            emit update_dialog_info(tr("Erasing SPI NAND From: 0x%1 to 0x%2")
+                                            .arg(QString::number(base, 16),
+                                                 QString::number(base + cnt, 16)));
         }
     }));
     loop.exec();
@@ -395,9 +405,9 @@ void spi_nand::spi_nand_erase(uint64_t addr, uint64_t count) {
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
         cbuf[clen++] = 4;
         cbuf[clen++] = SPI_NAND_OPCODE::OPCODE_BLOCK_ERASE;
-        cbuf[clen++] = (uint8_t)(pa >> 16);
-        cbuf[clen++] = (uint8_t)(pa >> 8);
-        cbuf[clen++] = (uint8_t)(pa >> 0);
+        cbuf[clen++] = (uint8_t) (pa >> 16);
+        cbuf[clen++] = (uint8_t) (pa >> 8);
+        cbuf[clen++] = (uint8_t) (pa >> 0);
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;

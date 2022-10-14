@@ -29,6 +29,8 @@ Q_OBJECT
 signals:
     void update_progress(int value);
 
+    void update_dialog_info(QString info);
+
     void release_ui();
 
 public:
