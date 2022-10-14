@@ -109,9 +109,17 @@ void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
     spi_nand spinand(current_chip, fel_);
     connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     spinand.init();
-    spinand.erase(addr, len);
-    disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
-    fel_->fel_close_connection();
+    if ((len + addr) > spinand.get_spi_nand_size()) {
+        // if len + addr > spi nand size, disconnect signal, emit release ui and throw exception
+        disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+        fel_->fel_close_connection();
+        emit release_ui();
+        throw spi_erase_out_of_range();
+    } else {
+        spinand.erase(addr, len);
+        disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+        fel_->fel_close_connection();
+    }
 }
 
 void ChipOP::chip_erase_all_spi_nand() {

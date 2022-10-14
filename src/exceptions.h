@@ -84,4 +84,15 @@ public:
     }
 };
 
+class spi_erase_out_of_range : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] spi_erase_out_of_range *clone() const override {
+        return new spi_erase_out_of_range(*this);
+    }
+};
+
 #endif //YFEL_EXCEPTIONS_H

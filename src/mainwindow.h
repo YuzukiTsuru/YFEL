@@ -90,6 +90,8 @@ private:
 
     void updateStatusBar(const QString &status);
 
+    void updateStatusBar(const QString &status, int time);
+
     void copyToClipboard(const QString &data, QPushButton *button);
 
     void enableJtag();

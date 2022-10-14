@@ -96,6 +96,10 @@ void MainWindow::updateStatusBar(const QString &status) {
     ui->statusbar->showMessage(status, 1000);
 }
 
+void MainWindow::updateStatusBar(const QString &status, int time) {
+    ui->statusbar->showMessage(status, time);
+}
+
 void MainWindow::on_scan_pushButton_clicked() {
     updateStatusBar(tr("Scanning..."));
     try {
@@ -389,7 +393,7 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
         scanChipWarning();
         return;
     }
-    updateStatusBar(tr("Erasing SPI NAND..."));
+    updateStatusBar(tr("Erasing SPI NAND..."), 20000);
     try {
         lockUI();
 
@@ -405,6 +409,8 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
         QMessageBox::information(this, tr("Information"), tr("Erase SPI NAND successfully"));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const spi_erase_out_of_range &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Erase address out of range"));
     } catch (const std::runtime_error &e) {
         chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -418,7 +424,7 @@ void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
         scanChipWarning();
         return;
     }
-    updateStatusBar(tr("Erasing All SPI NAND..."));
+    updateStatusBar(tr("Erasing All SPI NAND..."), 20000);
     try {
         lockUI();
         chip_op->chip_erase_all_spi_nand();
@@ -430,4 +436,5 @@ void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }
+
 
