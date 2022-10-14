@@ -360,15 +360,11 @@ void MainWindow::scanChipWarning() {
 }
 
 void MainWindow::lockUI() {
-    ui->scan_pushButton->setEnabled(false);
-    ui->chip_spi_nand_scan_pushButton->setEnabled(false);
-    ui->chip_spi_nor_scan_pushButton->setEnabled(false);
+    this->setEnabled(false);
 }
 
 void MainWindow::releaseUI() {
-    ui->scan_pushButton->setEnabled(true);
-    ui->chip_spi_nand_scan_pushButton->setEnabled(true);
-    ui->chip_spi_nor_scan_pushButton->setEnabled(true);
+    this->setEnabled(true);
 }
 
 void MainWindow::scanSpiNand() {
