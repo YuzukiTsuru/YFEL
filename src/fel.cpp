@@ -106,6 +106,7 @@ void fel::fel_write_raw(uint32_t addr, void *buf, size_t len) {
 }
 
 uint32_t fel::fel_read32(uint32_t addr) {
+    qDebug("fel_read32: addr: 0x%x", addr);
     uint32_t val = 0;
     // Check current fel status, if enabled long connection, skip fel open usb
     if (fel_status != FEL_STATUS::FEL_OK) {
@@ -120,6 +121,7 @@ uint32_t fel::fel_read32(uint32_t addr) {
 }
 
 void fel::fel_write32(uint32_t addr, uint32_t val) {
+    qDebug("fel_write32: addr: 0x%x, val: 0x%x", addr, val);
     // Check current fel status, if enabled long connection, skip fel open usb
     if (fel_status != FEL_STATUS::FEL_OK) {
         fel_open_usb();
@@ -132,6 +134,7 @@ void fel::fel_write32(uint32_t addr, uint32_t val) {
 }
 
 void fel::fel_exec(uint32_t addr) {
+    qDebug("fel_exec: addr: 0x%x", addr);
     // Check current fel status, if enabled long connection, skip fel open usb
     if (fel_status != FEL_STATUS::FEL_OK) {
         fel_open_usb();
@@ -145,6 +148,7 @@ void fel::fel_exec(uint32_t addr) {
 }
 
 uint32_t fel::payload_arm_read32(uint32_t addr) {
+    qDebug("payload_arm_read32: addr: 0x%x", addr);
     // Scan chip info, get scratchpad
     fel_scan_chip();
 
