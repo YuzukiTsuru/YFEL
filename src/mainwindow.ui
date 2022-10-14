@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -629,6 +629,13 @@
           <widget class="QPushButton" name="flash_spi_erase_spi_nor_erase_button">
            <property name="text">
             <string>Erase</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QPushButton" name="flash_spi_erase_spi_nand_setall_button">
+           <property name="text">
+            <string>Erase All</string>
            </property>
           </widget>
          </item>

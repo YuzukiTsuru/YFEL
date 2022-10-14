@@ -18,10 +18,12 @@
 ChipOP::ChipOP() = default;
 
 ChipOP::~ChipOP() {
+    qDebug() << "ChipOP::~ChipOP()";
     delete fel_;
 }
 
 void ChipOP::chip_release_ui() {
+    qDebug() << "ChipOP::chip_release_ui()";
     emit release_ui();
 }
 
@@ -84,24 +86,21 @@ void ChipOP::chip_init_dram(const dram_param_t &param) {
     current_chip->chip_ddr(param);
 }
 
-QFuture<QString> ChipOP::chip_scan_spi_nand() {
-    QFuture<QString> future = QtConcurrent::run([=]() -> QString {
-        fel_->fel_open_connection();
+QString ChipOP::chip_scan_spi_nand() {
+    fel_->fel_open_connection();
+    // TODO: Need try...catch to handle exception
+    spi_nand spinand(current_chip, fel_);
+    spinand.init();
+    fel_->fel_close_connection();
 
-        // TODO: Need try...catch to handle exception
-        spi_nand spinand(current_chip, fel_);
-        spinand.init();
-        fel_->fel_close_connection();
-
-        if (spinand.get_spi_nand_size() == 0) {
-            return {"No supported SPI NAND found"};
-        } else {
-            return spinand.get_spi_nand_name() + " "
-                   + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x"
-                   + QString::number(spinand.get_spi_nand_size(), 16);
-        }
-    });
-    return future;
+    chip_release_ui();
+    if (spinand.get_spi_nand_size() == 0) {
+        return {"No supported SPI NAND found"};
+    } else {
+        return spinand.get_spi_nand_name() + " "
+               + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x"
+               + QString::number(spinand.get_spi_nand_size(), 16);
+    }
 }
 
 void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
@@ -111,6 +110,17 @@ void ChipOP::chip_erase_spi_nand(uint32_t addr, uint32_t len) {
     connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     spinand.init();
     spinand.erase(addr, len);
+    disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+    fel_->fel_close_connection();
+}
+
+void ChipOP::chip_erase_all_spi_nand() {
+    fel_->fel_open_connection();
+    // TODO: Need try...catch to handle exception
+    spi_nand spinand(current_chip, fel_);
+    connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+    spinand.init();
+    spinand.erase(0x00, spinand.get_spi_nand_size());
     disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     fel_->fel_close_connection();
 }

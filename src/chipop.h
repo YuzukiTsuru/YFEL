@@ -55,9 +55,11 @@ public:
 
     void chip_sid();
 
-    QFuture<QString> chip_scan_spi_nand();
+    QString chip_scan_spi_nand();
 
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
+
+    void chip_erase_all_spi_nand();
 
     void chip_write_spi_nand(uint64_t addr, uint8_t *buf, uint64_t len);
 

@@ -27,16 +27,23 @@ spi_nand::spi_nand(Chips *chips, fel *fels) {
 
 spi_nand::~spi_nand() {
     // delete spi handler
+    qDebug() << "Release SPI Handler";
     delete spi_;
 }
 
 void spi_nand::init() {
-    // init spi pref
-    spi_nand_init();
+    qDebug() << "Init SPI NAND";
+    QFutureWatcher<void> watcher;
+    connect(&watcher, &QFutureWatcher<void>::finished, &watcher, &QFutureWatcher<void>::deleteLater);
 
-    // calculate spi nand size
-    pdata.info.nand_size = pdata.info.page_size * pdata.info.pages_per_block
-                           * pdata.info.blocks_per_die * pdata.info.ndies;
+    // init spi pref
+    watcher.setFuture(QtConcurrent::run([=]() mutable {
+        spi_nand_init();
+        // calculate spi nand size
+        pdata.info.nand_size = pdata.info.page_size * pdata.info.pages_per_block
+                               * pdata.info.blocks_per_die * pdata.info.ndies;
+    }));
+    watcher.waitForFinished();
 }
 
 QString spi_nand::get_spi_nand_name() const {
@@ -225,6 +232,7 @@ void spi_nand::spi_nand_set_feature(uint8_t addr, uint8_t val) {
     tx[1] = addr;
     tx[2] = val;
     try {
+        qDebug("spi_nand_set_feature: %02x %02x %02x", tx[0], tx[1], tx[2]);
         spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 3,
                        nullptr, 0);
     } catch (const std::runtime_error &e) {

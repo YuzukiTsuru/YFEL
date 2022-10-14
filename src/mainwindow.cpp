@@ -14,7 +14,6 @@
 #include "yfel_config.h"
 
 #include <QClipboard>
-#include <QFutureWatcher>
 #include <QMessageBox>
 #include <QTimer>
 #include <qdesktopservices.h>
@@ -25,16 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     initMainwindowData();
     initMenubar();
 
-    connect(&spi_nand_watcher, &QFutureWatcher<QString>::finished, this, [&]() {
-        qDebug() << "SPI NAND Get: " + spi_nand_watcher.result();
-        ui->chip_spi_nand_lineEdit->setText(spi_nand_watcher.result());
-        ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText(spi_nand_watcher.result());
-
-        releaseUI();
-        updateStatusBar(tr("Done."));
-    });
-
-    connect(chip_op, &ChipOP::release_ui, this, [&]() {
+    connect(chip_op, &ChipOP::release_ui, this, [=]() {
         releaseUI();
         updateStatusBar(tr("Done."));
     });
@@ -43,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
+    qDebug() << "MainWindow::~MainWindow()";
     delete ui;
     delete chip_op;
 }
@@ -375,8 +366,15 @@ void MainWindow::scanSpiNand() {
     }
     updateStatusBar(tr("Scanning SPI NAND..."));
     try {
-        spi_nand_watcher.setFuture(chip_op->chip_scan_spi_nand());
+        // lock UI
         lockUI();
+
+        // get spi nand info
+        auto nandInfo = chip_op->chip_scan_spi_nand();
+
+        // update ui
+        ui->chip_spi_nand_lineEdit->setText(nandInfo);
+        ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText(nandInfo);
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {
@@ -404,6 +402,26 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
             len = ui->flash_spi_erase_spi_nand_length_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
 
         chip_op->chip_erase_spi_nand(addr, len);
+        QMessageBox::information(this, tr("Information"), tr("Erase SPI NAND successfully"));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        chipStatus.setNone();
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+}
+
+
+void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
+    qDebug() << "Erasing All SPI NAND...";
+    if (!chipStatus.isOK()) {
+        scanChipWarning();
+        return;
+    }
+    updateStatusBar(tr("Erasing All SPI NAND..."));
+    try {
+        lockUI();
+        chip_op->chip_erase_all_spi_nand();
         QMessageBox::information(this, tr("Information"), tr("Erase SPI NAND successfully"));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));

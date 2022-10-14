@@ -56,10 +56,10 @@ private slots:
 
     void on_flash_spi_erase_spi_nand_erase_button_clicked();
 
+    void on_flash_spi_erase_spi_nand_setall_button_clicked();
+
 private:
     Ui::MainWindow *ui;
-
-    QFutureWatcher<QString> spi_nand_watcher;
 
     ChipOP *chip_op = new ChipOP();
 
