@@ -153,10 +153,10 @@ bool spi_nor::spi_nor_read_sfdp() {
     spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 5,
                    (uint8_t *) &sfdp.header, sizeof(sfdp_header_t));
 
-    // check sfdp header, if not match, throw exception
+    // check sfdp header, if not match, return false
     if (sfdp.header.sign[0] != 'S' || sfdp.header.sign[1] != 'F' || sfdp.header.sign[2] != 'D' ||
         sfdp.header.sign[3] != 'P') {
-        throw cannot_find_spi_flash_device();
+        return false;
     }
 
     // check sfdp nph size, if > SFDP_MAX_NPH, check to SFDP_MAX_NPH
