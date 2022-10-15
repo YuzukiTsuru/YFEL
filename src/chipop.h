@@ -22,6 +22,7 @@
 #include "chips/chip_type.h"
 
 #include "spi_nand.h"
+#include "spi_nor.h"
 #include "fel.h"
 
 class ChipOP : public QObject {
@@ -55,6 +56,9 @@ public:
 
     void chip_sid();
 
+    /*
+     * SPI NAND OP
+     */
     QString chip_scan_spi_nand();
 
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
@@ -63,10 +67,13 @@ public:
 
     void chip_write_spi_nand(uint64_t addr, uint8_t *buf, uint64_t len);
 
+    /*
+     * SPI NOR OP
+     */
+    QString chip_scan_spi_nor();
+
 public: // getter
     chip_t get_current_chip();
-
-    fel *get_current_fel();
 
     QVector<dram_info_t> get_dram_params();
 

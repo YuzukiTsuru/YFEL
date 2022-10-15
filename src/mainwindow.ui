@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="fel_flash">
        <attribute name="title">
@@ -534,7 +534,7 @@
           <widget class="QLineEdit" name="flash_spi_erase_spi_nor_addr_lineEdit"/>
          </item>
          <item row="6" column="3">
-          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_lineEdit"/>
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_currect_nor_chip_lineEdit"/>
          </item>
          <item row="2" column="1">
           <widget class="QLabel" name="flash_spi_erase_spi_nand_address_label">
@@ -616,7 +616,7 @@
           </widget>
          </item>
          <item row="8" column="3">
-          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_addr_lineEdit_2"/>
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_length"/>
          </item>
          <item row="8" column="1">
           <widget class="QLabel" name="flash_spi_erase_spi_nor_length_label">

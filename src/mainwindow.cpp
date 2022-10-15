@@ -160,7 +160,7 @@ void MainWindow::on_chip_chip_core_pushButton_4_clicked() {
 }
 
 void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
-    qDebug() << "Scanning SPI NOR...";
+    scanSpiNor();
 }
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
@@ -420,7 +420,6 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
     }
 }
 
-
 void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
     qDebug() << "Erasing All SPI NAND...";
     if (!chipStatus.isOK()) {
@@ -436,6 +435,25 @@ void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {
         chipStatus.setNone();
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+}
+
+void MainWindow::scanSpiNor() {
+    qDebug() << "Scanning SPI NOR...";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
+    try {
+        lockUI();
+        auto norInfo = chip_op->chip_scan_spi_nor();
+        // update ui
+        ui->chip_spi_nor_lineEdit->setText(norInfo);
+        ui->flash_spi_erase_spi_nor_currect_nor_chip_lineEdit->setText(norInfo);
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
 }

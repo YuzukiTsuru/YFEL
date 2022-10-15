@@ -30,6 +30,7 @@ public:
     ~MainWindow() override;
 
 private slots:
+
     void on_scan_pushButton_clicked();
 
     void on_chip_chip_name_pushButton_clicked();
@@ -105,6 +106,8 @@ private:
     void releaseUI();
 
     void scanSpiNand();
+
+    void scanSpiNor();
 };
 
 #endif // YFEL_MAINWINDOW_H

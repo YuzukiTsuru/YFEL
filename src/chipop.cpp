@@ -95,7 +95,7 @@ QString ChipOP::chip_scan_spi_nand() {
 
     chip_release_ui();
     if (spinand.get_spi_nand_size() == 0) {
-        return {"No supported SPI NAND found"};
+        return {tr("No supported SPI NAND found")};
     } else {
         return spinand.get_spi_nand_name() + " "
                + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x"
@@ -154,4 +154,20 @@ void ChipOP::chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64
     disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
 }
 
+QString ChipOP::chip_scan_spi_nor() {
+    fel_->fel_open_connection();
+    // TODO: Need try...catch to handle exception
+    spi_nor spi_nor(current_chip, fel_);
+    spi_nor.init();
+    fel_->fel_close_connection();
+
+    chip_release_ui();
+    if (spi_nor.get_spi_nor_size() == 0) {
+        return {tr("No supported SPI NOR found")};
+    } else {
+        return spi_nor.get_spi_nor_name() + " "
+               + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) + "MB 0x"
+               + QString::number(spi_nor.get_spi_nor_size(), 16);
+    }
+}
 

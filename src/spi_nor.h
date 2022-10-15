@@ -32,6 +32,12 @@ public:
 
     ~spi_nor() override;
 
+    void init();
+
+    [[nodiscard]] QString get_spi_nor_name() const;
+
+    [[nodiscard]] uint64_t get_spi_nor_size() const;
+
 private:
     bool get_spi_nor_info();
 

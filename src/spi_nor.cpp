@@ -12,7 +12,8 @@
 // Created by gloom on 2022/9/28.
 //
 
-#include <QDebug>
+#include <QMessageBox>
+#include <QFontDatabase>
 
 #include "exceptions.h"
 #include "spi_nor.h"
@@ -29,12 +30,109 @@ spi_nor::~spi_nor() {
     delete spi_;
 }
 
+void spi_nor::init() {
+    qDebug() << "Init SPI NOR";
+    QFutureWatcher<void> watcher;
+    connect(&watcher, &QFutureWatcher<void>::finished, &watcher, &QFutureWatcher<void>::deleteLater);
+
+    // init spi pref
+    watcher.setFuture(QtConcurrent::run([=]() mutable {
+        spi_nor_init();
+    }));
+    watcher.waitForFinished();
+}
+
+QString spi_nor::get_spi_nor_name() const {
+    return pdata.info.name;
+}
+
+uint64_t spi_nor::get_spi_nor_size() const {
+    return pdata.info.capacity;
+}
+
 void spi_nor::spi_nor_init() {
     uint8_t cbuf[256];
     uint32_t clen = 0;
 
     try {
         spi_->spi_init(&pdata.swap_buf, &pdata.swap_len, &pdata.cmd_len);
+        if (get_spi_nor_info()) {
+            // spi select 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+            // chip reset 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+            cbuf[clen++] = 2;
+            cbuf[clen++] = 0x66;
+            cbuf[clen++] = 0x99;
+            // spi deselect 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+            // spi select 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+            // wait busy 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINOR_WAIT;
+            // spi deselect 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+            // spi select 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+            // write enable 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+            cbuf[clen++] = 1;
+            cbuf[clen++] = pdata.info.opcode_write_enable;
+            // spi deselect 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+            // spi select 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+            // write status 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+            cbuf[clen++] = 2;
+            cbuf[clen++] = SPI_NOR_OPS::NOR_OPCODE_WRSR;
+            cbuf[clen++] = 0;
+            // spi deselect 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+            // spi select 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+            // wait busy 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINOR_WAIT;
+            // spi deselect 
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+            if (pdata.info.address_length == 4) {
+                // spi select 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                // write enable 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+                cbuf[clen++] = 1;
+                cbuf[clen++] = pdata.info.opcode_write_enable;
+                // spi deselect 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+                // spi select 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                // entern 4byte address 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
+                cbuf[clen++] = 1;
+                cbuf[clen++] = SPI_NOR_OPS::NOR_OPCODE_ENTER_4B;
+                // spi deselect 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+
+                // spi select 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
+                // wait busy 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINOR_WAIT;
+                // spi deselect 
+                cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
+            }
+
+            // end
+            cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_END;
+            if (clen <= pdata.cmd_len) {
+                spi_->get_current_chip()->chip_spi_run(cbuf, clen);
+            }
+        }
     } catch (const function_not_implemented &e) {
         throw e;
     }
@@ -263,3 +361,5 @@ void spi_nor::spi_nor_sfdp_handler() {
     }
     pdata.info.opcode_write = NOR_OPCODE_PROG;
 }
+
+
