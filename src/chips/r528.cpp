@@ -22,6 +22,9 @@ r528::r528(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_core_count = 2;
     chip_info.chip_core_count_str = core_count_.core_count_2;
     chip_info.chip_heterogeneous_core.push_back("HIFI4");
+
+    dram_info.append(r528_s3_ddr3);
+    dram_info.append(t113_s3_ddr3);
 }
 
 chip_function_e r528::chip_detect() {
@@ -98,7 +101,25 @@ chip_function_e r528::chip_jtag() {
 }
 
 chip_function_e r528::chip_ddr(chip_ddr_type_e dram_type) {
+    // default using R528 ddr init code
+    if (dram_type == chip_ddr_type_e::DDR3) {
+        fel_->fel_write(0x00020000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
+        fel_->fel_write(0x00020018, &r528_s3_ddr3, sizeof(r528_s3_ddr3));
+        fel_->fel_exec(0x00020000);
+        return chip_function_e::Success;
+    }
     return chip_function_e::NotSupport;
+}
+
+chip_function_e r528::chip_ddr(dram_param_t param) {
+    if (param.dram_type == chip_ddr_type_e::DDR3) {
+        fel_->fel_write(0x00020000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
+    } else {
+        return chip_function_e::NotSupport;
+    }
+    fel_->fel_write(0x00020018, &param, sizeof(param));
+    fel_->fel_exec(0x00020000);
+    return chip_function_e::Success;
 }
 
 chip_function_e r528::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {
