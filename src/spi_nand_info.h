@@ -17,7 +17,7 @@
 
 #include <QObject>
 
-typedef struct spinand_info {
+typedef struct spi_nand_info {
     QString name;
     struct {
         uint8_t val[4];
@@ -30,14 +30,14 @@ typedef struct spinand_info {
     uint32_t planes_per_die = 0;
     uint32_t ndies = 0;
     uint64_t nand_size = 0;
-} spinand_info_t;
+} spi_nand_info_t;
 
-typedef struct spinand_pdata {
-    spinand_info_t info;
+typedef struct spi_nand_pdata {
+    spi_nand_info_t info;
     uint32_t swap_buf = 0;
     uint32_t swap_len = 0;
     uint32_t cmd_len = 0;
-} spinand_pdata_t;
+} spi_nand_pdata_t;
 
 enum SPI_NAND_OPS {
     OPCODE_RDID = 0x9f,
@@ -55,7 +55,7 @@ enum SPI_NAND_OPS {
     OPCODE_RESET = 0xff,
 };
 
-static const spinand_info_t spinand_info[] = {
+static const spi_nand_info_t spi_nand_info_table[] = {
         /* Winbond */
         {"W25N512GV",       {.val = {0xef, 0xaa, 0x20}, .len = 3}, 2048, 64,  64,  512,  1, 1},
         {"W25N01GV",        {.val = {0xef, 0xaa, 0x21}, .len = 3}, 2048, 64,  64,  1024, 1, 1},

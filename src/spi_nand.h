@@ -70,7 +70,7 @@ private:
     void spi_nand_erase(uint64_t addr, uint64_t count);
 
 private:
-    spinand_pdata_t pdata = {};
+    spi_nand_pdata_t pdata = {};
     spi *spi_ = nullptr;
 };
 

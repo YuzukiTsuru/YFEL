@@ -185,7 +185,7 @@ bool spi_nand::get_spi_nand_info() {
         qDebug() << e.what();
     }
 
-    for (const auto &i: spinand_info) {
+    for (const auto &i: spi_nand_info_table) {
         if (memcmp(rx, i.id.val, i.id.len) == 0) {
             pdata.info = i;
             return true;
@@ -199,7 +199,7 @@ bool spi_nand::get_spi_nand_info() {
     } catch (const std::runtime_error &e) {
         qDebug() << e.what();
     }
-    for (const auto &i: spinand_info) {
+    for (const auto &i: spi_nand_info_table) {
         if (memcmp(rx, i.id.val, i.id.len) == 0) {
             pdata.info = i;
             return true;
