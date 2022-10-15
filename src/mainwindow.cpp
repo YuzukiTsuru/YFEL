@@ -211,6 +211,7 @@ void MainWindow::clearChipInfo() {
     ui->chip_sid_lineEdit->setText("");
     ui->chip_core_lineEdit->setText("");
     ui->chip_spi_nand_lineEdit->setText("");
+    ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText("");
     chipStatus.setNone();
 }
 
@@ -343,11 +344,13 @@ void MainWindow::on_dram_init_dram_btn_clicked() {
         } catch (const usb_bulk_send_error &e) {
             chipStatus.setError();
             scanChipWarning();
+            chipStatus.setError();
         } catch (const usb_bulk_recv_error &e) {
             chipStatus.setError();
             scanChipWarning();
+            chipStatus.setError();
         } catch (const std::exception &e) {
-            clearChipInfo();
+            chipStatus.setError();
             QMessageBox::warning(this, tr("Warning"), tr(e.what()));
         }
     } else {
@@ -367,6 +370,9 @@ void MainWindow::scanChipWarning() {
                              tr("Chip operation error, please reset the chip manually"));
     else
         QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
+
+    // clear the chip info
+    clearChipInfo();
 }
 
 void MainWindow::lockUI() {
