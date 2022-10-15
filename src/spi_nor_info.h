@@ -44,18 +44,18 @@ typedef struct spi_nor_pdata {
 } spi_nor_pdata_t;
 
 enum SPI_NOR_OPS {
-    OPCODE_SFDP = 0x5a,
-    OPCODE_RDID = 0x9f,
-    OPCODE_WRSR = 0x01,
-    OPCODE_RDSR = 0x05,
-    OPCODE_WREN = 0x06,
-    OPCODE_READ = 0x03,
-    OPCODE_PROG = 0x02,
-    OPCODE_E4K = 0x20,
-    OPCODE_E32K = 0x52,
-    OPCODE_E64K = 0xd8,
-    OPCODE_ENTER_4B = 0xb7,
-    OPCODE_EXIT_4B = 0xe9,
+    NOR_OPCODE_SFDP = 0x5a,
+    NOR_OPCODE_RDID = 0x9f,
+    NOR_OPCODE_WRSR = 0x01,
+    NOR_OPCODE_RDSR = 0x05,
+    NOR_OPCODE_WREN = 0x06,
+    NOR_OPCODE_READ = 0x03,
+    NOR_OPCODE_PROG = 0x02,
+    NOR_OPCODE_E4K = 0x20,
+    NOR_OPCODE_E32K = 0x52,
+    NOR_OPCODE_E64K = 0xd8,
+    NOR_OPCODE_ENTER_4B = 0xb7,
+    NOR_OPCODE_EXIT_4B = 0xe9,
 };
 
 const spi_nor_info_t spi_nor_info_table[] = {
@@ -67,12 +67,12 @@ const spi_nor_info_t spi_nor_info_table[] = {
                 .read_granularity = 1,
                 .write_granularity = 256,
                 .address_length = 3,
-                .opcode_read = SPI_NOR_OPS::OPCODE_READ,
-                .opcode_write = SPI_NOR_OPS::OPCODE_PROG,
-                .opcode_write_enable = SPI_NOR_OPS::OPCODE_WREN,
-                .opcode_erase_4k = SPI_NOR_OPS::OPCODE_E4K,
+                .opcode_read = SPI_NOR_OPS::NOR_OPCODE_READ,
+                .opcode_write = SPI_NOR_OPS::NOR_OPCODE_PROG,
+                .opcode_write_enable = SPI_NOR_OPS::NOR_OPCODE_WREN,
+                .opcode_erase_4k = SPI_NOR_OPS::NOR_OPCODE_E4K,
                 .opcode_erase_32k = 0,
-                .opcode_erase_64k = SPI_NOR_OPS::OPCODE_E64K,
+                .opcode_erase_64k = SPI_NOR_OPS::NOR_OPCODE_E64K,
                 .opcode_erase_256k = 0
         },
 };

@@ -176,7 +176,7 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
 bool spi_nand::get_spi_nand_info() {
     uint8_t tx[2], rx[4];
 
-    tx[0] = SPI_NAND_OPS::OPCODE_RDID;
+    tx[0] = SPI_NAND_OPS::NAND_OPCODE_RDID;
     tx[1] = 0x0;
 
     try {
@@ -193,7 +193,7 @@ bool spi_nand::get_spi_nand_info() {
     }
 
     // Try OPCODE
-    tx[0] = SPI_NAND_OPS::OPCODE_RDID;
+    tx[0] = SPI_NAND_OPS::NAND_OPCODE_RDID;
     try {
         spi_->spi_xfer(pdata.swap_buf, pdata.cmd_len, pdata.swap_len, tx, 1, rx, 4);
     } catch (const std::runtime_error &e) {
@@ -211,7 +211,7 @@ bool spi_nand::get_spi_nand_info() {
 }
 
 void spi_nand::spi_nand_reset() {
-    uint8_t tx[1] = {SPI_NAND_OPS::OPCODE_RESET};
+    uint8_t tx[1] = {SPI_NAND_OPS::NAND_OPCODE_RESET};
 
     try {
         spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len,
@@ -225,7 +225,7 @@ void spi_nand::spi_nand_reset() {
 void spi_nand::spi_nand_get_feature(uint8_t addr, uint8_t *val) {
     uint8_t tx[2];
 
-    tx[0] = SPI_NAND_OPS::OPCODE_GET_FEATURE;
+    tx[0] = SPI_NAND_OPS::NAND_OPCODE_GET_FEATURE;
     tx[1] = addr;
     try {
         spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 2,
@@ -238,7 +238,7 @@ void spi_nand::spi_nand_get_feature(uint8_t addr, uint8_t *val) {
 void spi_nand::spi_nand_set_feature(uint8_t addr, uint8_t val) {
     uint8_t tx[3];
 
-    tx[0] = SPI_NAND_OPS::OPCODE_GET_FEATURE;
+    tx[0] = SPI_NAND_OPS::NAND_OPCODE_GET_FEATURE;
     tx[1] = addr;
     tx[2] = val;
     try {
@@ -271,9 +271,9 @@ void spi_nand::spi_nand_init() {
     if (get_spi_nand_info()) {
         spi_nand_reset();
         spi_nand_wait_for_busy();
-        spi_nand_get_feature(SPI_NAND_OPS::OPCODE_FEATURE_PROTECT, &val);
+        spi_nand_get_feature(SPI_NAND_OPS::NAND_OPCODE_FEATURE_PROTECT, &val);
         if (val != 0x0) {
-            spi_nand_set_feature(SPI_NAND_OPS::OPCODE_FEATURE_PROTECT, 0x0);
+            spi_nand_set_feature(SPI_NAND_OPS::NAND_OPCODE_FEATURE_PROTECT, 0x0);
             spi_nand_wait_for_busy();
         }
     }
@@ -286,14 +286,14 @@ void spi_nand::spi_nand_read(uint32_t addr, uint8_t *buf, uint32_t count) {
         auto pa = addr / pdata.info.page_size;
         auto ca = addr & (pdata.info.page_size - 1);
         auto n = count > (pdata.info.page_size - ca) ? (pdata.info.page_size - ca) : count;
-        tx[0] = SPI_NAND_OPS::OPCODE_READ_PAGE_TO_CACHE;
+        tx[0] = SPI_NAND_OPS::NAND_OPCODE_READ_PAGE_TO_CACHE;
         tx[1] = static_cast<uint8_t> (pa >> 16);
         tx[2] = static_cast<uint8_t> (pa >> 8);
         tx[3] = static_cast<uint8_t> (pa >> 0);
         spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len,
                        tx, 4, nullptr, 0);
         spi_nand_wait_for_busy();
-        tx[0] = SPI_NAND_OPS::OPCODE_READ_PAGE_FROM_CACHE;
+        tx[0] = SPI_NAND_OPS::NAND_OPCODE_READ_PAGE_FROM_CACHE;
         tx[1] = static_cast<uint8_t> (ca >> 8);
         tx[2] = static_cast<uint8_t> (ca >> 0);
         tx[3] = 0x0;
@@ -326,7 +326,7 @@ void spi_nand::spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count) {
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
                 cbuf[clen++] = 1;
-                cbuf[clen++] = SPI_NAND_OPS::OPCODE_WRITE_ENABLE;
+                cbuf[clen++] = SPI_NAND_OPS::NAND_OPCODE_WRITE_ENABLE;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
@@ -348,7 +348,7 @@ void spi_nand::spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count) {
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
                 cbuf[clen++] = 4;
-                cbuf[clen++] = SPI_NAND_OPS::OPCODE_PROGRAM_EXEC;
+                cbuf[clen++] = SPI_NAND_OPS::NAND_OPCODE_PROGRAM_EXEC;
                 cbuf[clen++] = (pa >> 16);
                 cbuf[clen++] = (pa >> 8);
                 cbuf[clen++] = (pa >> 0);
@@ -357,7 +357,7 @@ void spi_nand::spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count) {
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
                 cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
 
-                txbuf[txlen++] = SPI_NAND_OPS::OPCODE_PROGRAM_LOAD;
+                txbuf[txlen++] = SPI_NAND_OPS::NAND_OPCODE_PROGRAM_LOAD;
                 txbuf[txlen++] = (ca >> 8);
                 txbuf[txlen++] = (ca >> 0);
                 std::copy(&buf[0], &buf[0] + n, &txbuf[txlen]);
@@ -396,7 +396,7 @@ void spi_nand::spi_nand_erase(uint64_t addr, uint64_t count) {
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
         cbuf[clen++] = 1;
-        cbuf[clen++] = SPI_NAND_OPS::OPCODE_WRITE_ENABLE;
+        cbuf[clen++] = SPI_NAND_OPS::NAND_OPCODE_WRITE_ENABLE;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_DESELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SPINAND_WAIT;
@@ -404,7 +404,7 @@ void spi_nand::spi_nand_erase(uint64_t addr, uint64_t count) {
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_SELECT;
         cbuf[clen++] = chip_spi_ctrl_e::SPI_CMD_FAST;
         cbuf[clen++] = 4;
-        cbuf[clen++] = SPI_NAND_OPS::OPCODE_BLOCK_ERASE;
+        cbuf[clen++] = SPI_NAND_OPS::NAND_OPCODE_BLOCK_ERASE;
         cbuf[clen++] = (uint8_t) (pa >> 16);
         cbuf[clen++] = (uint8_t) (pa >> 8);
         cbuf[clen++] = (uint8_t) (pa >> 0);

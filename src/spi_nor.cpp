@@ -12,8 +12,9 @@
 // Created by gloom on 2022/9/28.
 //
 
-#include "exceptions.h"
+#include <QDebug>
 
+#include "exceptions.h"
 #include "spi_nor.h"
 
 spi_nor::spi_nor(Chips *chips, fel *fels) {
@@ -44,7 +45,7 @@ bool spi_nor::spi_nor_read_sfdp() {
     uint8_t tx[5];
 
     // generate sfdp tx command
-    tx[0] = SPI_NOR_OPS::OPCODE_SFDP;
+    tx[0] = SPI_NOR_OPS::NOR_OPCODE_SFDP;
     tx[1] = 0x0;
     tx[2] = 0x0;
     tx[3] = 0x0;
@@ -70,7 +71,7 @@ bool spi_nor::spi_nor_read_sfdp() {
     // read sfdp parameter header
     for (int j = 0; j < sfdp.header.nph; ++j) {
         addr = j * sizeof(sfdp_parameter_header_t) + sizeof(sfdp_header_t);
-        tx[0] = SPI_NOR_OPS::OPCODE_SFDP;
+        tx[0] = SPI_NOR_OPS::NOR_OPCODE_SFDP;
         tx[1] = (addr >> 16) & 0xff;
         tx[2] = (addr >> 8) & 0xff;
         tx[3] = (addr >> 0) & 0xff;
@@ -84,7 +85,7 @@ bool spi_nor::spi_nor_read_sfdp() {
         if ((sfdp.parameter_header[j].idlsb == 0x00) && (sfdp.parameter_header[j].idmsb == 0xff)) {
             addr = (sfdp.parameter_header[0].ptp[0] << 0) | (sfdp.parameter_header[0].ptp[1] << 8) |
                    (sfdp.parameter_header[0].ptp[2] << 16);
-            tx[0] = SPI_NOR_OPS::OPCODE_SFDP;
+            tx[0] = SPI_NOR_OPS::NOR_OPCODE_SFDP;
             tx[1] = (addr >> 16) & 0xff;
             tx[2] = (addr >> 8) & 0xff;
             tx[3] = (addr >> 0) & 0xff;
@@ -102,7 +103,7 @@ bool spi_nor::spi_nor_read_sfdp() {
 uint32_t spi_nor::spi_nor_read_id() {
     uint8_t tx[1];
     uint8_t rx[3];
-    tx[0] = SPI_NOR_OPS::OPCODE_RDID;
+    tx[0] = SPI_NOR_OPS::NOR_OPCODE_RDID;
     spi_->spi_xfer(pdata.swap_buf, pdata.swap_len, pdata.cmd_len, tx, 1, rx, 3);
     return (rx[0] << 16) | (rx[1] << 8) | (rx[2] << 0);
 }
@@ -242,9 +243,9 @@ void spi_nor::spi_nor_sfdp_handler() {
         pdata.info.blksz = 65536;
     else if (pdata.info.opcode_erase_256k != 0x00)
         pdata.info.blksz = 262144;
-    pdata.info.opcode_write_enable = OPCODE_WREN;
+    pdata.info.opcode_write_enable = NOR_OPCODE_WREN;
     pdata.info.read_granularity = 1;
-    pdata.info.opcode_read = OPCODE_READ;
+    pdata.info.opcode_read = NOR_OPCODE_READ;
 
     if ((sfdp.basic_table.major == 1) && (sfdp.basic_table.minor < 5)) {
         // Basic flash parameter table 1th dword
@@ -260,5 +261,5 @@ void spi_nor::spi_nor_sfdp_handler() {
             (sfdp.basic_table.table[41] << 8) | (sfdp.basic_table.table[40] << 0);
         pdata.info.write_granularity = 1 << ((v >> 4) & 0xf);
     }
-    pdata.info.opcode_write = OPCODE_PROG;
+    pdata.info.opcode_write = NOR_OPCODE_PROG;
 }
