@@ -95,4 +95,15 @@ public:
     }
 };
 
+class cannot_find_spi_flash_device : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] cannot_find_spi_flash_device *clone() const override {
+        return new cannot_find_spi_flash_device(*this);
+    }
+};
+
 #endif //YFEL_EXCEPTIONS_H
