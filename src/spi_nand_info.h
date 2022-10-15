@@ -39,7 +39,7 @@ typedef struct spinand_pdata {
     uint32_t cmd_len = 0;
 } spinand_pdata_t;
 
-enum SPI_NAND_OPCODE {
+enum SPI_NAND_OPS {
     OPCODE_RDID = 0x9f,
     OPCODE_GET_FEATURE = 0x0f,
     OPCODE_SET_FEATURE = 0x1f,
