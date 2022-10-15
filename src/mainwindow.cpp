@@ -337,8 +337,19 @@ void MainWindow::on_dram_init_dram_btn_clicked() {
             .dram_tpr13 = ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt(nullptr, 16),
     };
     if (chipStatus.isOK()) {
-        chip_op->chip_init_dram(dramParam);
-        updateStatusBar("DRAM init done, Check the result in the UART log");
+        try {
+            chip_op->chip_init_dram(dramParam);
+            updateStatusBar("DRAM init done, Check the result in the UART log");
+        } catch (const usb_bulk_send_error &e) {
+            chipStatus.setError();
+            scanChipWarning();
+        } catch (const usb_bulk_recv_error &e) {
+            chipStatus.setError();
+            scanChipWarning();
+        } catch (const std::exception &e) {
+            clearChipInfo();
+            QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+        }
     } else {
         scanChipWarning();
     }
