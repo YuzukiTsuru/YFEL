@@ -210,6 +210,7 @@ void MainWindow::clearChipInfo() {
     ui->chip_name_lineEdit->setText("");
     ui->chip_sid_lineEdit->setText("");
     ui->chip_core_lineEdit->setText("");
+    ui->chip_spi_nand_lineEdit->setText("");
     chipStatus.setNone();
 }
 
@@ -458,4 +459,7 @@ void MainWindow::scanSpiNor() {
     }
 }
 
+void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {
+    scanSpiNor();
+}
 
