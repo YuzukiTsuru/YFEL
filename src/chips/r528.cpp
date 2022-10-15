@@ -23,8 +23,10 @@ r528::r528(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_core_count_str = core_count_.core_count_2;
     chip_info.chip_heterogeneous_core.push_back("HIFI4");
 
+    // dram presets
     dram_info.append(r528_s3_ddr3);
     dram_info.append(t113_s3_ddr3);
+    dram_info.append(t113_s3_ddr3_oc_1008);
 }
 
 chip_function_e r528::chip_detect() {

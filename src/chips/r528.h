@@ -99,6 +99,36 @@ private:
             }
     };
 
+    const dram_info_t t113_s3_ddr3_oc_1008 = {
+            .dram_param_name = "T113-S3 DDR3 SIP 1008M OC",
+            .dram_param {
+                    .dram_clk = 1008,
+                    .dram_type = 3,
+                    .dram_zq = 0x7b7bfb,
+                    .dram_odt_en = 0x00,
+                    .dram_para1 = 0x000010d2,
+                    .dram_para2 = 0x0000,
+                    .dram_mr0 = 0x1c70,
+                    .dram_mr1 = 0x042,
+                    .dram_mr2 = 0x18,
+                    .dram_mr3 = 0x0,
+                    .dram_tpr0 = 0x004A2195,
+                    .dram_tpr1 = 0x02423191,
+                    .dram_tpr2 = 0x0008B061,
+                    .dram_tpr3 = 0xB4787896,
+                    .dram_tpr4 = 0x0,
+                    .dram_tpr5 = 0x48484848,
+                    .dram_tpr6 = 0x00000048,
+                    .dram_tpr7 = 0x1620121e,
+                    .dram_tpr8 = 0x0,
+                    .dram_tpr9 = 0x0,
+                    .dram_tpr10 = 0x0,
+                    .dram_tpr11 = 0x00340000,
+                    .dram_tpr12 = 0x00000046,
+                    .dram_tpr13 = 0x34000100,
+            }
+    };
+
     constexpr static uint8_t ddr3_dram_payload[] = {
             0xf0, 0x00, 0x00, 0xea, 0x65, 0x47, 0x4f, 0x4e, 0x2e, 0x42, 0x54, 0x30,
             0xa8, 0x76, 0x15, 0xc6, 0xc0, 0x4b, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00,
