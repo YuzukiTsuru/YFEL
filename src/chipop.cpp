@@ -67,14 +67,19 @@ chip_t ChipOP::get_current_chip() {
 }
 
 bool ChipOP::check_chip() {
+    // enable long connection of fel
+    fel_->fel_open_connection();
     for (auto item: qAsConst(chip_db)) {
         qDebug() << "Checking chip " << item->get_chip_info().chip_id;
         if (item->chip_detect() == chip_function_e::Success) {
             current_chip = item;
             qDebug() << "Current Chip" << current_chip->get_chip_info().chip_name;
+            // deinit fel
+            fel_->fel_close_connection();
             return true;
         }
     }
+    fel_->fel_close_connection();
     return false;
 }
 
@@ -165,9 +170,14 @@ QString ChipOP::chip_scan_spi_nor() {
     if (spi_nor.get_spi_nor_size() == 0) {
         return {tr("No supported SPI NOR found")};
     } else {
-        return spi_nor.get_spi_nor_name() + " "
-               + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) + "MB 0x"
-               + QString::number(spi_nor.get_spi_nor_size(), 16);
+        if (spi_nor.get_spi_nor_name() == "SFDP") {
+            return "JEDEC SFDP Compatible SPI NOR " + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) + "MB 0x"
+                   + QString::number(spi_nor.get_spi_nor_size(), 16);
+        } else {
+            return spi_nor.get_spi_nor_name() + " "
+                   + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) + "MB 0x"
+                   + QString::number(spi_nor.get_spi_nor_size(), 16);
+        }
     }
 }
 

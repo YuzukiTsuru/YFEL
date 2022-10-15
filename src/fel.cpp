@@ -32,17 +32,25 @@ void fel::fel_close_connection() {
 }
 
 void fel::fel_scan_chip() {
-    fel_open_usb();
+    // Check current fel status, if enabled long connection, skip fel open usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_open_usb();
+    }
     fel_chip_id();
-    fel_close_usb();
+    // Check current fel status, if enabled long connection, skip fel close usb
+    if (fel_status != FEL_STATUS::FEL_OK) {
+        fel_close_usb();
+    }
 }
 
 void fel::fel_open_usb() {
+    qDebug() << "fel::fel_open_usb()";
     usb_handler.open_usb();
     usb_handler.usb_fel_init();
 }
 
 void fel::fel_close_usb() {
+    qDebug() << "fel::fel_close_usb()";
     usb_handler.close_usb();
 }
 
