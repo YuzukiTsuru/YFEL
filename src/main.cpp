@@ -18,7 +18,16 @@
 
 int main(int argc, char *argv[]) {
     QApplication _(argc, argv);
+
+    /*
+     * debug message output format
+     */
+#ifdef QT_NO_DEBUG
+    qSetMessagePattern("[%{type}] %{time MM-dd hh:mm:ss} %{message}");
+#else
     qSetMessagePattern("[%{type}] %{time MM-dd hh:mm:ss}  %{function}:%{line} %{message}");
+#endif
+
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale: uiLanguages) {
