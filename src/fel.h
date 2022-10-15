@@ -129,9 +129,9 @@ private:
 
     void read_fel_status();
 
-    void fel_read_raw(uint32_t addr, void *buf, size_t len);
+    void fel_read_raw(uint32_t addr, void *buf, uint32_t len);
 
-    void fel_write_raw(uint32_t addr, void *buf, size_t len);
+    void fel_write_raw(uint32_t addr, void *buf, uint32_t len);
 };
 
 #endif// YFEL_FEL_H

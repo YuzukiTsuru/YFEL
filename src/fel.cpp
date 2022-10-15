@@ -89,7 +89,7 @@ void fel::read_fel_status() {
            buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7]);
 }
 
-void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
+void fel::fel_read_raw(uint32_t addr, void *buf, uint32_t len) {
     qDebug("fel_read_raw: addr: 0x%x, len: 0x%x", addr, len);
 
     send_fel_request(FEL_COMMAND::FEL_READRAW, addr, len);
@@ -97,7 +97,7 @@ void fel::fel_read_raw(uint32_t addr, void *buf, size_t len) {
     read_fel_status();
 }
 
-void fel::fel_write_raw(uint32_t addr, void *buf, size_t len) {
+void fel::fel_write_raw(uint32_t addr, void *buf, uint32_t len) {
     qDebug("fel_write_raw: addr: 0x%x, len: 0x%x", addr, len);
 
     send_fel_request(FEL_COMMAND::FEL_WRITERAW, addr, len);
