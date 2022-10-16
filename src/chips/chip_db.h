@@ -17,5 +17,6 @@
 
 #include "d1.h"
 #include "r528.h"
+#include "f1c100s.h"
 
 #endif //YFEL_CHIP_DB_H
