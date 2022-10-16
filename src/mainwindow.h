@@ -61,6 +61,8 @@ private slots:
 
     void on_flash_spi_erase_spi_nor_scan_button_clicked();
 
+    void on_dram_load_preset_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -96,6 +98,8 @@ private:
     void updateStatusBar(const QString &status, int time);
 
     void copyToClipboard(const QString &data, QPushButton *button);
+
+    void loadDramPresets();
 
     void enableJtag();
 

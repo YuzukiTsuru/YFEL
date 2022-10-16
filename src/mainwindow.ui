@@ -669,10 +669,73 @@
         <x>10</x>
         <y>10</y>
         <width>661</width>
-        <height>331</height>
+        <height>326</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
+       <item row="11" column="6">
+        <widget class="QPushButton" name="dram_init_dram_btn">
+         <property name="text">
+          <string>Init DRAM</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr13_lineEdit"/>
+       </item>
+       <item row="6" column="2">
+        <widget class="QLineEdit" name="dram_dram_para2_lineEdit"/>
+       </item>
+       <item row="11" column="5">
+        <widget class="QCheckBox" name="dram_init_dram_uart_checkbox">
+         <property name="text">
+          <string>UART</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr1_lineEdit"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="dram_dram_odt_en_label">
+         <property name="text">
+          <string>dram odt en</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr16_lineEdit"/>
+       </item>
+       <item row="9" column="2">
+        <widget class="QLineEdit" name="dram_dram_mr2_lineEdit"/>
+       </item>
+       <item row="6" column="5">
+        <widget class="QLabel" name="dram_dram_tpr17_label">
+         <property name="text">
+          <string>dram tpr17</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr4_lineEdit"/>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLabel" name="dram_dram_tpr1_label">
+         <property name="text">
+          <string>dram tpr1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="3">
+        <widget class="QLabel" name="dram_dram_tpr10_label">
+         <property name="text">
+          <string>dram tpr10</string>
+         </property>
+        </widget>
+       </item>
        <item row="9" column="0">
         <widget class="QLabel" name="dram_dram_mr2_label">
          <property name="text">
@@ -687,67 +750,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="5">
-        <widget class="QLabel" name="dram_dram_tpr13_label">
-         <property name="text">
-          <string>dram tpr13</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="3">
-        <widget class="QLabel" name="dram_dram_tpr9_label">
-         <property name="text">
-          <string>dram tpr9</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr12_lineEdit"/>
-       </item>
-       <item row="6" column="5">
-        <widget class="QLabel" name="dram_dram_tpr17_label">
-         <property name="text">
-          <string>dram tpr17</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="5">
-        <widget class="QLabel" name="dram_dram_tpr20_label">
-         <property name="text">
-          <string>dram tpr20</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QLabel" name="dram_dram_tpr1_label">
-         <property name="text">
-          <string>dram tpr1</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="dram_dram_tpr0_label">
-         <property name="text">
-          <string>dram tpr0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="5">
-        <widget class="QLabel" name="dram_dram_tpr16_label">
-         <property name="text">
-          <string>dram tpr16</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="3">
-        <widget class="QLabel" name="dram_dram_tpr5_label">
-         <property name="text">
-          <string>dram tpr5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QLineEdit" name="dram_dram_zq_lineEdit"/>
+       <item row="6" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr17_lineEdit"/>
        </item>
        <item row="4" column="3">
         <widget class="QLabel" name="dram_dram_tpr4_label">
@@ -756,18 +760,47 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="dram_dram_odt_en_label">
+       <item row="11" column="2">
+        <widget class="QLineEdit" name="dram_dram_tpr0_lineEdit"/>
+       </item>
+       <item row="7" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr7_lineEdit"/>
+       </item>
+       <item row="10" column="2">
+        <widget class="QLineEdit" name="dram_dram_mr3_lineEdit"/>
+       </item>
+       <item row="3" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr14_lineEdit"/>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="dram_dram_clk_lineEdit"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="dram_dram_type_label">
          <property name="text">
-          <string>dram odt en</string>
+          <string>dram type</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="2" colspan="5">
-        <widget class="QComboBox" name="dram_load_preset_comboBox"/>
+       <item row="3" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr3_lineEdit"/>
        </item>
-       <item row="2" column="2">
-        <widget class="QLineEdit" name="dram_dram_type_lineEdit"/>
+       <item row="9" column="3">
+        <widget class="QLabel" name="dram_dram_tpr9_label">
+         <property name="text">
+          <string>dram tpr9</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr21_lineEdit"/>
+       </item>
+       <item row="9" column="5">
+        <widget class="QLabel" name="dram_dram_tpr20_label">
+         <property name="text">
+          <string>dram tpr20</string>
+         </property>
+        </widget>
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="dram_dram_para2_label">
@@ -783,82 +816,22 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="dram_dram_para1_label">
-         <property name="text">
-          <string>dram para1</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="dram_dram_mr3_label">
-         <property name="text">
-          <string>dram mr3</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="dram_dram_mr0_label">
-         <property name="text">
-          <string>dram mr0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="3">
-        <widget class="QLabel" name="dram_dram_tpr10_label">
-         <property name="text">
-          <string>dram tpr10</string>
-         </property>
-        </widget>
-       </item>
        <item row="8" column="4">
         <widget class="QLineEdit" name="dram_dram_tpr8_lineEdit"/>
        </item>
-       <item row="1" column="2">
-        <widget class="QLineEdit" name="dram_dram_clk_lineEdit"/>
+       <item row="9" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr20_lineEdit"/>
        </item>
-       <item row="3" column="5">
-        <widget class="QLabel" name="dram_dram_tpr14_label">
-         <property name="text">
-          <string>dram tpr14</string>
-         </property>
-        </widget>
+       <item row="8" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr19_lineEdit"/>
        </item>
-       <item row="10" column="5">
-        <widget class="QLabel" name="dram_dram_tpr21_label">
-         <property name="text">
-          <string>dram tpr21</string>
-         </property>
-        </widget>
+       <item row="7" column="2">
+        <widget class="QLineEdit" name="dram_dram_mr0_lineEdit"/>
        </item>
        <item row="1" column="5">
         <widget class="QLabel" name="dram_dram_tpr12_label">
          <property name="text">
           <string>dram tpr12</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QLineEdit" name="dram_dram_para2_lineEdit"/>
-       </item>
-       <item row="8" column="3">
-        <widget class="QLabel" name="dram_dram_tpr8_label">
-         <property name="text">
-          <string>dram tpr8</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="dram_load_preset_label">
-         <property name="text">
-          <string>Preset</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="dram_dram_zq_label">
-         <property name="text">
-          <string>dram zq</string>
          </property>
         </widget>
        </item>
@@ -869,12 +842,28 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="5">
-        <widget class="QLabel" name="dram_dram_tpr18_label">
+       <item row="2" column="3">
+        <widget class="QLabel" name="dram_dram_tpr2_label">
          <property name="text">
-          <string>dram tpr18</string>
+          <string>dram tpr2</string>
          </property>
         </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="dram_dram_mr3_label">
+         <property name="text">
+          <string>dram mr3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr12_lineEdit"/>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLineEdit" name="dram_dram_para1_lineEdit"/>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="dram_dram_zq_lineEdit"/>
        </item>
        <item row="4" column="2">
         <widget class="QLineEdit" name="dram_dram_odt_en_lineEdit"/>
@@ -886,10 +875,124 @@
          </property>
         </widget>
        </item>
+       <item row="9" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr9_lineEdit"/>
+       </item>
+       <item row="2" column="5">
+        <widget class="QLabel" name="dram_dram_tpr13_label">
+         <property name="text">
+          <string>dram tpr13</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="3">
+        <widget class="QLabel" name="dram_dram_tpr8_label">
+         <property name="text">
+          <string>dram tpr8</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="dram_dram_para1_label">
+         <property name="text">
+          <string>dram para1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr6_lineEdit"/>
+       </item>
+       <item row="4" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr15_lineEdit"/>
+       </item>
+       <item row="2" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr2_lineEdit"/>
+       </item>
+       <item row="8" column="2">
+        <widget class="QLineEdit" name="dram_dram_mr1_lineEdit"/>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="dram_dram_type_lineEdit"/>
+       </item>
+       <item row="3" column="5">
+        <widget class="QLabel" name="dram_dram_tpr14_label">
+         <property name="text">
+          <string>dram tpr14</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="5">
+        <widget class="QLabel" name="dram_dram_tpr18_label">
+         <property name="text">
+          <string>dram tpr18</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="5">
+        <widget class="QLabel" name="dram_dram_tpr16_label">
+         <property name="text">
+          <string>dram tpr16</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr5_lineEdit"/>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="dram_dram_mr0_label">
+         <property name="text">
+          <string>dram mr0</string>
+         </property>
+        </widget>
+       </item>
        <item row="11" column="3">
         <widget class="QLabel" name="dram_dram_tpr11_label">
          <property name="text">
           <string>dram tpr11</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="dram_dram_zq_label">
+         <property name="text">
+          <string>dram zq</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="dram_label_dram_clk">
+         <property name="text">
+          <string>dram clk</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr10_lineEdit"/>
+       </item>
+       <item row="11" column="4">
+        <widget class="QLineEdit" name="dram_dram_tpr11_lineEdit"/>
+       </item>
+       <item row="5" column="3">
+        <widget class="QLabel" name="dram_dram_tpr5_label">
+         <property name="text">
+          <string>dram tpr5</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="6">
+        <widget class="QLineEdit" name="dram_dram_tpr18_lineEdit"/>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="dram_dram_tpr0_label">
+         <property name="text">
+          <string>dram tpr0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="5">
+        <widget class="QLabel" name="dram_dram_tpr21_label">
+         <property name="text">
+          <string>dram tpr21</string>
          </property>
         </widget>
        </item>
@@ -900,30 +1003,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr1_lineEdit"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="dram_label_dram_clk">
-         <property name="text">
-          <string>dram clk</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="dram_dram_type_label">
-         <property name="text">
-          <string>dram type</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QLabel" name="dram_dram_tpr2_label">
-         <property name="text">
-          <string>dram tpr2</string>
-         </property>
-        </widget>
-       </item>
        <item row="4" column="5">
         <widget class="QLabel" name="dram_dram_tpr15_label">
          <property name="text">
@@ -931,94 +1010,22 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="2">
-        <widget class="QLineEdit" name="dram_dram_para1_lineEdit"/>
-       </item>
-       <item row="7" column="2">
-        <widget class="QLineEdit" name="dram_dram_mr0_lineEdit"/>
-       </item>
-       <item row="8" column="2">
-        <widget class="QLineEdit" name="dram_dram_mr1_lineEdit"/>
-       </item>
-       <item row="9" column="2">
-        <widget class="QLineEdit" name="dram_dram_mr2_lineEdit"/>
-       </item>
-       <item row="10" column="2">
-        <widget class="QLineEdit" name="dram_dram_mr3_lineEdit"/>
-       </item>
-       <item row="11" column="2">
-        <widget class="QLineEdit" name="dram_dram_tpr0_lineEdit"/>
-       </item>
-       <item row="10" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr10_lineEdit"/>
-       </item>
-       <item row="11" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr11_lineEdit"/>
-       </item>
-       <item row="9" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr9_lineEdit"/>
-       </item>
-       <item row="7" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr7_lineEdit"/>
-       </item>
-       <item row="6" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr6_lineEdit"/>
-       </item>
-       <item row="5" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr5_lineEdit"/>
-       </item>
-       <item row="4" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr4_lineEdit"/>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr3_lineEdit"/>
-       </item>
-       <item row="2" column="4">
-        <widget class="QLineEdit" name="dram_dram_tpr2_lineEdit"/>
-       </item>
-       <item row="2" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr13_lineEdit"/>
-       </item>
-       <item row="3" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr14_lineEdit"/>
-       </item>
-       <item row="4" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr15_lineEdit"/>
-       </item>
-       <item row="5" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr16_lineEdit"/>
-       </item>
-       <item row="6" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr17_lineEdit"/>
-       </item>
-       <item row="7" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr18_lineEdit"/>
-       </item>
-       <item row="8" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr19_lineEdit"/>
-       </item>
-       <item row="9" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr20_lineEdit"/>
-       </item>
-       <item row="10" column="6">
-        <widget class="QLineEdit" name="dram_dram_tpr21_lineEdit"/>
-       </item>
-       <item row="11" column="6">
-        <widget class="QPushButton" name="dram_init_dram_btn">
+       <item row="0" column="0">
+        <widget class="QLabel" name="dram_load_preset_label">
          <property name="text">
-          <string>Init DRAM</string>
+          <string>Preset</string>
          </property>
         </widget>
        </item>
-       <item row="11" column="5">
-        <widget class="QCheckBox" name="dram_init_dram_uart_checkbox">
+       <item row="0" column="6">
+        <widget class="QPushButton" name="dram_load_preset_pushButton">
          <property name="text">
-          <string>UART</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
+          <string>Load Presets</string>
          </property>
         </widget>
+       </item>
+       <item row="0" column="2" colspan="4">
+        <widget class="QComboBox" name="dram_load_preset_comboBox"/>
        </item>
       </layout>
      </widget>
