@@ -95,6 +95,18 @@ void MainWindow::copyToClipboard(const QString &data, QPushButton *button) {
     QTimer::singleShot(500, this, [button]() { button->setText(tr("Copy")); });
 }
 
+void MainWindow::loadDramPresets() {
+    if (!chipStatus.isNone()) {
+        auto dram_paras = chip_op->get_dram_params();
+        ui->dram_load_preset_comboBox->clear();
+        for (const auto &item: dram_paras) {
+            ui->dram_load_preset_comboBox->addItem(item.dram_param_name);
+        }
+    } else {
+        scanChipWarning();
+    }
+}
+
 void MainWindow::updateStatusBar(const QString &status) {
     ui->statusbar->showMessage(status, 1000);
 }
@@ -260,19 +272,13 @@ void MainWindow::on_Misc_exec_addr_btn_clicked() {
 void MainWindow::on_tabWidget_currentChanged(int index) {
     qDebug() << "change tabWidget to: " << index;
     if (index == uiTabWidgetIndex::tab_dram) {
-        if (!chipStatus.isNone()) {
-            auto dram_paras = chip_op->get_dram_params();
-            ui->dram_load_preset_comboBox->clear();
-            for (const auto &item: dram_paras) {
-                ui->dram_load_preset_comboBox->addItem(item.dram_param_name);
-            }
-        }
+        loadDramPresets();
     }
 }
 
 void MainWindow::on_dram_load_preset_comboBox_currentIndexChanged() {
     // Prevention of cross-border
-    if (chip_op->get_dram_params().length() > 1) {
+    if (chip_op->get_dram_params().length() >= 1) {
         auto current_dram_param = chip_op->get_dram_params()[0].dram_param;
         for (const auto &item: chip_op->get_dram_params()) {
             if (ui->dram_load_preset_comboBox->currentText() == item.dram_param_name) {
@@ -478,5 +484,9 @@ void MainWindow::scanSpiNor() {
 
 void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {
     scanSpiNor();
+}
+
+void MainWindow::on_dram_load_preset_pushButton_clicked() {
+    loadDramPresets();
 }
 
