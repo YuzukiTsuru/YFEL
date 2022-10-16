@@ -15,7 +15,7 @@
 #include "f1c100s.h"
 
 f1c100s::f1c100s(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
-    chip_info.chip_name = "F1C100s/F1C200s/F1C500s/F1C600/R6";
+    chip_info.chip_name = "F1C100A/F1C100s/F1C200s/F1C500s/F1C600/F1C700/F1C800/R6/RT1806";
     chip_info.chip_id = 0x00166300;
     chip_info.chip_type = chip_type_e::Normal;
     chip_info.chip_core = core_name_.ARM9;
@@ -43,7 +43,7 @@ chip_function_e f1c100s::chip_reset() {
 
 chip_function_e f1c100s::chip_sid() {
     // f1c100s have no sid
-    chip_info.chip_sid = "AW1663 Series not support SID";
+    chip_info.chip_sid = "1663 Series not support SID";
     return chip_function_e::Success;
 }
 
