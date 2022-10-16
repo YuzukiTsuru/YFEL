@@ -73,7 +73,7 @@ bool ChipOP::check_chip() {
     // enable long connection of fel
     fel_->fel_open_connection();
     for (auto item: qAsConst(chip_db)) {
-        qDebug() << "Checking chip " << item->get_chip_info().chip_id;
+        qDebug() << "Checking chip 0x" << QString::number(item->get_chip_info().chip_id, 16);
         if (item->chip_detect() == chip_function_e::Success) {
             current_chip = item;
             qDebug() << "Current Chip" << current_chip->get_chip_info().chip_name;
