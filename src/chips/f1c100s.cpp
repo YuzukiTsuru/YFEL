@@ -43,7 +43,8 @@ chip_function_e f1c100s::chip_reset() {
 
 chip_function_e f1c100s::chip_sid() {
     // f1c100s have no sid
-    return chip_function_e::Fail;
+    chip_info.chip_sid = "AW1663 Series not support SID";
+    return chip_function_e::Success;
 }
 
 chip_function_e f1c100s::chip_jtag() {

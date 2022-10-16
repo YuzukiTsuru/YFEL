@@ -30,6 +30,7 @@ void ChipOP::chip_release_ui() {
 void ChipOP::generate_chip_db() {
     chip_db.push_back(new d1(fel_, chip_version));
     chip_db.push_back(new r528(fel_, chip_version));
+    chip_db.push_back(new f1c100s(fel_, chip_version));
 }
 
 void ChipOP::chip_scan_chip() {
@@ -41,7 +42,9 @@ void ChipOP::chip_scan_chip() {
 
     // check chip type form chip id
     if (!check_chip()) {
-        throw std::runtime_error("Unsupported Chip\nfunction not implemented");
+        throw std::runtime_error("Unsupported Chip 0x" +
+                                 QString::number(chip_version.id, 16).toStdString() +
+                                 "\nfunction not implemented");
     }
 }
 
@@ -171,7 +174,8 @@ QString ChipOP::chip_scan_spi_nor() {
         return {tr("No supported SPI NOR found")};
     } else {
         if (spi_nor.get_spi_nor_name() == "SFDP") {
-            return "JEDEC SFDP Compatible SPI NOR " + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) + "MB 0x"
+            return "JEDEC SFDP Compatible SPI NOR " + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) +
+                   "MB 0x"
                    + QString::number(spi_nor.get_spi_nor_size(), 16);
         } else {
             return spi_nor.get_spi_nor_name() + " "
