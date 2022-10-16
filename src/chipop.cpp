@@ -175,8 +175,7 @@ QString ChipOP::chip_scan_spi_nor() {
     } else {
         if (spi_nor.get_spi_nor_name() == "SFDP") {
             return "JEDEC SFDP Compatible SPI NOR " + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) +
-                   "MB 0x"
-                   + QString::number(spi_nor.get_spi_nor_size(), 16);
+                   "MB 0x" + QString::number(spi_nor.get_spi_nor_size(), 16);
         } else {
             return spi_nor.get_spi_nor_name() + " "
                    + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) + "MB 0x"
