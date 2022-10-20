@@ -53,8 +53,8 @@ private:
     void spi_nor_sfdp_handler();
 
 private:
-    spi_nor_pdata_t pdata;
-    sfdp_t sfdp;
+    spi_nor_pdata_t pdata{};
+    sfdp_t sfdp{};
     spi *spi_ = nullptr;
 };
 

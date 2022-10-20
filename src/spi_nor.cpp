@@ -132,6 +132,8 @@ void spi_nor::spi_nor_init() {
             if (clen <= pdata.cmd_len) {
                 spi_->get_current_chip()->chip_spi_run(cbuf, clen);
             }
+        }else {
+
         }
     } catch (const function_not_implemented &e) {
         throw e;
