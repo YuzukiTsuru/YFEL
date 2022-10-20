@@ -15,7 +15,10 @@
 #include "chipop.h"
 #include "exceptions.h"
 
-ChipOP::ChipOP() = default;
+ChipOP::ChipOP(){
+    // Generate chip db
+    generate_chip_db();
+};
 
 ChipOP::~ChipOP() {
     qDebug() << "ChipOP::~ChipOP()";
@@ -28,14 +31,21 @@ void ChipOP::chip_release_ui() {
 }
 
 void ChipOP::generate_chip_db() {
+    // clear chip db
+    chip_db.clear();
+
     chip_db.push_back(new d1(fel_, chip_version));
     chip_db.push_back(new r528(fel_, chip_version));
     chip_db.push_back(new f1c100s(fel_, chip_version));
 }
 
 void ChipOP::chip_scan_chip() {
+    fel_->fel_open_connection();
+
     fel_->fel_scan_chip();
     chip_version = fel_->fel_get_chip_version();
+
+    fel_->fel_close_connection();
 
     // Generate chip db
     generate_chip_db();
@@ -170,7 +180,7 @@ QString ChipOP::chip_scan_spi_nor() {
     fel_->fel_close_connection();
 
     chip_release_ui();
-    if (spi_nor.get_spi_nor_size() == 0) {
+    if (spi_nor.get_spi_nor_size() < 1) {
         return {tr("No supported SPI NOR found")};
     } else {
         if (spi_nor.get_spi_nor_name() == "SFDP") {
