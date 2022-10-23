@@ -116,6 +116,7 @@ void MainWindow::updateStatusBar(const QString &status, int time) {
 }
 
 void MainWindow::on_scan_pushButton_clicked() {
+    lockUI();
     updateStatusBar(tr("Scanning..."));
     try {
         chip_op->chip_scan_chip();
@@ -153,6 +154,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         clearChipInfo();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+    releaseUI();
 }
 
 void MainWindow::on_chip_chip_name_pushButton_clicked() {
