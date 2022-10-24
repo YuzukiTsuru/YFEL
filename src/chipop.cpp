@@ -22,9 +22,8 @@ ChipOP::ChipOP() {
 
 ChipOP::~ChipOP() {
     qDebug() << "ChipOP::~ChipOP()";
-    if (fel_) {
-        delete fel_;
-    }
+    delete fel_;
+    delete current_chip;
 }
 
 void ChipOP::chip_release_ui() {
