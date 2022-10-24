@@ -25,6 +25,12 @@ private:
         chip_dram_inited,
     };
 
+    enum chip_spi_e {
+        chip_spi_none,
+        chip_spi_ok,
+        chip_spi_error,
+    };
+
 public:
     chip_status() = default;
 
@@ -42,6 +48,7 @@ public:
 
 private:
     chip_status_e chipStatus = chip_status_e::chip_none;
+    chip_spi_e chipSpiStatus = chip_spi_e::chip_spi_none;
 };
 
 

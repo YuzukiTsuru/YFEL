@@ -496,20 +496,29 @@ void MainWindow::on_dram_load_preset_pushButton_clicked() {
     loadDramPresets();
 }
 
-
-void MainWindow::on_flash_spi_read_pushButton_clicked()
-{
-    QFile file("fileName");
-
-
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        QMessageBox::critical(this, "File opening problem", "Problem with open file for reading");
+void MainWindow::on_flash_spi_read_pushButton_clicked() {
+    qDebug() << "READ SPI NAND...";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
         return;
     }
+    try {
+        auto addr = ui->flash_spi_read_addr_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->flash_spi_read_addr_lineEdit->text().startsWith("0x"))
+            addr = ui->flash_spi_read_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+        auto len = ui->flash_spi_read_length_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->flash_spi_read_length_lineEdit->text().startsWith("0x"))
+            len = ui->flash_spi_read_length_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
 
-    hexView -> clear();
-    QByteArray arr = file.readAll();
-    hexView -> setData(new QHexView::DataStorageArray(arr));
+        lockUI();
+        hexView->clear();
+        QByteArray arr = chip_op->chip_read_spi_nand(addr, len);
+        hexView->setData(new QHexView::DataStorageArray(arr));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+    releaseUI();
 }
 

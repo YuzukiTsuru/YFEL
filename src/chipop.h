@@ -29,9 +29,11 @@ class ChipOP : public QObject {
 Q_OBJECT
 
 signals:
+
     void release_ui();
 
 private slots:
+
     void chip_release_ui();
 
 public:
@@ -64,6 +66,8 @@ public:
     void chip_erase_spi_nand(uint32_t addr, uint32_t len);
 
     void chip_erase_all_spi_nand();
+
+    QByteArray chip_read_spi_nand(uint64_t addr, uint64_t len);
 
     void chip_write_spi_nand(uint64_t addr, uint8_t *buf, uint64_t len);
 
