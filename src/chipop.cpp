@@ -15,14 +15,16 @@
 #include "chipop.h"
 #include "exceptions.h"
 
-ChipOP::ChipOP(){
+ChipOP::ChipOP() {
     // Generate chip db
     generate_chip_db();
 };
 
 ChipOP::~ChipOP() {
     qDebug() << "ChipOP::~ChipOP()";
-    delete fel_;
+    if (fel_) {
+        delete fel_;
+    }
 }
 
 void ChipOP::chip_release_ui() {
