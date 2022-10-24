@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="fel_flash">
        <attribute name="title">
@@ -508,6 +508,89 @@
        <attribute name="title">
         <string>SPI Read</string>
        </attribute>
+       <widget class="QWidget" name="">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>681</width>
+          <height>311</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="flash_spi_read" stretch="0,10,0">
+         <item>
+          <layout class="QHBoxLayout" name="flash_spi_read_read_horizontalLayout">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="flash_spi_read_addr_label">
+             <property name="text">
+              <string>Address</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="flash_spi_read_addr_lineEdit">
+             <property name="text">
+              <string>0x000000</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="flash_spi_read_length_label">
+             <property name="text">
+              <string>Length</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="flash_spi_read_length_lineEdit">
+             <property name="text">
+              <string>0x100000</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="flash_spi_read_pushButton">
+             <property name="text">
+              <string>Read</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="flash_spi_read_button">
+             <property name="text">
+              <string>Save</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="flash_spi_read_hexView">
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="flash_spi_read_save_horizontalLayout" stretch=""/>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="spi_erase">
        <attribute name="title">
@@ -526,12 +609,16 @@
          <item row="3" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nand_length_lineEdit">
            <property name="text">
-            <string>0x01</string>
+            <string>0x1000</string>
            </property>
           </widget>
          </item>
          <item row="7" column="3">
-          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_addr_lineEdit"/>
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_addr_lineEdit">
+           <property name="text">
+            <string>0x0000</string>
+           </property>
+          </widget>
          </item>
          <item row="6" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nor_currect_nor_chip_lineEdit"/>
@@ -597,7 +684,7 @@
          <item row="2" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nand_addr_lineEdit">
            <property name="text">
-            <string>0x0</string>
+            <string>0x0000</string>
            </property>
           </widget>
          </item>
@@ -616,7 +703,11 @@
           </widget>
          </item>
          <item row="8" column="3">
-          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_length"/>
+          <widget class="QLineEdit" name="flash_spi_erase_spi_nor_length">
+           <property name="text">
+            <string>0x1000</string>
+           </property>
+          </widget>
          </item>
          <item row="8" column="1">
           <widget class="QLabel" name="flash_spi_erase_spi_nor_length_label">

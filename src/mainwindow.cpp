@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
         updateStatusBar(tr("Done."));
     });
 
+    ui->flash_spi_read_hexView->addWidget(hexView);
     chipStatus.setNone();
 }
 
@@ -142,6 +143,9 @@ void MainWindow::on_scan_pushButton_clicked() {
         // update status bar
         updateStatusBar(tr("Done."));
         chipStatus.setOK();
+
+        // load dram presets
+        loadDramPresets();
     } catch (const cannot_find_fel_device &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Can't find target FEL device"));
     } catch (const usb_bulk_send_error &e) {
@@ -490,5 +494,22 @@ void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {
 
 void MainWindow::on_dram_load_preset_pushButton_clicked() {
     loadDramPresets();
+}
+
+
+void MainWindow::on_flash_spi_read_pushButton_clicked()
+{
+    QFile file("fileName");
+
+
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        QMessageBox::critical(this, "File opening problem", "Problem with open file for reading");
+        return;
+    }
+
+    hexView -> clear();
+    QByteArray arr = file.readAll();
+    hexView -> setData(new QHexView::DataStorageArray(arr));
 }
 

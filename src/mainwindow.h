@@ -14,6 +14,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 
+#include <lib/QHexView/QHexView.h>
+
 #include "chipop.h"
 #include "chip_status.h"
 
@@ -63,10 +65,14 @@ private slots:
 
     void on_dram_load_preset_pushButton_clicked();
 
+    void on_flash_spi_read_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     ChipOP *chip_op = new ChipOP();
+
+    QHexView *hexView = new QHexView();
 
     chip_status chipStatus;
 
