@@ -228,7 +228,7 @@ void MainWindow::clearChipInfo() {
     ui->chip_core_lineEdit->setText("");
     ui->chip_spi_nand_lineEdit->setText("");
     ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText("");
-
+    ui->flash_spi_erase_spi_nor_currect_nor_chip_lineEdit->setText("");
     chipStatus.setNone();
 }
 
