@@ -543,7 +543,7 @@
              <item row="0" column="1" colspan="2">
               <widget class="QLineEdit" name="flash_spi_write_fileName_lineEdit">
                <property name="text">
-                <string>`</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -557,7 +557,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="flash_spi_write_fileName_label">
                <property name="text">
-                <string>File:</string>
+                <string>File</string>
                </property>
               </widget>
              </item>

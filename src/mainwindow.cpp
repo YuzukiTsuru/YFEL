@@ -16,6 +16,7 @@
 #include <QClipboard>
 #include <QMessageBox>
 #include <QTimer>
+#include <QFileDialog>
 #include <qdesktopservices.h>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -41,6 +42,8 @@ MainWindow::~MainWindow() {
     qDebug() << "MainWindow::~MainWindow()";
     delete ui;
     delete chip_op;
+    delete spiNandWriteHexView;
+    delete spiNandReadHexView;
 }
 
 void MainWindow::initMainwindowData() {
@@ -524,5 +527,21 @@ void MainWindow::on_flash_spi_read_pushButton_clicked() {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
     releaseUI();
+}
+
+void MainWindow::on_flash_spi_write_fileOpen_button_clicked() {
+    auto fileName = QFileDialog::getOpenFileName(this, tr("Open Image File"), "",
+                                                 tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
+    ui->flash_spi_write_fileName_lineEdit->setText(fileName);
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("File opening fail"),
+                              tr("Problem with open file `") + fileName + tr("`for reading"));
+        return;
+    }
+
+    QByteArray fileBuf = file.readAll();
+    spiNandWriteHexView->clear();
+    spiNandWriteHexView->setData(new QHexView::DataStorageArray(fileBuf));
 }
 

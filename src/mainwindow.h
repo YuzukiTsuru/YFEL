@@ -67,6 +67,8 @@ private slots:
 
     void on_flash_spi_read_pushButton_clicked();
 
+    void on_flash_spi_write_fileOpen_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
