@@ -68,15 +68,19 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
     });
     connect(&watcher, &QFutureWatcher<void>::finished, &watcher, &QFutureWatcher<void>::deleteLater);
     connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
+    connect(this, &spi_nand::update_dialog_info, &dialog, &QProgressDialog::setLabelText);
+
+    QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
     dialog.setCancelButton(nullptr);
-    dialog.setWindowTitle(tr("Erasing"));
+    dialog.setWindowTitle(tr("Reading SPI NAND"));
     dialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     dialog.setRange(static_cast<int>(addr), static_cast<int>(addr + len));
     dialog.setValue(static_cast<int>(addr));
     dialog.show();
-    dialog.setLabelText(tr("Write SPI NAND From: 0x%1 to 0x%2").arg(QString::number(addr, 16),
-                                                                    QString::number(addr + len, 16)));
+    dialog.setFont(fixedFont);
+    dialog.setLabelText(tr("Reading SPI NAND From: 0x%1 to 0x%2").arg(QString::number(addr, 16),
+                                                                      QString::number(addr + len, 16)));
     // for progress
     watcher.setFuture(QtConcurrent::run([=]() mutable {
         while (len > 0) {
@@ -85,6 +89,10 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
             addr += n;
             len -= n;
             buf += n;
+            emit update_progress(static_cast<int>(addr));
+            emit update_dialog_info(tr("Reading SPI NAND From: 0x%1 to 0x%2")
+                                            .arg(QString::number(addr, 16),
+                                                 QString::number(addr + len, 16)));
         }
     }));
     loop.exec();
@@ -134,7 +142,6 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     QProgressDialog dialog;
     QEventLoop loop;
     QFutureWatcher<void> watcher;
-    QFont fixedFont;
 
     connect(&watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
     connect(&watcher, &QFutureWatcher<void>::finished, this, [=]() {
@@ -144,10 +151,10 @@ void spi_nand::erase(uint64_t addr, uint64_t len) {
     connect(this, &spi_nand::update_progress, &dialog, &QProgressDialog::setValue);
     connect(this, &spi_nand::update_dialog_info, &dialog, &QProgressDialog::setLabelText);
 
-    fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
     dialog.setCancelButton(nullptr);
-    dialog.setWindowTitle(tr("Erasing"));
+    dialog.setWindowTitle(tr("Erasing SPI NAND"));
     dialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     dialog.setRange(static_cast<int>(base), static_cast<int>(cnt));
     dialog.setValue(static_cast<int>(base));

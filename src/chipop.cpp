@@ -15,11 +15,15 @@
 #include "chipop.h"
 #include "exceptions.h"
 
-ChipOP::ChipOP() = default;
+ChipOP::ChipOP() {
+    // Generate chip db
+    generate_chip_db();
+};
 
 ChipOP::~ChipOP() {
     qDebug() << "ChipOP::~ChipOP()";
     delete fel_;
+    delete current_chip;
 }
 
 void ChipOP::chip_release_ui() {
@@ -28,14 +32,21 @@ void ChipOP::chip_release_ui() {
 }
 
 void ChipOP::generate_chip_db() {
+    // clear chip db
+    chip_db.clear();
+
     chip_db.push_back(new d1(fel_, chip_version));
     chip_db.push_back(new r528(fel_, chip_version));
     chip_db.push_back(new f1c100s(fel_, chip_version));
 }
 
 void ChipOP::chip_scan_chip() {
+    fel_->fel_open_connection();
+
     fel_->fel_scan_chip();
     chip_version = fel_->fel_get_chip_version();
+
+    fel_->fel_close_connection();
 
     // Generate chip db
     generate_chip_db();
@@ -94,6 +105,19 @@ void ChipOP::chip_init_dram(const dram_param_t &param) {
     current_chip->chip_ddr(param);
 }
 
+void ChipOP::chip_exec(uint32_t addr) {
+    fel_->fel_exec(addr);
+}
+
+QVector<dram_info_t> ChipOP::get_dram_params() {
+    return current_chip->get_chip_dram_info();
+}
+
+void ChipOP::chip_sid() {
+    // Read SID Here
+    current_chip->chip_sid();
+}
+
 QString ChipOP::chip_scan_spi_nand() {
     fel_->fel_open_connection();
     // TODO: Need try...catch to handle exception
@@ -141,17 +165,17 @@ void ChipOP::chip_erase_all_spi_nand() {
     fel_->fel_close_connection();
 }
 
-void ChipOP::chip_exec(uint32_t addr) {
-    fel_->fel_exec(addr);
-}
+QByteArray ChipOP::chip_read_spi_nand(uint64_t addr, uint64_t len) {
+    auto *buf = new uint8_t[len];
+    fel_->fel_open_connection();
+    spi_nand spinand(current_chip, fel_);
+    connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+    spinand.init();
+    spinand.read(addr, buf, len);
+    disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+    fel_->fel_close_connection();
 
-QVector<dram_info_t> ChipOP::get_dram_params() {
-    return current_chip->get_chip_dram_info();
-}
-
-void ChipOP::chip_sid() {
-    // Read SID Here
-    current_chip->chip_sid();
+    return QByteArray::fromRawData(reinterpret_cast<char *>(buf), static_cast<int64_t>(len));
 }
 
 void ChipOP::chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64_t len) {
@@ -170,7 +194,7 @@ QString ChipOP::chip_scan_spi_nor() {
     fel_->fel_close_connection();
 
     chip_release_ui();
-    if (spi_nor.get_spi_nor_size() == 0) {
+    if (spi_nor.get_spi_nor_size() < 1) {
         return {tr("No supported SPI NOR found")};
     } else {
         if (spi_nor.get_spi_nor_name() == "SFDP") {

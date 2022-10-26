@@ -70,7 +70,7 @@ set(
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
         ${WIN32_RESOURCES}
-)
+        lib/QHexView/QHexView.cpp lib/QHexView/QHexView.h)
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(YFEL

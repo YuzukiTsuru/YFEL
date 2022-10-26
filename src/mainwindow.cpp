@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
         updateStatusBar(tr("Done."));
     });
 
+    ui->flash_spi_read_hexView->addWidget(hexView);
     chipStatus.setNone();
 }
 
@@ -116,6 +117,7 @@ void MainWindow::updateStatusBar(const QString &status, int time) {
 }
 
 void MainWindow::on_scan_pushButton_clicked() {
+    lockUI();
     updateStatusBar(tr("Scanning..."));
     try {
         chip_op->chip_scan_chip();
@@ -141,6 +143,9 @@ void MainWindow::on_scan_pushButton_clicked() {
         // update status bar
         updateStatusBar(tr("Done."));
         chipStatus.setOK();
+
+        // load dram presets
+        loadDramPresets();
     } catch (const cannot_find_fel_device &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Can't find target FEL device"));
     } catch (const usb_bulk_send_error &e) {
@@ -153,6 +158,7 @@ void MainWindow::on_scan_pushButton_clicked() {
         clearChipInfo();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+    releaseUI();
 }
 
 void MainWindow::on_chip_chip_name_pushButton_clicked() {
@@ -488,5 +494,31 @@ void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {
 
 void MainWindow::on_dram_load_preset_pushButton_clicked() {
     loadDramPresets();
+}
+
+void MainWindow::on_flash_spi_read_pushButton_clicked() {
+    qDebug() << "READ SPI NAND...";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
+    try {
+        auto addr = ui->flash_spi_read_addr_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->flash_spi_read_addr_lineEdit->text().startsWith("0x"))
+            addr = ui->flash_spi_read_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+        auto len = ui->flash_spi_read_length_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->flash_spi_read_length_lineEdit->text().startsWith("0x"))
+            len = ui->flash_spi_read_length_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+
+        lockUI();
+        hexView->clear();
+        QByteArray arr = chip_op->chip_read_spi_nand(addr, len);
+        hexView->setData(new QHexView::DataStorageArray(arr));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+    releaseUI();
 }
 
