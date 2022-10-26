@@ -98,7 +98,7 @@ void spi_nand::read(uint64_t addr, uint8_t *buf, uint64_t len) {
     loop.exec();
 }
 
-void spi_nand::write(uint64_t addr, uint8_t *buf, uint64_t len) {
+void spi_nand::write(uint64_t addr, const uint8_t *buf, uint64_t len) {
     QProgressDialog dialog;
     QEventLoop loop;
     QFutureWatcher<void> watcher;
@@ -313,7 +313,7 @@ void spi_nand::spi_nand_read(uint32_t addr, uint8_t *buf, uint32_t count) {
     }
 }
 
-void spi_nand::spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count) {
+void spi_nand::spi_nand_write(uint32_t addr, const uint8_t *buf, uint32_t count) {
     auto cbuf = new uint8_t[pdata.cmd_len];
     auto txbuf = new uint8_t[pdata.swap_len];
 

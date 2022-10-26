@@ -153,7 +153,6 @@ void usb::read_usb_response() {
     }
 }
 
-
 void usb::usb_write(const void *buf, size_t len) {
     send_usb_request(0x12, len);
     usb_bulk_send(ctx.epout, (uint8_t *) buf, len);

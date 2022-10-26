@@ -69,7 +69,7 @@ public:
 
     QByteArray chip_read_spi_nand(uint64_t addr, uint64_t len);
 
-    void chip_write_spi_nand(uint64_t addr, uint8_t *buf, uint64_t len);
+    void chip_write_spi_nand(uint64_t addr,const QByteArray &buf, uint64_t len);
 
     /*
      * SPI NOR OP

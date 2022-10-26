@@ -178,12 +178,15 @@ QByteArray ChipOP::chip_read_spi_nand(uint64_t addr, uint64_t len) {
     return QByteArray::fromRawData(reinterpret_cast<char *>(buf), static_cast<int64_t>(len));
 }
 
-void ChipOP::chip_write_spi_nand(const uint64_t addr, uint8_t *buf, const uint64_t len) {
+void ChipOP::chip_write_spi_nand(const uint64_t addr, const QByteArray& buf, const uint64_t len) {
+    auto buffer = reinterpret_cast<const uint8_t *>(buf.data());
+    fel_->fel_open_connection();
     spi_nand spinand(current_chip, fel_);
     connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     spinand.init();
-    spinand.write(addr, buf, len);
+    spinand.write(addr, buffer, len);
     disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
+    fel_->fel_close_connection();
 }
 
 QString ChipOP::chip_scan_spi_nor() {

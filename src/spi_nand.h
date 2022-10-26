@@ -27,6 +27,7 @@
 class spi_nand : public QObject {
 Q_OBJECT
 signals:
+
     void update_progress(int value);
 
     void update_dialog_info(QString info);
@@ -42,7 +43,7 @@ public:
 
     void read(uint64_t addr, uint8_t *buf, uint64_t len);
 
-    void write(uint64_t addr, uint8_t *buf, uint64_t len);
+    void write(uint64_t addr, const uint8_t *buf, uint64_t len);
 
     void erase(uint64_t addr, uint64_t len);
 
@@ -65,7 +66,7 @@ private:
 
     void spi_nand_read(uint32_t addr, uint8_t *buf, uint32_t count);
 
-    void spi_nand_write(uint32_t addr, uint8_t *buf, uint32_t count);
+    void spi_nand_write(uint32_t addr, const uint8_t *buf, uint32_t count);
 
     void spi_nand_erase(uint64_t addr, uint64_t count);
 
