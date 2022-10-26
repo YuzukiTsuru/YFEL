@@ -39,7 +39,7 @@
      <attribute name="title">
       <string>Chip</string>
      </attribute>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="layoutWidget_5">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="fel_flash">
        <attribute name="title">
@@ -503,12 +503,99 @@
        <attribute name="title">
         <string>SPI Write</string>
        </attribute>
+       <widget class="QWidget" name="layoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>681</width>
+          <height>311</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="flash_spi_read_2" stretch="0,10,0">
+         <item>
+          <layout class="QHBoxLayout" name="flash_spi_read_read_horizontalLayout_2">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,10,0,0">
+             <item row="1" column="0">
+              <widget class="QLabel" name="flash_spi_write_addr_label">
+               <property name="text">
+                <string>Address</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QPushButton" name="flash_spi_write_fileOpen_button">
+               <property name="text">
+                <string>Open</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" colspan="2">
+              <widget class="QLineEdit" name="flash_spi_write_fileName_lineEdit">
+               <property name="text">
+                <string>`</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QPushButton" name="flash_spi_write_button">
+               <property name="text">
+                <string>Write</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="flash_spi_write_fileName_label">
+               <property name="text">
+                <string>File:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" colspan="2">
+              <widget class="QLineEdit" name="flash_spi_write_addr_lineEdit">
+               <property name="text">
+                <string>0x000000</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="flash_spi_write_hexView">
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="flash_spi_read_save_horizontalLayout_2"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="spi_read">
        <attribute name="title">
         <string>SPI Read</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -587,7 +674,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="flash_spi_read_save_horizontalLayout" stretch=""/>
+          <layout class="QHBoxLayout" name="flash_spi_read_save_horizontalLayout"/>
          </item>
         </layout>
        </widget>

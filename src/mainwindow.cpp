@@ -32,7 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
         updateStatusBar(tr("Done."));
     });
 
-    ui->flash_spi_read_hexView->addWidget(hexView);
+    ui->flash_spi_read_hexView->addWidget(spiNandReadHexView);
+    ui->flash_spi_write_hexView->addWidget(spiNandWriteHexView);
     chipStatus.setNone();
 }
 
@@ -492,7 +493,7 @@ void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {
 }
 
 void MainWindow::on_dram_load_preset_pushButton_clicked() {
-    if (chipStatus.isNone()){
+    if (chipStatus.isNone()) {
         scanChipWarning();
         return;
     }
@@ -514,9 +515,9 @@ void MainWindow::on_flash_spi_read_pushButton_clicked() {
             len = ui->flash_spi_read_length_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
 
         lockUI();
-        hexView->clear();
+        spiNandReadHexView->clear();
         QByteArray arr = chip_op->chip_read_spi_nand(addr, len);
-        hexView->setData(new QHexView::DataStorageArray(arr));
+        spiNandReadHexView->setData(new QHexView::DataStorageArray(arr));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {

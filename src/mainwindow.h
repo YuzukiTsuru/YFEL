@@ -72,7 +72,9 @@ private:
 
     ChipOP *chip_op = new ChipOP();
 
-    QHexView *hexView = new QHexView();
+    QHexView *spiNandReadHexView = new QHexView();
+
+    QHexView *spiNandWriteHexView = new QHexView();
 
     chip_status chipStatus;
 
