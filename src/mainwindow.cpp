@@ -103,8 +103,6 @@ void MainWindow::loadDramPresets() {
         for (const auto &item: dram_paras) {
             ui->dram_load_preset_comboBox->addItem(item.dram_param_name);
         }
-    } else {
-        scanChipWarning();
     }
 }
 
@@ -230,6 +228,7 @@ void MainWindow::clearChipInfo() {
     ui->chip_core_lineEdit->setText("");
     ui->chip_spi_nand_lineEdit->setText("");
     ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText("");
+
     chipStatus.setNone();
 }
 
@@ -493,6 +492,10 @@ void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {
 }
 
 void MainWindow::on_dram_load_preset_pushButton_clicked() {
+    if (chipStatus.isNone()){
+        scanChipWarning();
+        return;
+    }
     loadDramPresets();
 }
 
