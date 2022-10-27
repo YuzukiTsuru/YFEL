@@ -184,6 +184,7 @@ void ChipOP::chip_write_spi_nand(const uint64_t addr, const QByteArray& buf, con
     spi_nand spinand(current_chip, fel_);
     connect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     spinand.init();
+    spinand.erase(addr, len);
     spinand.write(addr, buffer, len);
     disconnect(&spinand, &spi_nand::release_ui, this, &ChipOP::chip_release_ui);
     fel_->fel_close_connection();
