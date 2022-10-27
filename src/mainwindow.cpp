@@ -459,6 +459,11 @@ void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
         scanChipWarning();
         return;
     }
+    if (ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->text().isEmpty()) {
+        QMessageBox::warning(this, tr("Warning"), tr("Please scan the SPI NAND first"));
+        return;
+    }
+
     updateStatusBar(tr("Erasing All SPI NAND..."), 20000);
     try {
         lockUI();
@@ -536,12 +541,43 @@ void MainWindow::on_flash_spi_write_fileOpen_button_clicked() {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(this, tr("File opening fail"),
-                              tr("Problem with open file `") + fileName + tr("`for reading"));
+                             tr("Problem with open file `") + fileName + tr("` for reading"));
         return;
     }
 
     QByteArray fileBuf = file.readAll();
     spiNandWriteHexView->clear();
     spiNandWriteHexView->setData(new QHexView::DataStorageArray(fileBuf));
+}
+
+void MainWindow::on_flash_spi_write_button_clicked() {
+    qDebug() << "WRITE SPI NAND...";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
+    auto fileName = ui->flash_spi_write_fileName_lineEdit->text();
+    QFile file(fileName);
+    uint64_t fileSize = 0;
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("File opening fail"),
+                             tr("Problem with open file `") + fileName + tr("` for reading"));
+        return;
+    }
+    fileSize = file.size();
+    const QByteArray fileBuf = file.readAll();
+    try {
+        lockUI();
+        auto addr = ui->flash_spi_write_addr_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->flash_spi_write_addr_lineEdit->text().startsWith("0x"))
+            addr = ui->flash_spi_write_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+
+        chip_op->chip_write_spi_nand(addr, fileBuf, fileSize);
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+    releaseUI();
 }
 
