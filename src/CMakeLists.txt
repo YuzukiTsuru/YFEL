@@ -50,49 +50,42 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
             "${PROJECT_SOURCE_DIR}/assets/YFEL.rc.in"
             "${PROJECT_BINARY_DIR}/YFEL.rc"
     )
-    set (WIN32_RESOURCES ${PROJECT_BINARY_DIR}/YFEL.rc)
-endif()
+    set(WIN32_RESOURCES ${PROJECT_BINARY_DIR}/YFEL.rc)
+endif ()
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 
-set(TS_FILES "i18n/YFEL_zh_CN.ts")
+set(TS_FILES "${PROJECT_SOURCE_DIR}/i18n/YFEL_zh_CN.ts")
 
 file(GLOB PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 file(GLOB CHIP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.h)
 
 set(
         PROJECT_SOURCES
-        ${PROJECT_SOURCES}
         mainwindow.ui
         icon.qrc
+
+        ${PROJECT_SOURCES}
         ${CHIP_SOURCES}
         ${TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
         ${WIN32_RESOURCES}
-        lib/QHexView/QHexView.cpp lib/QHexView/QHexView.h)
+
+        lib/QHexView/QHexView.cpp
+        lib/QHexView/QHexView.h
+)
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(YFEL
-            MANUAL_FINALIZATION
-            ${PROJECT_SOURCES}
-            )
-    # Define target properties for Android with Qt 6 as:
-    #    set_property(TARGET YFEL APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-    #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-    # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt_add_executable(YFEL MANUAL_FINALIZATION ${PROJECT_SOURCES} ${QM_FILES})
 else ()
     if (ANDROID)
-        add_library(YFEL SHARED
-                ${PROJECT_SOURCES}
-                )
+        add_library(YFEL SHARED ${PROJECT_SOURCES})
         # Define properties for Android with Qt 5 after find_package() calls as:
         #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else ()
-        add_executable(YFEL
-                ${PROJECT_SOURCES}
-                )
+        add_executable(YFEL ${PROJECT_SOURCES})
     endif ()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif ()
