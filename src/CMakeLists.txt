@@ -56,7 +56,8 @@ endif ()
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Concurrent)
 
-set(TS_FILES "${PROJECT_SOURCE_DIR}/i18n/YFEL_zh_CN.ts")
+set(I18N_TS_FILES "${PROJECT_SOURCE_DIR}/i18n/YFEL_zh_CN.ts")
+set_source_files_properties(${I18N_TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/i18n")
 
 file(GLOB PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 file(GLOB CHIP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.h)
@@ -68,7 +69,7 @@ set(
 
         ${PROJECT_SOURCES}
         ${CHIP_SOURCES}
-        ${TS_FILES}
+        ${I18N_TS_FILES}
         ${PROJECT_BINARY_DIR}/yfel_config.h
         ${WIN32_RESOURCES}
 
@@ -77,13 +78,19 @@ set(
 )
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-    qt_add_executable(YFEL MANUAL_FINALIZATION ${PROJECT_SOURCES} ${QM_FILES})
+    qt_add_executable(YFEL MANUAL_FINALIZATION ${PROJECT_SOURCES})
+
+    qt_add_lupdate(YFEL TS_FILES ${I18N_TS_FILES})
+    qt_add_lrelease(YFEL
+            TS_FILES ${I18N_TS_FILES}
+            QM_FILES_OUTPUT_VARIABLE qm_files)
+    qt_add_resources(YFEL "translations"
+            PREFIX "/"
+            BASE "${CMAKE_CURRENT_BINARY_DIR}"
+            FILES "${qm_files}")
 else ()
     if (ANDROID)
         add_library(YFEL SHARED ${PROJECT_SOURCES})
-        # Define properties for Android with Qt 5 after find_package() calls as:
-        #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else ()
         add_executable(YFEL ${PROJECT_SOURCES})
     endif ()
