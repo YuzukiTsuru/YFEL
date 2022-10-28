@@ -101,8 +101,10 @@ if (WIN32)
     target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Concurrent
             ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/lib/libusb-1.0.a)
     target_include_directories(YFEL PRIVATE ${CMAKE_SOURCE_DIR}/lib/libusb/libusb-MinGW-x64/include)
-else ()
+elseif (UNIX)
     target_link_libraries(YFEL PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Concurrent usb-1.0)
+else()
+    message(FAIL "Not support platform")
 endif ()
 
 set_target_properties(
