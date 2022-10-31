@@ -17,6 +17,7 @@
 
 ChipOP::ChipOP() {
     // Generate chip db
+    qDebug() << "init chip op, generate chip db";
     generate_chip_db();
 };
 
