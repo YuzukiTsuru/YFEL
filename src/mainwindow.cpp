@@ -112,8 +112,10 @@ void MainWindow::loadDramPresets() {
     if (!chipStatus.isNone()) {
         auto dram_paras = chip_op->get_dram_params();
         ui->dram_load_preset_comboBox->clear();
-        for (const auto &item: dram_paras) {
-            ui->dram_load_preset_comboBox->addItem(item.dram_param_name);
+        if (!dram_paras.isEmpty()) {
+            for (const auto &item: dram_paras) {
+                ui->dram_load_preset_comboBox->addItem(item.dram_param_name);
+            }
         }
     }
 }
