@@ -100,6 +100,14 @@ void MainWindow::copyToClipboard(const QString &data, QPushButton *button) {
     QTimer::singleShot(500, this, [button]() { button->setText(tr("Copy")); });
 }
 
+QString MainWindow::openFileDialog(QLineEdit *lineEdit) {
+    QString fileName =
+            QFileDialog::getOpenFileName(this, tr("Open Image File"), "",
+                                         tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
+    lineEdit->setText(fileName);
+    return fileName;
+}
+
 void MainWindow::loadDramPresets() {
     if (!chipStatus.isNone()) {
         auto dram_paras = chip_op->get_dram_params();
@@ -579,5 +587,37 @@ void MainWindow::on_flash_spi_write_button_clicked() {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
     releaseUI();
+}
+
+void MainWindow::on_flash_pushButton_1_clicked() {
+    openFileDialog(ui->flash_lineEdit_1);
+}
+
+void MainWindow::on_flash_pushButton_2_clicked() {
+    openFileDialog(ui->flash_lineEdit_2);
+}
+
+void MainWindow::on_flash_pushButton_3_clicked() {
+    openFileDialog(ui->flash_lineEdit_3);
+}
+
+void MainWindow::on_flash_pushButton_4_clicked() {
+    openFileDialog(ui->flash_lineEdit_4);
+}
+
+void MainWindow::on_flash_pushButton_5_clicked() {
+    openFileDialog(ui->flash_lineEdit_5);
+}
+
+void MainWindow::on_flash_pushButton_6_clicked() {
+    openFileDialog(ui->flash_lineEdit_6);
+}
+
+void MainWindow::on_flash_pushButton_7_clicked() {
+    openFileDialog(ui->flash_lineEdit_7);
+}
+
+void MainWindow::on_flash_pushButton_8_clicked() {
+    openFileDialog(ui->flash_lineEdit_8);
 }
 

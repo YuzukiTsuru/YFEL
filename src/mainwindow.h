@@ -13,6 +13,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QLineEdit>
 
 #include <lib/QHexView/QHexView.h>
 
@@ -71,6 +72,22 @@ private slots:
 
     void on_flash_spi_write_button_clicked();
 
+    void on_flash_pushButton_1_clicked();
+
+    void on_flash_pushButton_2_clicked();
+
+    void on_flash_pushButton_3_clicked();
+
+    void on_flash_pushButton_4_clicked();
+
+    void on_flash_pushButton_5_clicked();
+
+    void on_flash_pushButton_6_clicked();
+
+    void on_flash_pushButton_7_clicked();
+
+    void on_flash_pushButton_8_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -110,6 +127,8 @@ private:
     void updateStatusBar(const QString &status, int time);
 
     void copyToClipboard(const QString &data, QPushButton *button);
+
+    QString openFileDialog(QLineEdit *lineEdit);
 
     void loadDramPresets();
 

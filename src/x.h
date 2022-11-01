@@ -101,9 +101,6 @@ static inline uint32_t __swahb32(uint32_t x) {
 #define be16_to_cpu(x) (__swab16((uint16_t) (x)))
 #endif
 
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
-#define X(...) ("" #__VA_ARGS__ "")
-
 YFEL_END_C_DECLS
 
 #endif// YFEL_X_H
