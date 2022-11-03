@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="spi_erase">
        <attribute name="title">
@@ -214,14 +214,14 @@
          <item row="3" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nand_length_lineEdit">
            <property name="text">
-            <string>0x1000</string>
+            <string/>
            </property>
           </widget>
          </item>
          <item row="7" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nor_addr_lineEdit">
            <property name="text">
-            <string>0x0000</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -289,7 +289,7 @@
          <item row="2" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nand_addr_lineEdit">
            <property name="text">
-            <string>0x0000</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -310,7 +310,7 @@
          <item row="8" column="3">
           <widget class="QLineEdit" name="flash_spi_erase_spi_nor_length">
            <property name="text">
-            <string>0x1000</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -330,6 +330,13 @@
          </item>
          <item row="2" column="4">
           <widget class="QPushButton" name="flash_spi_erase_spi_nand_setall_button">
+           <property name="text">
+            <string>Erase All</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="4">
+          <widget class="QPushButton" name="flash_spi_erase_spi_nor_setall_button">
            <property name="text">
             <string>Erase All</string>
            </property>
