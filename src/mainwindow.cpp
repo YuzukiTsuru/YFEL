@@ -58,6 +58,10 @@ void MainWindow::initMenubar() {
     ui->actionExit->setShortcut(QKeySequence::Quit);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitMenuClicked);
 
+    connect(ui->actionOpen, &QAction::triggered, this, [=]() -> void {
+        QMessageBox::critical(this, tr("Error"), tr("Success"));
+    });
+
     // menu about
     connect(ui->actionAbout_YFEL, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, tr("About YFEL"),
@@ -438,6 +442,7 @@ void MainWindow::scanSpiNand() {
         chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+    releaseUI();
 }
 
 void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
@@ -468,6 +473,8 @@ void MainWindow::on_flash_spi_erase_spi_nand_erase_button_clicked() {
         chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+
+    releaseUI();
 }
 
 void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
@@ -492,6 +499,8 @@ void MainWindow::on_flash_spi_erase_spi_nand_setall_button_clicked() {
         chipStatus.setNone();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+
+    releaseUI();
 }
 
 void MainWindow::scanSpiNor() {
@@ -511,6 +520,7 @@ void MainWindow::scanSpiNor() {
     } catch (const std::runtime_error &e) {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+    releaseUI();
 }
 
 void MainWindow::on_flash_spi_erase_spi_nor_scan_button_clicked() {

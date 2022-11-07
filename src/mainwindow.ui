@@ -33,7 +33,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="chip_tab">
      <attribute name="title">
@@ -1347,6 +1347,7 @@
      <string>File</string>
     </property>
     <addaction name="actionExit"/>
+    <addaction name="actionOpen"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1396,6 +1397,11 @@
   <action name="actionReset_CPU">
    <property name="text">
     <string>Reset CPU</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
    </property>
   </action>
  </widget>
