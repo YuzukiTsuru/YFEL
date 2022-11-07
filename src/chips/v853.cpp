@@ -8,11 +8,7 @@
  * See README and LICENSE for more details.
  */
 
-//
-// Created by gloom on 2022/9/23.
-//
-
-#include "r528.h"
+#include "v853.h"
 
 v853::v853(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_name = "R528-S1/R528-S2/R528-S3/R528-S4/T113-I/T113-S3/H133";
@@ -24,7 +20,7 @@ v853::v853(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_heterogeneous_core.push_back("HIFI4");
 
     // dram presets
-    dram_info.append(r528_s3_ddr3);
+    dram_info.append(v853_s3_ddr3);
     dram_info.append(t113_s3_ddr3);
     dram_info.append(t113_s3_ddr3_oc_1008);
 }
@@ -103,25 +99,12 @@ chip_function_e v853::chip_jtag() {
 }
 
 chip_function_e v853::chip_ddr(chip_ddr_type_e dram_type) {
-    // default using R528 ddr init code
-    if (dram_type == chip_ddr_type_e::DDR3) {
-        fel_->fel_write(0x00028000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
-        fel_->fel_write(0x00028038, &r528_s3_ddr3, sizeof(r528_s3_ddr3));
-        fel_->fel_exec(0x00028000);
-        return chip_function_e::Success;
-    }
+
     return chip_function_e::NotSupport;
 }
 
 chip_function_e v853::chip_ddr(dram_param_t param) {
-    if (param.dram_type == chip_ddr_type_e::DDR3) {
-        fel_->fel_write(0x00028000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
-    } else {
-        return chip_function_e::NotSupport;
-    }
-    fel_->fel_write(0x00028038, &param, sizeof(param));
-    fel_->fel_exec(0x00028000);
-    return chip_function_e::Success;
+    return chip_function_e::NotSupport;
 }
 
 chip_function_e v853::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {

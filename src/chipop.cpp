@@ -37,7 +37,7 @@ void ChipOP::generate_chip_db() {
     chip_db.clear();
 
     chip_db.push_back(new d1(fel_, chip_version));
-    chip_db.push_back(new r528(fel_, chip_version));
+    chip_db.push_back(new v853(fel_, chip_version));
     chip_db.push_back(new f1c100s(fel_, chip_version));
 }
 
@@ -46,6 +46,8 @@ void ChipOP::chip_scan_chip() {
 
     fel_->fel_scan_chip();
     chip_version = fel_->fel_get_chip_version();
+
+    qDebug() << QString::number((chipReadArm32(0x3006200) & 0xffff), 16);
 
     fel_->fel_close_connection();
 
@@ -211,5 +213,9 @@ QString ChipOP::chip_scan_spi_nor() {
                    + QString::number(spi_nor.get_spi_nor_size(), 16);
         }
     }
+}
+
+uint32_t ChipOP::chipReadArm32(uint32_t addr) {
+    return fel_->payload_arm_read32(addr);
 }
 

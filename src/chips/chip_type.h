@@ -11,6 +11,8 @@
 #ifndef CHIPS_H
 #define CHIPS_H
 
+#include <unordered_map>
+
 #include <QString>
 #include <QVector>
 
@@ -75,6 +77,8 @@ typedef struct chip {
     chip_version_t chip_version;
 } chip_t;
 
+typedef std::unordered_map<uint32_t, QString> chip_id_map;
+
 class Chips {
 public:
     Chips(fel *f, chip_version_t chip_version) : fel_(f) {
@@ -112,6 +116,7 @@ protected:
     QVector<dram_info_t> dram_info{};
     chip_core_name_t core_name_{};
     chip_core_count_t core_count_{};
+    chip_id_map chip_id_map_{};
     fel *fel_ = nullptr;
 };
 
