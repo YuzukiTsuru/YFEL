@@ -52,8 +52,7 @@ void usb::open_usb() {
             rc = libusb_open(device, &ctx.hdl);
             if (rc != 0) {
                 qDebug("ERROR: Can't connect to device: %d\r\n", rc);
-                throw std::runtime_error(
-                        "Find FEL Device but host driver is wrong\nPlease use libusb-win32 driver instead");
+                throw usb_driver_wrong();
             } else {
                 uint8_t string_buffer_product[4096];
                 libusb_get_string_descriptor_ascii(ctx.hdl, desc.iProduct,
