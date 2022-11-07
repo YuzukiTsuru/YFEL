@@ -166,10 +166,19 @@ void MainWindow::on_scan_pushButton_clicked() {
     } catch (const usb_bulk_recv_error &e) {
         chipStatus.setError();
         scanChipWarning();
+    } catch (const usb_driver_wrong &e) {
+        if (chipStatus.isError()) {
+            scanChipWarning();
+        } else {
+            QMessageBox::warning(this, tr("Warning"),
+                                 tr("Find FEL Device but host driver is wrong\n"
+                                    "Please use libusb-win32 driver instead"));
+        }
     } catch (const std::exception &e) {
         clearChipInfo();
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
+
     releaseUI();
 }
 
@@ -243,7 +252,6 @@ void MainWindow::clearChipInfo() {
     ui->chip_spi_nand_lineEdit->setText("");
     ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText("");
     ui->flash_spi_erase_spi_nor_currect_nor_chip_lineEdit->setText("");
-    chipStatus.setNone();
 }
 
 void MainWindow::on_Misc_exec_addr_btn_clicked() {
@@ -369,11 +377,9 @@ void MainWindow::on_dram_init_dram_btn_clicked() {
         } catch (const usb_bulk_send_error &e) {
             chipStatus.setError();
             scanChipWarning();
-            chipStatus.setError();
         } catch (const usb_bulk_recv_error &e) {
             chipStatus.setError();
             scanChipWarning();
-            chipStatus.setError();
         } catch (const std::exception &e) {
             chipStatus.setError();
             QMessageBox::warning(this, tr("Warning"), tr(e.what()));
@@ -388,13 +394,14 @@ void MainWindow::on_flash_spi_erase_spi_nand_scan_button_clicked() {
 }
 
 void MainWindow::scanChipWarning() {
-    if (chipStatus.isNone())
+    if (chipStatus.isNone()) {
         QMessageBox::warning(this, tr("Warning"), tr("Chip not avaliable, try scan it"));
-    else if (chipStatus.isError())
+    } else if (chipStatus.isError()) {
         QMessageBox::warning(this, tr("Warning"),
                              tr("Chip operation error, please reset the chip manually"));
-    else
+    } else {
         QMessageBox::warning(this, tr("Warning"), tr("Unknown error"));
+    }
 
     // clear the chip info
     clearChipInfo();

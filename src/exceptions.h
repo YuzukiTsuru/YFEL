@@ -106,4 +106,15 @@ public:
     }
 };
 
+class usb_driver_wrong : public QException {
+public:
+    void raise() const override {
+        throw *this;
+    }
+
+    [[nodiscard]] usb_driver_wrong *clone() const override {
+        return new usb_driver_wrong(*this);
+    }
+};
+
 #endif //YFEL_EXCEPTIONS_H
