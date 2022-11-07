@@ -18,7 +18,7 @@
 #include "chip_type.h"
 #include "fel.h"
 
-class v853 : public Chips {
+class r528 : public Chips {
     chip_function_e chip_detect() override;
 
     chip_function_e chip_reset() override;
@@ -36,7 +36,7 @@ class v853 : public Chips {
     chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) override;
 
 public:
-    v853(class fel *f, chip_version_t chip_version);
+    r528(class fel *f, chip_version_t chip_version);
 
 private:
     const dram_info_t r528_s3_ddr3 = {

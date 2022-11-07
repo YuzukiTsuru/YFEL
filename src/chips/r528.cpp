@@ -14,7 +14,7 @@
 
 #include "r528.h"
 
-v853::v853(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
+r528::r528(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     chip_info.chip_name = "R528-S1/R528-S2/R528-S3/R528-S4/T113-I/T113-S3/H133";
     chip_info.chip_id = 0x00185900;
     chip_info.chip_type = chip_type_e::Heterogeneous;
@@ -29,7 +29,7 @@ v853::v853(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     dram_info.append(t113_s3_ddr3_oc_1008);
 }
 
-chip_function_e v853::chip_detect() {
+chip_function_e r528::chip_detect() {
     if (chip_info.chip_version.id == chip_info.chip_id)
         // Check 0 addr is 0x43014281, ARM Cortex-A7
         if (fel_->fel_read32(0x00000000) == 0xea000019)
@@ -37,13 +37,13 @@ chip_function_e v853::chip_detect() {
     return chip_function_e::Fail;
 }
 
-chip_function_e v853::chip_reset() {
+chip_function_e r528::chip_reset() {
     // Timer::WDOG_IRQ_EN_REG
     fel_->fel_write32(0x020500a0 + 0x08, (0x16aa << 16) | (0x1 << 0));
     return chip_function_e::Success;
 }
 
-chip_function_e v853::chip_sid() {
+chip_function_e r528::chip_sid() {
     uint32_t id[4];
     id[0] = fel_->payload_arm_read32(0x03006200 + 0x0);
     id[1] = fel_->payload_arm_read32(0x03006200 + 0x4);
@@ -57,7 +57,7 @@ chip_function_e v853::chip_sid() {
     return chip_function_e::Success;
 }
 
-chip_function_e v853::chip_jtag() {
+chip_function_e r528::chip_jtag() {
     const uint8_t payload[] = {
             0x00, 0x00, 0xa0, 0xe3, 0x17, 0x0f, 0x08, 0xee, 0x15, 0x0f, 0x07, 0xee,
             0xd5, 0x0f, 0x07, 0xee, 0x9a, 0x0f, 0x07, 0xee, 0x95, 0x0f, 0x07, 0xee,
@@ -102,7 +102,7 @@ chip_function_e v853::chip_jtag() {
     return chip_function_e::Success;
 }
 
-chip_function_e v853::chip_ddr(chip_ddr_type_e dram_type) {
+chip_function_e r528::chip_ddr(chip_ddr_type_e dram_type) {
     // default using R528 ddr init code
     if (dram_type == chip_ddr_type_e::DDR3) {
         fel_->fel_write(0x00028000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
@@ -113,7 +113,7 @@ chip_function_e v853::chip_ddr(chip_ddr_type_e dram_type) {
     return chip_function_e::NotSupport;
 }
 
-chip_function_e v853::chip_ddr(dram_param_t param) {
+chip_function_e r528::chip_ddr(dram_param_t param) {
     if (param.dram_type == chip_ddr_type_e::DDR3) {
         fel_->fel_write(0x00028000, &ddr3_dram_payload[0], sizeof(ddr3_dram_payload));
     } else {
@@ -124,7 +124,7 @@ chip_function_e v853::chip_ddr(dram_param_t param) {
     return chip_function_e::Success;
 }
 
-chip_function_e v853::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {
+chip_function_e r528::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint32_t *cmd_len) {
     const uint8_t payload[] = {
             0x00, 0x00, 0xa0, 0xe3, 0x17, 0x0f, 0x08, 0xee, 0x15, 0x0f, 0x07, 0xee,
             0xd5, 0x0f, 0x07, 0xee, 0x9a, 0x0f, 0x07, 0xee, 0x95, 0x0f, 0x07, 0xee,
@@ -261,7 +261,7 @@ chip_function_e v853::chip_spi_init(uint32_t *swap_buf, uint32_t *swap_len, uint
     return chip_function_e::Success;
 }
 
-chip_function_e v853::chip_spi_run(uint8_t *cbuf, uint32_t clen) {
+chip_function_e r528::chip_spi_run(uint8_t *cbuf, uint32_t clen) {
     fel_->fel_write(0x00029000, cbuf, clen);
     fel_->fel_exec(0x00028000);
     return chip_function_e::Success;
