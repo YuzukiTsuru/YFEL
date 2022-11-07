@@ -170,7 +170,7 @@ uint32_t fel::payload_arm_read32(uint32_t addr) {
             cpu_to_le32(addr),
     };
 
-    uint32_t val;
+    uint32_t val = 0;
     fel_write(version.scratchpad, payload, sizeof(payload));
     fel_exec(version.scratchpad);
     fel_read(version.scratchpad + sizeof(payload), &val, sizeof(val));
