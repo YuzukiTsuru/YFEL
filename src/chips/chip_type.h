@@ -15,6 +15,7 @@
 
 #include <QString>
 #include <QVector>
+#include <QDebug>
 
 #include "dram_header.h"
 #include "chip_version.h"
@@ -102,6 +103,8 @@ public:
     };
 
     virtual chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) { return chip_function_e::NotSupport; };
+
+    virtual chip_function_e check_chip_id() { return chip_function_e::NotSupport; };
 
     chip_t get_chip_info() {
         return chip_info;
