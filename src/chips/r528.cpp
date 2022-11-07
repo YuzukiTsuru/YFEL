@@ -29,6 +29,20 @@ r528::r528(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
     dram_info.append(t113_s3_ddr3_oc_1008);
 }
 
+chip_function_e r528::check_chip_id() {
+    chip_id_map_[0x6000] = QString("T113-S3");
+
+    auto chip_id = fel_->payload_arm_read32(0x3006200) & 0xffff;
+    qDebug() << "Get Chip ID: 0x" << QString::number(chip_id, 16);
+
+    for (const auto &i: chip_id_map_) {
+        if (i.first == chip_id) {
+            chip_info.chip_name = i.second;
+        }
+    }
+    return chip_function_e::Success;
+}
+
 chip_function_e r528::chip_detect() {
     if (chip_info.chip_version.id == chip_info.chip_id)
         // Check 0 addr is 0x43014281, ARM Cortex-A7

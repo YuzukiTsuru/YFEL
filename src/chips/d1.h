@@ -35,6 +35,8 @@ class d1 : public Chips {
 
     chip_function_e chip_spi_run(uint8_t *cbuf, uint32_t clen) override;
 
+    chip_function_e check_chip_id() override;
+
 public:
     d1(class fel *f, chip_version_t chip_version);
 
