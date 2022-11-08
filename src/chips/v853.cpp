@@ -25,7 +25,9 @@ v853::v853(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
 }
 
 chip_function_e v853::check_chip_id() {
+    chip_id_map_[0x7400] = QString("R853");
     chip_id_map_[0x7800] = QString("V853");
+    chip_id_map_[0x7c00] = QString("V853s");
     chip_id_map_[0x5e00] = QString("V851s");
 
     auto chip_id = fel_->payload_arm_read32(0x3006200) & 0xffff;
