@@ -74,7 +74,6 @@ void ChipOP::chip_reset_chip() {
 void ChipOP::chip_enable_jtag() {
     if (current_chip->chip_jtag() == chip_function_e::NotSupport)
         throw function_not_implemented();
-
 }
 
 chip_t ChipOP::get_current_chip() {

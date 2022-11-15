@@ -640,3 +640,9 @@ void MainWindow::on_flash_pushButton_8_clicked() {
     openFileDialog(ui->flash_lineEdit_8);
 }
 
+
+void MainWindow::on_flash_spi_read_button_clicked()
+{
+
+}
+

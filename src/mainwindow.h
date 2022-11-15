@@ -88,6 +88,8 @@ private slots:
 
     void on_flash_pushButton_8_clicked();
 
+    void on_flash_spi_read_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
