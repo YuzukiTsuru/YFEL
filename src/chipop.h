@@ -94,6 +94,7 @@ private:
 
     chip_version_t chip_version{};
     QVector<Chips *> chip_db;
+	
 };
 
 #endif // ChipOP_H
