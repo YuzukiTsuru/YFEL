@@ -8,10 +8,6 @@
  *  See README and LICENSE for more details.
  */   
 
-//
-// Created by YuzukiTsuru on 2022/10/3.
-//
-
 #include "chip_status.h"
 
 bool chip_status::isOK() {

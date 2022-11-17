@@ -53,6 +53,10 @@ chip_function_e d1::check_chip_id() {
     fel_->fel_exec(0x00020000);
     fel_->fel_read(0x00021000, id, sizeof(id));
 
+    uint64_t a;
+    fel_->fel_read(0x3006200, &a, sizeof(a));
+    a &= 0xffff;
+
     auto chip_id = id[0] & 0xffff;
 
     for (const auto &i: chip_id_map_) {
