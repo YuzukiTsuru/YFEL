@@ -195,7 +195,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="spi_erase">
        <attribute name="title">
@@ -610,14 +610,11 @@
           </widget>
          </item>
          <item row="8" column="4">
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="flash_flash_button">
            <property name="text">
-            <string>PushButton</string>
+            <string>Flash</string>
            </property>
           </widget>
-         </item>
-         <item row="8" column="1" colspan="2">
-          <widget class="QLineEdit" name="flash_device_lineEdit"/>
          </item>
          <item row="8" column="0">
           <widget class="QLabel" name="flash_label_11">
@@ -625,6 +622,16 @@
             <string>@</string>
            </property>
           </widget>
+         </item>
+         <item row="8" column="3">
+          <widget class="QLabel" name="flash_label_12">
+           <property name="text">
+            <string>-&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1" colspan="2">
+          <widget class="QLineEdit" name="flash_device_lineEdit"/>
          </item>
         </layout>
        </widget>
