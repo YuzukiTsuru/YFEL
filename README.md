@@ -11,3 +11,4 @@ FEL is a low-level subroutine contained in the [BootROM](https://linux-sunxi.org
 ## Depends
 - Qt6
 - libusb
+- xfel
