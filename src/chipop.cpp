@@ -252,3 +252,7 @@ QString ChipOP::chip_scan_spi_nor() {
     }
 }
 
+uint32_t ChipOP::chipReadArm32(uint32_t addr) {
+    return fel_->payload_arm_read32(addr);
+}
+
