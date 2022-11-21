@@ -48,7 +48,10 @@ chip_function_e v853::chip_detect() {
 }
 
 chip_function_e v853::chip_reset() {
-    return chip_function_e::NotSupport;
+    // In the interrupt mode, when the counter value reaches 0 and
+    // WDOG_IRQ_EN_REG is enabled, the watchdog generates an interrupt.
+    fel_->fel_write32(0x02050000 + 0x00a0, (0x16aa << 16) | (0x1 << 0));
+    return chip_function_e::Success;
 }
 
 chip_function_e v853::chip_sid() {
