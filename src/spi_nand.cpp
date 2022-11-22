@@ -321,6 +321,8 @@ void spi_nand::spi_nand_read(uint32_t addr, uint8_t *buf, uint32_t count) {
 }
 
 void spi_nand::spi_nand_write(uint32_t addr, const uint8_t *buf, uint32_t count) {
+    // init data buf
+
     auto cbuf = new uint8_t[pdata.cmd_len];
     auto txbuf = new uint8_t[pdata.swap_len];
 
