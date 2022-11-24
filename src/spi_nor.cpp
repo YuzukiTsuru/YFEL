@@ -343,7 +343,7 @@ void spi_nor::spi_nor_sfdp_handler() {
         pdata.info.blksz = 65536;
     else if (pdata.info.opcode_erase_256k != 0x00)
         pdata.info.blksz = 262144;
-    pdata.info.opcode_write_enable = NOR_OPCODE_WREN;
+    pdata.info.opcode_write_enable = SPI_NOR_OPS::NOR_OPCODE_WREN;
     pdata.info.read_granularity = 1;
     pdata.info.opcode_read = SPI_NOR_OPS::NOR_OPCODE_READ;
 
