@@ -345,7 +345,7 @@ void spi_nor::spi_nor_sfdp_handler() {
         pdata.info.blksz = 262144;
     pdata.info.opcode_write_enable = NOR_OPCODE_WREN;
     pdata.info.read_granularity = 1;
-    pdata.info.opcode_read = NOR_OPCODE_READ;
+    pdata.info.opcode_read = SPI_NOR_OPS::NOR_OPCODE_READ;
 
     if ((sfdp.basic_table.major == 1) && (sfdp.basic_table.minor < 5)) {
         // Basic flash parameter table 1th dword
