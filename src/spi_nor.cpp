@@ -361,7 +361,7 @@ void spi_nor::spi_nor_sfdp_handler() {
             (sfdp.basic_table.table[41] << 8) | (sfdp.basic_table.table[40] << 0);
         pdata.info.write_granularity = 1 << ((v >> 4) & 0xf);
     }
-    pdata.info.opcode_write = NOR_OPCODE_PROG;
+    pdata.info.opcode_write = SPI_NOR_OPS::NOR_OPCODE_PROG;
 }
 
 
