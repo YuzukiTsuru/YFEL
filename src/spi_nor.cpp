@@ -12,8 +12,6 @@
 // Created by gloom on 2022/9/28.
 //
 
-#include <QMessageBox>
-#include <QFontDatabase>
 
 #include "exceptions.h"
 #include "spi_nor.h"
