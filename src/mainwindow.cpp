@@ -744,13 +744,12 @@ void MainWindow::on_dump_do_dump_button_clicked() {
 }
 
 void MainWindow::on_dump_save_file_button_clicked() {
-    QSaveFile file([this]() -> QString{
+    QSaveFile file([this]() -> QString {
         return QFileDialog::getSaveFileName(this, tr("Save File"), "",
-                                     tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
+                                            tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
     }());
-    if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this, tr("File opening fail"),
-                             tr("Problem with open file `") + file.fileName() + tr("` for reading"));
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::warning(this, tr("File opening fail"), tr("Problem with open file"));
         return;
     }
     file.write(dumpHexView->getData());
