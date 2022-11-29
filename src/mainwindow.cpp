@@ -748,7 +748,11 @@ void MainWindow::on_dump_save_file_button_clicked() {
         return QFileDialog::getSaveFileName(this, tr("Save File"), "",
                                      tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
     }());
-    file.open(QIODevice::WriteOnly);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("File opening fail"),
+                             tr("Problem with open file `") + file.fileName() + tr("` for reading"));
+        return;
+    }
     file.write(dumpHexView->getData());
     file.commit();
 }
