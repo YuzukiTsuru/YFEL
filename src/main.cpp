@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
      * debug message output format
      */
 #ifdef QT_NO_DEBUG
-    qSetMessagePattern("[%{type}] %{time MM-dd hh:mm:ss} %{message}");
+    qSetMessagePattern("[%{type}] %{message}");
 #else
     qSetMessagePattern("[%{type}] %{time MM-dd hh:mm:ss}  %{function}:%{line} %{message}");
 #endif
