@@ -90,6 +90,8 @@ private slots:
 
     void on_flash_spi_read_button_clicked();
 
+    void on_run_open_file_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -98,6 +100,8 @@ private:
     QHexView *spiNandReadHexView = new QHexView();
 
     QHexView *spiNandWriteHexView = new QHexView();
+
+    QHexView *runHexView = new QHexView();
 
     chip_status chipStatus;
 
