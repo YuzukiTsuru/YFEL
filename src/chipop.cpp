@@ -131,7 +131,7 @@ QString ChipOP::chip_scan_spi_nand() {
 
         chip_release_ui();
         if (spinand.get_spi_nand_size() == 0) {
-            return {tr("No supported SPI NAND found")};
+            throw cannot_find_spi_flash_device();
         } else {
             return spinand.get_spi_nand_name() + " "
                    + QString::number(spinand.get_spi_nand_size() / 1024 / 1024) + "MB 0x"
@@ -230,7 +230,7 @@ QString ChipOP::chip_scan_spi_nor() {
 
         chip_release_ui();
         if (spi_nor.get_spi_nor_size() < 1) {
-            return {tr("No supported SPI NOR found")};
+            throw cannot_find_spi_flash_device();
         } else {
             if (spi_nor.get_spi_nor_name() == "SFDP") {
                 return "JEDEC SFDP Compatible SPI NOR " + QString::number(spi_nor.get_spi_nor_size() / 1024 / 1024) +
