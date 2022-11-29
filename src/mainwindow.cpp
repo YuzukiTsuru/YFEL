@@ -35,6 +35,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->flash_spi_read_hexView->addWidget(spiNandReadHexView);
     ui->flash_spi_write_hexView->addWidget(spiNandWriteHexView);
+    ui->run_file_hexView->addWidget(runHexView);
+
+    QByteArray arr(1000, 0);
+    spiNandReadHexView->setData(new QHexView::DataStorageArray(arr));
+    spiNandWriteHexView->setData(new QHexView::DataStorageArray(arr));
+    runHexView->setData(new QHexView::DataStorageArray(arr));
+
     chipStatus.setNone();
 }
 
@@ -44,6 +51,7 @@ MainWindow::~MainWindow() {
     delete chip_op;
     delete spiNandWriteHexView;
     delete spiNandReadHexView;
+    delete runHexView;
 }
 
 void MainWindow::initMainwindowData() {
@@ -434,6 +442,10 @@ void MainWindow::scanSpiNand() {
         // update ui
         ui->chip_spi_nand_lineEdit->setText(nandInfo);
         ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText(nandInfo);
+        ui->flash_device_comboBox->addItem(nandInfo);
+    } catch (const cannot_find_spi_flash_device &e) {
+        ui->chip_spi_nand_lineEdit->setText(tr("No supported SPI NAND found"));
+        ui->flash_spi_erase_spi_nand_currect_nand_chip_lineEdit->setText(tr("No supported SPI NAND found"));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {
@@ -513,6 +525,9 @@ void MainWindow::scanSpiNor() {
         // update ui
         ui->chip_spi_nor_lineEdit->setText(norInfo);
         ui->flash_spi_erase_spi_nor_currect_nor_chip_lineEdit->setText(norInfo);
+    } catch (const cannot_find_spi_flash_device &e) {
+        ui->chip_spi_nor_lineEdit->setText(tr("No supported SPI NOR found"));
+        ui->flash_spi_erase_spi_nor_currect_nor_chip_lineEdit->setText(tr("No supported SPI NOR found"));
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
     } catch (const std::runtime_error &e) {
@@ -639,7 +654,12 @@ void MainWindow::on_flash_pushButton_8_clicked() {
 }
 
 
-void MainWindow::on_flash_spi_read_button_clicked()
+void MainWindow::on_flash_spi_read_button_clicked() {
+
+}
+
+
+void MainWindow::on_run_open_file_clicked()
 {
 
 }
