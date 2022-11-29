@@ -256,3 +256,19 @@ uint32_t ChipOP::chipReadArm32(uint32_t addr) {
     return fel_->payload_arm_read32(addr);
 }
 
+void ChipOP::chip_write(uint64_t addr, const QByteArray &buf, uint64_t len) {
+    auto buffer = reinterpret_cast<const uint8_t *>(buf.data());
+    fel_->fel_open_connection();
+    try {
+        fel_->fel_write(addr, buffer, len);
+    } catch (const function_not_implemented &e) {
+        fel_->fel_close_connection();
+        chip_release_ui();
+        throw function_not_implemented();
+    } catch (const std::runtime_error &e) {
+        fel_->fel_close_connection();
+        chip_release_ui();
+        throw std::runtime_error(e.what());
+    }
+}
+

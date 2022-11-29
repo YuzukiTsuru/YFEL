@@ -92,6 +92,8 @@ private slots:
 
     void on_run_open_file_clicked();
 
+    void on_run_run_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 

@@ -59,6 +59,12 @@ public:
     void chip_sid();
 
     /*
+     * Chip write op
+     */
+
+    void chip_write(uint64_t addr,const QByteArray &buf, uint64_t len);
+
+    /*
      * SPI NAND OP
      */
     QString chip_scan_spi_nand();

@@ -612,6 +612,9 @@ void MainWindow::on_flash_spi_write_button_clicked() {
         if (ui->flash_spi_write_addr_lineEdit->text().startsWith("0x"))
             addr = ui->flash_spi_write_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
 
+        if (addr <= 0)
+            QMessageBox::warning(this, tr("Warning"), tr("Invalid address"));
+
         chip_op->chip_write_spi_nand(addr, fileBuf, fileSize);
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
@@ -658,9 +661,54 @@ void MainWindow::on_flash_spi_read_button_clicked() {
 
 }
 
+void MainWindow::on_run_open_file_clicked() {
+    auto fileName = QFileDialog::getOpenFileName(this, tr("Open Image File"), "",
+                                                 tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
+    ui->run_file_open_lineEdit->setText(fileName);
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("File opening fail"),
+                             tr("Problem with open file `") + fileName + tr("` for reading"));
+        return;
+    }
 
-void MainWindow::on_run_open_file_clicked()
-{
+    QByteArray fileBuf = file.readAll();
+    runHexView->clear();
+    runHexView->setData(new QHexView::DataStorageArray(fileBuf));
+}
 
+void MainWindow::on_run_run_button_clicked() {
+    qDebug() << "Run Code withing BIN...";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
+    auto fileName = ui->run_file_open_lineEdit->text();
+    QFile file(fileName);
+    uint64_t fileSize = 0;
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("File opening fail"),
+                             tr("Problem with open file `") + fileName + tr("` for reading"));
+        return;
+    }
+    fileSize = file.size();
+    const QByteArray fileBuf = file.readAll();
+
+    auto addr = ui->run_run_address_lineEdit->text().toUInt(nullptr, 10);
+    if (ui->run_run_address_lineEdit->text().startsWith("0x"))
+        addr = ui->run_run_address_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+
+    if (addr <= 0)
+        QMessageBox::warning(this, tr("Warning"), tr("Invalid address"));
+
+    try {
+        lockUI();
+        chip_op->chip_write(addr, fileBuf, fileSize);
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+    releaseUI();
 }
 
