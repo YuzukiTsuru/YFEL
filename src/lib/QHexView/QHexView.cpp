@@ -500,6 +500,9 @@ void QHexView::ensureVisible() {
         verticalScrollBar()->setValue(cursorY - areaSize.height() / m_charHeight + 1);
 }
 
+QByteArray QHexView::getData() {
+    return m_pdata->getData(0, m_pdata->size());
+}
 
 QHexView::DataStorageArray::DataStorageArray(const QByteArray &arr) {
     m_data = arr;

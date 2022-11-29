@@ -52,6 +52,8 @@ public slots:
 
     void setData(DataStorage *pData);
 
+    QByteArray getData();
+
     void clear();
 
     void showFromOffset(std::size_t offset);

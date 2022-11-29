@@ -272,3 +272,21 @@ void ChipOP::chip_write(uint64_t addr, const QByteArray &buf, uint64_t len) {
     }
 }
 
+QByteArray ChipOP::chip_read(uint64_t addr, uint64_t len) {
+    auto *buf = new uint8_t[len];
+    fel_->fel_open_connection();
+    try {
+        fel_->fel_read(addr, buf, len);
+    } catch (const function_not_implemented &e) {
+        fel_->fel_close_connection();
+        chip_release_ui();
+        throw function_not_implemented();
+    } catch (const std::runtime_error &e) {
+        fel_->fel_close_connection();
+        chip_release_ui();
+        throw std::runtime_error(e.what());
+    }
+    fel_->fel_close_connection();
+    return QByteArray::fromRawData(reinterpret_cast<char *>(buf), static_cast<int64_t>(len));
+}
+

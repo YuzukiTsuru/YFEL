@@ -36,11 +36,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->flash_spi_read_hexView->addWidget(spiNandReadHexView);
     ui->flash_spi_write_hexView->addWidget(spiNandWriteHexView);
     ui->run_file_hexView->addWidget(runHexView);
+    ui->dump_data_hexView->addWidget(dumpHexView);
 
-    QByteArray arr(1000, 0);
-    spiNandReadHexView->setData(new QHexView::DataStorageArray(arr));
-    spiNandWriteHexView->setData(new QHexView::DataStorageArray(arr));
-    runHexView->setData(new QHexView::DataStorageArray(arr));
+    QByteArray initHexArr(1000, 0);
+    spiNandReadHexView->setData(new QHexView::DataStorageArray(initHexArr));
+    spiNandWriteHexView->setData(new QHexView::DataStorageArray(initHexArr));
+    runHexView->setData(new QHexView::DataStorageArray(initHexArr));
+    dumpHexView->setData(new QHexView::DataStorageArray(initHexArr));
 
     chipStatus.setNone();
 }
@@ -52,6 +54,7 @@ MainWindow::~MainWindow() {
     delete spiNandWriteHexView;
     delete spiNandReadHexView;
     delete runHexView;
+    delete dumpHexView;
 }
 
 void MainWindow::initMainwindowData() {
@@ -710,5 +713,43 @@ void MainWindow::on_run_run_button_clicked() {
         QMessageBox::warning(this, tr("Warning"), tr(e.what()));
     }
     releaseUI();
+}
+
+void MainWindow::on_dump_do_dump_button_clicked() {
+    qDebug() << "Dump Code from FEL..";
+    if (chipStatus.isNone()) {
+        scanChipWarning();
+        return;
+    }
+    try {
+        auto addr = ui->dump_address_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->dump_address_lineEdit->text().startsWith("0x"))
+            addr = ui->dump_address_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+        auto length = ui->dump_length_lineEdit->text().toUInt(nullptr, 10);
+        if (ui->dump_length_lineEdit->text().startsWith("0x"))
+            length = ui->dump_length_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
+
+        lockUI();
+        auto data = chip_op->chip_read(addr, length);
+        dumpHexView->clear();
+        dumpHexView->setData(new QHexView::DataStorageArray(data));
+    } catch (const usb_bulk_send_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Dump error"));
+    } catch (const function_not_implemented &e) {
+        QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
+    } catch (const std::runtime_error &e) {
+        QMessageBox::warning(this, tr("Warning"), tr(e.what()));
+    }
+    releaseUI();
+}
+
+void MainWindow::on_dump_save_file_button_clicked() {
+    QSaveFile file([this]() -> QString{
+        return QFileDialog::getSaveFileName(this, tr("Save File"), "",
+                                     tr("IMAGE (*.img *.IMG);;Binary (*.bin);;All files (*.*)"));
+    }());
+    file.open(QIODevice::WriteOnly);
+    file.write(dumpHexView->getData());
+    file.commit();
 }
 

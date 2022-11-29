@@ -94,6 +94,10 @@ private slots:
 
     void on_run_run_button_clicked();
 
+    void on_dump_do_dump_button_clicked();
+
+    void on_dump_save_file_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -104,6 +108,8 @@ private:
     QHexView *spiNandWriteHexView = new QHexView();
 
     QHexView *runHexView = new QHexView();
+
+    QHexView *dumpHexView = new QHexView();
 
     chip_status chipStatus;
 

@@ -64,6 +64,8 @@ public:
 
     void chip_write(uint64_t addr,const QByteArray &buf, uint64_t len);
 
+    QByteArray chip_read(uint64_t addr, uint64_t len);
+
     /*
      * SPI NAND OP
      */
