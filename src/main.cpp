@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
+    
     MainWindow w;
     w.setWindowTitle(PROJECT_NAME + QString(" - ") + PROJECT_DESCRIPTION);
     w.setWindowIcon(QIcon(":/assets/img/icon.png"));
