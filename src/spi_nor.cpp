@@ -219,7 +219,7 @@ bool spi_nor::get_spi_nor_info() {
             // empty spi nor
             return false;
         } else {
-            // find spi nor id device in spi_nor_info_table
+            // find spi nor id device in spi_nor_info_table if yes return true
             for (const auto &i: spi_nor_info_table) {
                 if (i.id == id) {
                     pdata.info = i;

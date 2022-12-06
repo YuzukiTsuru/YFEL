@@ -289,4 +289,3 @@ QByteArray ChipOP::chip_read(uint64_t addr, uint64_t len) {
     fel_->fel_close_connection();
     return QByteArray::fromRawData(reinterpret_cast<char *>(buf), static_cast<int64_t>(len));
 }
-
