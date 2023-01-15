@@ -39,7 +39,7 @@ typedef struct spi_nand_pdata {
     uint32_t cmd_len = 0;
 } spi_nand_pdata_t;
 
-enum SPI_NAND_OPS {
+enum spi_nand_ops_e {
     NAND_OPCODE_RDID = 0x9f,
     NAND_OPCODE_GET_FEATURE = 0x0f,
     NAND_OPCODE_SET_FEATURE = 0x1f,

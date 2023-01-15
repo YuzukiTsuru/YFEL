@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
     runHexView->setData(new QHexView::DataStorageArray(initHexArr));
     dumpHexView->setData(new QHexView::DataStorageArray(initHexArr));
 
+    ui->dram_dram_tpr13_label->installEventFilter(this);
+
     chipStatus.setNone();
 }
 
@@ -754,5 +756,14 @@ void MainWindow::on_dump_save_file_button_clicked() {
     }
     file.write(dumpHexView->getData());
     file.commit();
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+    if (obj == ui->dram_dram_tpr13_label) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            qDebug() << "dram_dram_tpr13_label";
+        }
+    }
+    return true;
 }
 

@@ -14,6 +14,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QMouseEvent>
 
 #include <lib/QHexView/QHexView.h>
 
@@ -133,6 +134,8 @@ private:
     static void exitMenuClicked();
 
     static QString fixedUint32ToString(uint32_t value);
+
+    bool eventFilter(QObject *obj, QEvent *event);
 
     void scanChipWarning();
 

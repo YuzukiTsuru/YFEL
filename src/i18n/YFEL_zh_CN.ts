@@ -1348,7 +1348,8 @@ GNU General Public License v3.0</source>
         <location filename="../mainwindow.cpp" line="176"/>
         <source>Find FEL Device but host driver is wrong
 Please use libusb-win32 driver instead</source>
-        <translation>找到了FEL设备，但是系统使用的驱动是错误的\n请使用zadig替换为libusb-win32驱动</translation>
+        <translation>找到了FEL设备，但是系统使用的驱动是错误的
+请使用zadig替换为libusb-win32驱动</translation>
     </message>
 </context>
 <context>
