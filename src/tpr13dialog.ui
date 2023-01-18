@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TPR13Dialog</class>
+ <widget class="QDialog" name="TPR13Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>290</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>500</width>
+    <height>290</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>481</width>
+     <height>264</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="9" column="2" colspan="2">
+     <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QCheckBox" name="dynamic_clk_checkBox_9">
+      <property name="text">
+       <string>Enable Dynamic CLK</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QCheckBox" name="mdfs_enable_checkBox_11">
+      <property name="text">
+       <string>Enable MDFS</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QCheckBox" name="vtf_enable_checkBox_8">
+      <property name="text">
+       <string>Enable VTF</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2" colspan="2">
+     <widget class="QCheckBox" name="dq_hold_disable_checkBox_14">
+      <property name="text">
+       <string>Disable DQ Hold</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="type_auto_det_mode_checkBox_4">
+      <property name="text">
+       <string>DRAM Type Auto Detect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2" colspan="2">
+     <widget class="QCheckBox" name="rnk_wth_auto_det_checkBox_12">
+      <property name="text">
+       <string>Rank Width Auto Detect </string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="timing_auto_det_checkBox_3">
+      <property name="text">
+       <string>DRAM Timing Auto Detect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2" colspan="2">
+     <widget class="QCheckBox" name="boot_auto_det_checkBox_13">
+      <property name="text">
+       <string>Boot Auto Detect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2" colspan="2">
+     <widget class="QCheckBox" name="mst_prio_disable_checkBox_15">
+      <property name="text">
+       <string>Disable MST Priority</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="dram_size_auto_det_checkBox">
+      <property name="text">
+       <string>DRAM Size Auto Detect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="2">
+     <widget class="QCheckBox" name="mdfs_odt_mode_checkBox_2">
+      <property name="text">
+       <string>Enable MDFS ODT Mode</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QCheckBox" name="mdfs_mode_checkBox_10">
+      <property name="text">
+       <string>Select MDFS Mode</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QCheckBox" name="pll_src_sel_checkBox_6">
+      <property name="text">
+       <string>PLL Source Select</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="enable_2t_mode_checkBox_5">
+      <property name="text">
+       <string>2T Mode</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QCheckBox" name="dbg_0_checkBox_7">
+      <property name="text">
+       <string>Enable DEBUG Mode</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QLineEdit" name="lineEdit_4"/>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLineEdit" name="lineEdit_2"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>CFS SSC Step</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>SSC Factor</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="3">
+     <widget class="QLabel" name="config_label_4">
+      <property name="text">
+       <string>0x00000</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>CONFIG</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>TPR13Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>TPR13Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
