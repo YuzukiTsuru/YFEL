@@ -20,6 +20,7 @@
 
 #include "chipop.h"
 #include "chip_status.h"
+#include "tpr13dialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -99,6 +100,8 @@ private slots:
 
     void on_dump_save_file_button_clicked();
 
+    void TPR13_value_getter(uint32_t value);
+
 private:
     Ui::MainWindow *ui;
 
@@ -111,6 +114,8 @@ private:
     QHexView *runHexView = new QHexView();
 
     QHexView *dumpHexView = new QHexView();
+
+    TPR13Dialog *tpr13 = new TPR13Dialog();
 
     chip_status chipStatus;
 
@@ -132,8 +137,6 @@ private:
 
 private:
     static void exitMenuClicked();
-
-    static QString fixedUint32ToString(uint32_t value);
 
     bool eventFilter(QObject *obj, QEvent *event);
 
