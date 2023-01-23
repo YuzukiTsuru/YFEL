@@ -19,6 +19,8 @@
 #include <QFileDialog>
 #include <qdesktopservices.h>
 
+#include "utils.h"
+
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -45,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     dumpHexView->setData(new QHexView::DataStorageArray(initHexArr));
 
     ui->dram_dram_tpr13_label->installEventFilter(this);
+    ui->dram_dram_tpr13_label->show();
 
     chipStatus.setNone();
 }
@@ -57,6 +60,7 @@ MainWindow::~MainWindow() {
     delete spiNandReadHexView;
     delete runHexView;
     delete dumpHexView;
+    delete tpr13;
 }
 
 void MainWindow::initMainwindowData() {
@@ -93,6 +97,9 @@ void MainWindow::initMenubar() {
     // reset chip
     connect(ui->actionReset_CPU, &QAction::triggered, this, &MainWindow::chipReset);
     connect(ui->Misc_reset_pushButton, &QPushButton::clicked, this, &MainWindow::chipReset);
+
+    // TPR13 dialogs
+    connect(tpr13, &TPR13Dialog::GetTPR13Data, this, &MainWindow::TPR13_value_getter);
 }
 
 void MainWindow::exitMenuClicked() {
@@ -219,10 +226,6 @@ void MainWindow::on_chip_spi_nor_scan_pushButton_clicked() {
 
 void MainWindow::on_chip_spi_nand_scan_pushButton_clicked() {
     scanSpiNand();
-}
-
-QString MainWindow::fixedUint32ToString(uint32_t value) {
-    return "0x" + QString::number(value, 16).toUpper().rightJustified(8, '0');
 }
 
 void MainWindow::enableJtag() {
@@ -761,9 +764,17 @@ void MainWindow::on_dump_save_file_button_clicked() {
 bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
     if (obj == ui->dram_dram_tpr13_label) {
         if (event->type() == QEvent::MouseButtonDblClick) {
-            qDebug() << "dram_dram_tpr13_label";
+            qDebug() << "dram_dram_tpr13_label double clicked";
+            tpr13->setWindowTitle(tr("DRAM Driver Options Settings"));
+            tpr13->SetTPR13Value(ui->dram_dram_tpr13_lineEdit->text().remove(0, 2).toUInt(nullptr, 16));
+            tpr13->show();
+            return true;
         }
     }
-    return true;
+    return false;
+}
+
+void MainWindow::TPR13_value_getter(uint32_t value){
+    qDebug() << "TPR13_value_getter: " << value;
 }
 
