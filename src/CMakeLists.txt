@@ -65,6 +65,7 @@ file(GLOB CHIP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/chips/*.cpp ${CMAKE_CURRENT_S
 set(
         PROJECT_SOURCES
         mainwindow.ui
+        tpr13dialog.ui
         icon.qrc
 
         ${PROJECT_SOURCES}
@@ -75,7 +76,7 @@ set(
 
         lib/QHexView/QHexView.cpp
         lib/QHexView/QHexView.h
-)
+        utils.h)
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(YFEL MANUAL_FINALIZATION ${PROJECT_SOURCES})
