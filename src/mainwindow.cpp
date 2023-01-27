@@ -620,9 +620,6 @@ void MainWindow::on_flash_spi_write_button_clicked() {
         if (ui->flash_spi_write_addr_lineEdit->text().startsWith("0x"))
             addr = ui->flash_spi_write_addr_lineEdit->text().remove(0, 2).toUInt(nullptr, 16);
 
-        if (addr <= 0)
-            QMessageBox::warning(this, tr("Warning"), tr("Invalid address"));
-
         chip_op->chip_write_spi_nand(addr, fileBuf, fileSize);
     } catch (const function_not_implemented &e) {
         QMessageBox::warning(this, tr("Warning"), tr("Function is not implemented"));
