@@ -31,5 +31,5 @@ void chip_status::setNone() {
 }
 
 void chip_status::setError() {
-    chipStatus = chip_status_e::chip_error;
+    chipStatus = chip_status_e::chip_error; 
 }

@@ -18,6 +18,7 @@ fel::fel() {
 };
 
 fel::~fel() {
+    qDebug() << "Release FEL";
     usb_handler.usb_exit();
 }
 
