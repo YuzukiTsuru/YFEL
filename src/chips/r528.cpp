@@ -31,6 +31,7 @@ r528::r528(class fel *f, chip_version_t chip_version) : Chips(f, chip_version) {
 
 chip_function_e r528::check_chip_id() {
     chip_id_map_[0x6000] = QString("T113-S3");
+    chip_id_map_[0x6800] = QString("T113-S4");
 
     auto chip_id = fel_->payload_arm_read32(0x3006200) & 0xffff;
     qDebug() << "Get Chip ID: 0x" << QString::number(chip_id, 16);
