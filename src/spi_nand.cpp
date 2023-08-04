@@ -14,6 +14,7 @@
 
 #include <QMessageBox>
 #include <QFontDatabase>
+#include <cstring>
 
 #include "spi_nand.h"
 #include "x.h"
