@@ -23,7 +23,7 @@ QHexView::QHexView(QWidget *parent) :
         m_pdata(NULL) {
     setFont(QFont("Courier", 10));
 
-#if QT_VERSION >= 0x051100
+#if QT_VERSION >= QT_VERSION_CHECK(5,11,0)
     m_charWidth = fontMetrics().horizontalAdvance(QLatin1Char('9'));
 #else
     m_charWidth = fontMetrics().width(QLatin1Char('9'));
@@ -100,7 +100,7 @@ QSize QHexView::fullSize() const {
 }
 
 void QHexView::updatePositions() {
-#if QT_VERSION >= 0x051100
+#if QT_VERSION >= QT_VERSION_CHECK(5,11,0)
     m_charWidth = fontMetrics().horizontalAdvance(QLatin1Char('9'));
 #else
     m_charWidth = fontMetrics().width(QLatin1Char('9'));
