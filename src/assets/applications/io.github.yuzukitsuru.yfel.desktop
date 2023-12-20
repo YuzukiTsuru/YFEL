@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=YFEL
+Comment="AYet another Allwinner FEL Toolkit"
+Comment[zh_CN]="又一个 Allwinner FEL 工具箱"
+Categories=Development;Electronics;
+
+Icon=yfel
+Exec=yfel
+Terminal=false
