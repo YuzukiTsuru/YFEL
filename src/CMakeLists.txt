@@ -151,3 +151,21 @@ if (WIN32)
         endforeach (QT_LIB)
     endif ()
 endif ()
+
+install(TARGETS YFEL
+        RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
+install(FILES ${PROJECT_BINARY_DIR}/yfel_config.h
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+
+install(FILES ${qm_files}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/locale)
+
+install(FILES ${PROJECT_SOURCE_DIR}/assets/applications/io.github.yuzukitsuru.yfel.desktop
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+
+install(FILES ${PROJECT_SOURCE_DIR}/assets/img/yfel.png
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps)
+

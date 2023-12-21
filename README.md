@@ -12,3 +12,11 @@ FEL is a low-level subroutine contained in the [BootROM](https://linux-sunxi.org
 - Qt6
 - libusb
 - xfel
+
+## Arch Linux
+
+- [yfel-git](https://aur.archlinux.org/packages/yfel-git)
+
+```bash
+yay -Syu yfel-git
+```
